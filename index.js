@@ -1,29 +1,35 @@
-import chalk from 'chalk';
-import { format, isPast } from 'date-fns';
+import express from 'express';
 
-console.log("Somos Elias y compañia y este es el trabajo de Node.js para PDI (La mejor materia)");
+const app = express();
+const PORT = process.env.PORT || 3000;
 
-const integrantes = [
-    "Eliastf06 (Franco Elias)",
-    "Ferreyra Valentin",
-    "Matto Maximo",
-    "Licera Julian"
-];
+// Middleware para parsear JSON en el body de las peticiones
+app.use(express.json());
 
-integrantes.forEach(nombre => {
-    console.log(chalk.green(`Hola, soy ${nombre}`));
+// Ruta de bienvenida
+app.get('/', (req, res) => {
+    res.json({ message: "Bienvenido a la API de Gestor de Portafolios WEB" });
 });
 
-// Mostrar fecha de hoy
-const fechaHoy = new Date();
-console.log(chalk.blue(`Fecha de hoy: ${format(fechaHoy, 'dd/MM/yyyy')}`));
+// Rutas para la entidad Proyecto (ejemplo inicial, luego se modularizará)
+app.get('/proyectos', (req, res) => {
+    res.json({ message: "Esta es la ruta GET de mi entidad Proyecto (todos los elementos)" });
+});
 
-// Fecha de entrega de la tarea (ejemplo: 20 de Julio de 2025)
-// Ajusta esta fecha según la fecha real de entrega para probar el color
-const fechaEntrega = new Date('2025-07-20T23:59:59'); // Año-Mes-Día (Mes es 0-indexado)
+app.post('/proyectos', (req, res) => {
+    res.json({ message: "Esta es la ruta POST de mi entidad Proyecto (creación)" });
+});
 
-if (isPast(fechaEntrega)) {
-    console.log(chalk.red(`Fecha de entrega: ${format(fechaEntrega, 'dd/MM/yyyy')} (¡Ya pasó!)`));
-} else {
-    console.log(chalk.yellow(`Fecha de entrega: ${format(fechaEntrega, 'dd/MM/yyyy')} (¡Todavía hay tiempo!)`));
-}
+app.put('/proyectos', (req, res) => {
+    res.json({ message: "Esta es la ruta PUT de mi entidad Proyecto (modificación)" });
+});
+
+app.delete('/proyectos', (req, res) => {
+    res.json({ message: "Esta es la ruta DELETE de mi entidad Proyecto (eliminación)" });
+});
+
+
+// Iniciar el servidor
+app.listen(PORT, () => {
+    console.log(`Servidor Express corriendo en el puerto ${PORT}`);
+});
