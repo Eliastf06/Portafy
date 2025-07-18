@@ -2,11 +2,16 @@
   "name": "portafy",
   "version": "1.0.0",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "Eliastf06",
   "license": "ISC",
-  "description": "Mi proyecto de Portafy"
+  "description": "Mi proyecto de Portafy",
+  "dependencies": {
+    "chalk": "^5.4.1",
+    "date-fns": "^4.1.0"
+  }
 }
