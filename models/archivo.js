@@ -18,11 +18,11 @@ const Archivo = sequelize.define('Archivo', {
         }
     },
     tipo_archivo: {
-        type: DataTypes.STRING, // ej. 'imagen', 'video', 'documento'
+        type: DataTypes.STRING,
         allowNull: false
     },
     url: {
-        type: DataTypes.STRING, // URL del archivo
+        type: DataTypes.STRING,
         allowNull: false,
         validate: {
             isUrl: true

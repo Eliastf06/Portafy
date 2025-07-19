@@ -21,7 +21,7 @@ const Usuario = sequelize.define('Usuario', {
             isEmail: true
         }
     },
-    contrasenia: { // En una app real, esto debería estar hasheado
+    contrasenia: {
         type: DataTypes.STRING,
         allowNull: false
     },
@@ -30,7 +30,7 @@ const Usuario = sequelize.define('Usuario', {
         allowNull: false
     },
     foto_perfil: {
-        type: DataTypes.STRING, // URL a la imagen
+        type: DataTypes.STRING,
         allowNull: true
     },
     biografia: {
@@ -38,7 +38,7 @@ const Usuario = sequelize.define('Usuario', {
         allowNull: true
     },
     red_social: {
-        type: DataTypes.STRING, // URL a la red social
+        type: DataTypes.STRING,
         allowNull: true
     }
 }, {

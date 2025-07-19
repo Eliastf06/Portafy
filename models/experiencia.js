@@ -26,15 +26,15 @@ const Experiencia = sequelize.define('Exp_Lbl', {
         allowNull: false
     },
     fecha_inicio: {
-        type: DataTypes.DATEONLY, // Solo fecha sin hora
+        type: DataTypes.DATEONLY,
         allowNull: false
     },
     fecha_salida: {
-        type: DataTypes.DATEONLY, // Solo fecha sin hora
+        type: DataTypes.DATEONLY,
         allowNull: false
     }
 }, {
-    tableName: 'Exp_Lbls', // Nombre de la tabla en la DB
+    tableName: 'Exp_Lbls',
     timestamps: false
 });
 
