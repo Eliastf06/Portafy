@@ -1,18 +1,25 @@
 import express from 'express';
-import applyRoutes from './routes/index.js'; // Importa la función centralizadora
+import applyRoutes from './routes/index.js';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+app.use(express.static(path.join(__dirname, 'public')));
+
 app.use(express.json());
 
 app.get('/', (req, res) => {
-    res.json({ message: "Bienvenido a la API de Gestor de Portafolios WEB" });
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-// Aplica todas las rutas centralizadas
 applyRoutes(app);
 
 app.listen(PORT, () => {
     console.log(`Servidor Express corriendo en el puerto ${PORT}`);
+    console.log(`Frontend disponible en http://localhost:${PORT}`);
 });
