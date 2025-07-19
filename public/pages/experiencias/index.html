@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Experiencias Laborales</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 0; background-color: #f4f4f4; color: #333; }
+        header { background-color: #333; color: #fff; padding: 1em 0; text-align: center; }
+        nav ul { list-style: none; padding: 0; text-align: center; background-color: #eee; margin: 0; }
+        nav ul li { display: inline; margin: 0 15px; }
+        nav ul li a { text-decoration: none; color: #333; font-weight: bold; padding: 10px 0; display: inline-block; }
+        nav ul li a:hover { color: #007bff; }
+        .container { width: 80%; margin: 20px auto; background-color: #fff; padding: 20px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); border-radius: 8px; }
+        .exp-item { border: 1px solid #ddd; padding: 15px; margin-bottom: 10px; border-radius: 5px; background-color: #f9f9f9; }
+        .exp-item h3 { margin-top: 0; color: #007bff; }
+        .actions a { margin-right: 10px; text-decoration: none; color: #007bff; }
+        .actions button { background-color: #dc3545; color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer; }
+        .actions button:hover { background-color: #c82333; }
+        .add-button { display: inline-block; background-color: #28a745; color: white; padding: 10px 15px; border-radius: 5px; text-decoration: none; margin-bottom: 20px; }
+        .add-button:hover { background-color: #218838; }
+        footer { text-align: center; padding: 20px; margin-top: 30px; background-color: #333; color: #fff; }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Gestor de Portafolios Web</h1>
+    </header>
+    <nav>
+        <ul>
+            <li><a href="/">Inicio</a></li>
+            <li><a href="/pages/proyectos/index.html">Proyectos</a></li>
+            <li><a href="/pages/usuarios/index.html">Usuarios</a></li>
+            <li><a href="/pages/archivos/index.html">Archivos</a></li>
+            <li><a href="/pages/experiencias/index.html">Experiencias</a></li>
+        </ul>
+    </nav>
+    <div class="container">
+        <h2>Experiencias Laborales</h2>
+        <a href="/pages/experiencias/create.html" class="add-button">Crear Nueva Experiencia</a>
+        <div id="experiencias-list">
+            </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 Gestor de Portafolios Web. Todos los derechos reservados.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', fetchExperiencias);
+
+        async function fetchExperiencias() {
+            try {
+                const response = await fetch('/api/experiencias');
+                const experiencias = await response.json();
+                const experienciasList = document.getElementById('experiencias-list');
+                experienciasList.innerHTML = '';
+                experiencias.forEach(exp => {
+                    const div = document.createElement('div');
+                    div.className = 'exp-item';
+                    div.innerHTML = `
+                        <h3>${exp.cargo} en ${exp.empresa}</h3>
+                        <p><strong>Usuario:</strong> ${exp.usuario ? `<a href="/pages/usuarios/show.html?nom_usuario=${exp.usuario.nom_usuario}">${exp.usuario.nom_usuario}</a>` : 'N/A'}</p>
+                        <p><strong>Período:</strong> ${new Date(exp.fecha_inicio).toLocaleDateString()} - ${new Date(exp.fecha_salida).toLocaleDateString()}</p>
+                        <div class="actions">
+                            <a href="/pages/experiencias/show.html?id=${exp.id_exp}">Ver</a>
+                            <a href="/pages/experiencias/edit.html?id=${exp.id_exp}">Editar</a>
+                            <button onclick="deleteExperiencia(${exp.id_exp})">Eliminar</button>
+                        </div>
+                    `;
+                    experienciasList.appendChild(div);
+                });
+            } catch (error) {
+                console.error('Error al cargar experiencias:', error);
+                document.getElementById('experiencias-list').innerHTML = '<p>Error al cargar experiencias. Inténtalo de nuevo más tarde.</p>';
+            }
+        }
+
+        async function deleteExperiencia(id) {
+            if (confirm(`¿Estás seguro de que quieres eliminar la experiencia ID ${id}?`)) {
+                try {
+                    const response = await fetch(`/api/experiencias/${id}`, {
+                        method: 'DELETE',
+                    });
+                    if (response.ok) {
+                        alert('Experiencia eliminada exitosamente.');
+                        fetchExperiencias();
+                    } else {
+                        const errorData = await response.json();
+                        alert(`Error al eliminar la experiencia: ${errorData.message}`);
+                    }
+                } catch (error) {
+                    console.error('Error al eliminar experiencia:', error);
+                    alert('Error al eliminar la experiencia. Consulta la consola para más detalles.');
+                }
+            }
+        }
+    </script>
+</body>
+</html>

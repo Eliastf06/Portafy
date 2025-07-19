@@ -1,105 +1,81 @@
-import { Router } from 'express';
-import { PrismaClient } from '@prisma/client';
+// routes/archivo.routes.js
+import express from 'express';
+const router = express.Router();
+import Archivo from '../models/archivo.js';
+import Proyecto from '../models/proyecto.js';
 
-const router = Router();
-const prisma = new PrismaClient();
-
+// Obtener todos los archivos
 router.get('/', async (req, res) => {
     try {
-        const archivos = await prisma.archivo.findMany({
-            include: { proyecto: true }
+        const archivos = await Archivo.findAll({
+            include: [
+                { model: Proyecto, attributes: ['id_proyecto', 'titulo'] }
+            ]
         });
-        res.json(archivos);
+        res.status(200).json(archivos);
     } catch (error) {
-        console.error("Error al obtener archivos:", error);
-        res.status(500).json({ message: "Error al obtener archivos", error: error.message });
+        res.status(500).json({ message: 'Error al obtener archivos', error: error.message });
     }
 });
 
+// Obtener un archivo por ID
 router.get('/:id', async (req, res) => {
     try {
-        const { id } = req.params;
-        const archivo = await prisma.archivo.findUnique({
-            where: { id_archivo: parseInt(id) },
-            include: { proyecto: true }
+        const archivo = await Archivo.findByPk(req.params.id, {
+            include: [
+                { model: Proyecto, attributes: ['id_proyecto', 'titulo'] }
+            ]
         });
         if (archivo) {
-            res.json(archivo);
+            res.status(200).json(archivo);
         } else {
-            res.status(404).json({ message: "Archivo no encontrado" });
+            res.status(404).json({ message: 'Archivo no encontrado' });
         }
     } catch (error) {
-        console.error("Error al obtener archivo por ID:", error);
-        res.status(500).json({ message: "Error al obtener archivo", error: error.message });
+        res.status(500).json({ message: 'Error al obtener archivo', error: error.message });
     }
 });
 
+// Crear un nuevo archivo
 router.post('/', async (req, res) => {
     try {
-        const { id_proyecto, tipo_archivo, url } = req.body;
-        if (!id_proyecto || !tipo_archivo || !url) {
-            return res.status(400).json({ message: "Los campos id_proyecto, tipo_archivo y url son requeridos." });
-        }
-
-        const proyectoExistente = await prisma.proyecto.findUnique({
-            where: { id_proyecto: parseInt(id_proyecto) }
-        });
-        if (!proyectoExistente) {
-            return res.status(404).json({ message: `Proyecto con ID '${id_proyecto}' no encontrado.` });
-        }
-
-        const nuevoArchivo = await prisma.archivo.create({
-            data: {
-                id_proyecto: parseInt(id_proyecto),
-                tipo_archivo,
-                url,
-            },
-        });
+        const nuevoArchivo = await Archivo.create(req.body);
         res.status(201).json(nuevoArchivo);
     } catch (error) {
-        console.error("Error al crear archivo:", error);
-        res.status(500).json({ message: "Error al crear archivo", error: error.message });
+        res.status(400).json({ message: 'Error al crear archivo', error: error.message });
     }
 });
 
+// Actualizar un archivo por ID
 router.put('/:id', async (req, res) => {
     try {
-        const { id } = req.params;
-        const { id_proyecto, tipo_archivo, url } = req.body;
-
-        const archivoActualizado = await prisma.archivo.update({
-            where: { id_archivo: parseInt(id) },
-            data: {
-                id_proyecto: id_proyecto ? parseInt(id_proyecto) : undefined,
-                tipo_archivo,
-                url,
-            },
+        const [updated] = await Archivo.update(req.body, {
+            where: { id_archivo: req.params.id }
         });
-        res.json(archivoActualizado);
-    } catch (error) {
-        console.error("Error al actualizar archivo:", error);
-        if (error.code === 'P2025') {
-            res.status(404).json({ message: "Archivo no encontrado para actualizar" });
+        if (updated) {
+            const archivoActualizado = await Archivo.findByPk(req.params.id);
+            res.status(200).json(archivoActualizado);
         } else {
-            res.status(500).json({ message: "Error al actualizar archivo", error: error.message });
+            res.status(404).json({ message: 'Archivo no encontrado' });
         }
+    } catch (error) {
+        res.status(400).json({ message: 'Error al actualizar archivo', error: error.message });
     }
 });
 
+// Eliminar un archivo por ID
 router.delete('/:id', async (req, res) => {
     try {
-        const { id } = req.params;
-        await prisma.archivo.delete({
-            where: { id_archivo: parseInt(id) },
+        const deleted = await Archivo.destroy({
+            where: { id_archivo: req.params.id }
         });
-        res.status(204).send();
-    } catch (error) {
-        console.error("Error al eliminar archivo:", error);
-        if (error.code === 'P2025') {
-            res.status(404).json({ message: "Archivo no encontrado para eliminar" });
+        if (deleted) {
+            res.status(204).json({ message: 'Archivo eliminado' });
         } else {
-            res.status(500).json({ message: "Error al eliminar archivo", error: error.message });
+            res.status(404).json({ message: 'Archivo no encontrado' });
         }
+    } catch (error) {
+        res.status(500).json({ message: 'Error al eliminar archivo', error: error.message });
     }
 });
 

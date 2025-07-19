@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Usuario</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 0; background-color: #f4f4f4; color: #333; }
+        header { background-color: #333; color: #fff; padding: 1em 0; text-align: center; }
+        nav ul { list-style: none; padding: 0; text-align: center; background-color: #eee; margin: 0; }
+        nav ul li { display: inline; margin: 0 15px; }
+        nav ul li a { text-decoration: none; color: #333; font-weight: bold; padding: 10px 0; display: inline-block; }
+        nav ul li a:hover { color: #007bff; }
+        .container { width: 80%; margin: 20px auto; background-color: #fff; padding: 20px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); border-radius: 8px; }
+        form div { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; }
+        input[type="text"], input[type="email"], input[type="password"], textarea, select {
+            width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box;
+        }
+        button { background-color: #007bff; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; }
+        button:hover { background-color: #0056b3; }
+        .back-link { display: inline-block; margin-top: 20px; color: #007bff; text-decoration: none; }
+        .back-link:hover { text-decoration: underline; }
+        footer { text-align: center; padding: 20px; margin-top: 30px; background-color: #333; color: #fff; }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Gestor de Portafolios Web</h1>
+    </header>
+    <nav>
+        <ul>
+            <li><a href="/">Inicio</a></li>
+            <li><a href="/pages/proyectos/index.html">Proyectos</a></li>
+            <li><a href="/pages/usuarios/index.html">Usuarios</a></li>
+            <li><a href="/pages/archivos/index.html">Archivos</a></li>
+            <li><a href="/pages/experiencias/index.html">Experiencias</a></li>
+        </ul>
+    </nav>
+    <div class="container">
+        <h2>Editar Usuario</h2>
+        <form id="edit-user-form">
+            <div>
+                <label for="nom_usuario">Nombre de Usuario (no editable):</label>
+                <input type="text" id="nom_usuario" name="nom_usuario" readonly>
+            </div>
+            <div>
+                <label for="nombre">Nombre Completo:</label>
+                <input type="text" id="nombre" name="nombre" required>
+            </div>
+            <div>
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div>
+                <label for="contrasenia">Contraseña (dejar en blanco para no cambiar):</label>
+                <input type="password" id="contrasenia" name="contrasenia">
+            </div>
+            <div>
+                <label for="tipo_usuario">Tipo de Usuario:</label>
+                <select id="tipo_usuario" name="tipo_usuario" required>
+                    <option value="programador">Programador</option>
+                    <option value="visual">Visual</option>
+                </select>
+            </div>
+            <div>
+                <label for="foto_perfil">URL Foto de Perfil:</label>
+                <input type="text" id="foto_perfil" name="foto_perfil">
+            </div>
+            <div>
+                <label for="biografia">Biografía:</label>
+                <textarea id="biografia" name="biografia" rows="5"></textarea>
+            </div>
+            <div>
+                <label for="red_social">URL Red Social:</label>
+                <input type="text" id="red_social" name="red_social">
+            </div>
+            <button type="submit">Actualizar Usuario</button>
+        </form>
+        <a href="/pages/usuarios/index.html" class="back-link">Volver a la lista de usuarios</a>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 Gestor de Portafolios Web. Todos los derechos reservados.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', loadUserForEdit);
+
+        let currentUsername;
+
+        async function loadUserForEdit() {
+            const urlParams = new URLSearchParams(window.location.search);
+            currentUsername = urlParams.get('nom_usuario');
+
+            if (!currentUsername) {
+                alert('Nombre de usuario no especificado para edición.');
+                window.location.href = '/pages/usuarios/index.html';
+                return;
+            }
+
+            try {
+                const response = await fetch(`/api/usuarios/${currentUsername}`);
+                if (response.status === 404) {
+                    alert('Usuario no encontrado.');
+                    window.location.href = '/pages/usuarios/index.html';
+                    return;
+                }
+                const usuario = await response.json();
+
+                document.getElementById('nom_usuario').value = usuario.nom_usuario;
+                document.getElementById('nombre').value = usuario.nombre;
+                document.getElementById('email').value = usuario.email;
+                document.getElementById('tipo_usuario').value = usuario.tipo_usuario;
+                document.getElementById('foto_perfil').value = usuario.foto_perfil || '';
+                document.getElementById('biografia').value = usuario.biografia || '';
+                document.getElementById('red_social').value = usuario.red_social || '';
+
+            } catch (error) {
+                console.error('Error al cargar usuario para edición:', error);
+                alert('Error al cargar los datos del usuario.');
+                window.location.href = '/pages/usuarios/index.html';
+            }
+        }
+
+        document.getElementById('edit-user-form').addEventListener('submit', async function(event) {
+            event.preventDefault();
+
+            const nombre = document.getElementById('nombre').value;
+            const email = document.getElementById('email').value;
+            const contrasenia = document.getElementById('contrasenia').value; // Puede estar vacío
+            const tipo_usuario = document.getElementById('tipo_usuario').value;
+            const foto_perfil = document.getElementById('foto_perfil').value;
+            const biografia = document.getElementById('biografia').value;
+            const red_social = document.getElementById('red_social').value;
+
+            const userData = { nombre, email, tipo_usuario, foto_perfil, biografia, red_social };
+            if (contrasenia) { // Solo si se proporciona una nueva contraseña
+                userData.contrasenia = contrasenia;
+            }
+
+            try {
+                const response = await fetch(`/api/usuarios/${currentUsername}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(userData),
+                });
+
+                if (response.ok) {
+                    alert('Usuario actualizado exitosamente!');
+                    window.location.href = '/pages/usuarios/index.html';
+                } else {
+                    const errorData = await response.json();
+                    alert(`Error al actualizar el usuario: ${errorData.message}`);
+                }
+            } catch (error) {
+                console.error('Error al enviar el formulario de actualización:', error);
+                alert('Error de conexión o del servidor al actualizar el usuario.');
+            }
+        });
+    </script>
+</body>
+</html>

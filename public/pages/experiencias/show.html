@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalles de la Experiencia Laboral</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 0; background-color: #f4f4f4; color: #333; }
+        header { background-color: #333; color: #fff; padding: 1em 0; text-align: center; }
+        nav ul { list-style: none; padding: 0; text-align: center; background-color: #eee; margin: 0; }
+        nav ul li { display: inline; margin: 0 15px; }
+        nav ul li a { text-decoration: none; color: #333; font-weight: bold; padding: 10px 0; display: inline-block; }
+        nav ul li a:hover { color: #007bff; }
+        .container { width: 80%; margin: 20px auto; background-color: #fff; padding: 20px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); border-radius: 8px; }
+        h2 { color: #007bff; }
+        p { margin-bottom: 10px; }
+        strong { color: #555; }
+        .back-link { display: inline-block; margin-top: 20px; color: #007bff; text-decoration: none; }
+        .back-link:hover { text-decoration: underline; }
+        footer { text-align: center; padding: 20px; margin-top: 30px; background-color: #333; color: #fff; }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Gestor de Portafolios Web</h1>
+    </header>
+    <nav>
+        <ul>
+            <li><a href="/">Inicio</a></li>
+            <li><a href="/pages/proyectos/index.html">Proyectos</a></li>
+            <li><a href="/pages/usuarios/index.html">Usuarios</a></li>
+            <li><a href="/pages/archivos/index.html">Archivos</a></li>
+            <li><a href="/pages/experiencias/index.html">Experiencias</a></li>
+        </ul>
+    </nav>
+    <div class="container">
+        <h2 id="experience-title">Cargando experiencia...</h2>
+        <p><strong>Empresa:</strong> <span id="experience-company"></span></p>
+        <p><strong>Cargo:</strong> <span id="experience-role"></span></p>
+        <p><strong>Usuario:</strong> <span id="experience-user"></span></p>
+        <p><strong>Fecha de Inicio:</strong> <span id="experience-start-date"></span></p>
+        <p><strong>Fecha de Salida:</strong> <span id="experience-end-date"></span></p>
+
+        <a href="/pages/experiencias/index.html" class="back-link">Volver a la lista de experiencias</a>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 Gestor de Portafolios Web. Todos los derechos reservados.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', fetchExperienceDetails);
+
+        async function fetchExperienceDetails() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const experienceId = urlParams.get('id');
+
+            if (!experienceId) {
+                document.getElementById('experience-title').textContent = 'Error: ID de experiencia no especificado.';
+                return;
+            }
+
+            try {
+                const response = await fetch(`/api/experiencias/${experienceId}`);
+                if (response.status === 404) {
+                    document.getElementById('experience-title').textContent = 'Experiencia no encontrada.';
+                    return;
+                }
+                const experiencia = await response.json();
+
+                document.getElementById('experience-title').textContent = `${experiencia.cargo} en ${experiencia.empresa}`;
+                document.getElementById('experience-company').textContent = experiencia.empresa;
+                document.getElementById('experience-role').textContent = experiencia.cargo;
+                document.getElementById('experience-user').innerHTML = experiencia.usuario ? `<a href="/pages/usuarios/show.html?nom_usuario=${experiencia.usuario.nom_usuario}">${experiencia.usuario.nom_usuario}</a>` : 'N/A';
+                document.getElementById('experience-start-date').textContent = new Date(experiencia.fecha_inicio).toLocaleDateString();
+                document.getElementById('experience-end-date').textContent = new Date(experiencia.fecha_salida).toLocaleDateString();
+
+            } catch (error) {
+                console.error('Error al cargar detalles de la experiencia:', error);
+                document.getElementById('experience-title').textContent = 'Error al cargar la experiencia.';
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalles del Proyecto</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 1em 0;
+            text-align: center;
+        }
+        nav ul {
+            list-style: none;
+            padding: 0;
+            text-align: center;
+            background-color: #eee;
+            margin: 0;
+        }
+        nav ul li {
+            display: inline;
+            margin: 0 15px;
+        }
+        nav ul li a {
+            text-decoration: none;
+            color: #333;
+            font-weight: bold;
+            padding: 10px 0;
+            display: inline-block;
+        }
+        nav ul li a:hover {
+            color: #007bff;
+        }
+        .container {
+            width: 80%;
+            margin: 20px auto;
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+        h2 {
+            color: #007bff;
+        }
+        p {
+            margin-bottom: 10px;
+        }
+        strong {
+            color: #555;
+        }
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            color: #007bff;
+            text-decoration: none;
+        }
+        .back-link:hover {
+            text-decoration: underline;
+        }
+        footer {
+            text-align: center;
+            padding: 20px;
+            margin-top: 30px;
+            background-color: #333;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Gestor de Portafolios Web</h1>
+    </header>
+    <nav>
+        <ul>
+            <li><a href="/">Inicio</a></li>
+            <li><a href="/pages/proyectos/index.html">Proyectos</a></li>
+        </ul>
+    </nav>
+    <div class="container">
+        <h2 id="project-title">Cargando proyecto...</h2>
+        <p><strong>Usuario:</strong> <span id="project-user"></span></p>
+        <p><strong>Descripción:</strong> <span id="project-description"></span></p>
+        <p><strong>Categoría:</strong> <span id="project-category"></span></p>
+        <p><strong>Fecha de Publicación:</strong> <span id="project-date"></span></p>
+        <h3>Archivos Asociados:</h3>
+        <ul id="project-files">
+            </ul>
+        <a href="/pages/proyectos/index.html" class="back-link">Volver a la lista de proyectos</a>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 Gestor de Portafolios Web. Todos los derechos reservados.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', fetchProjectDetails);
+
+        async function fetchProjectDetails() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const projectId = urlParams.get('id');
+
+            if (!projectId) {
+                document.getElementById('project-title').textContent = 'Error: ID de proyecto no especificado.';
+                return;
+            }
+
+            try {
+                const response = await fetch(`/api/proyectos/${projectId}`);
+                if (response.status === 404) {
+                    document.getElementById('project-title').textContent = 'Proyecto no encontrado.';
+                    return;
+                }
+                const proyecto = await response.json();
+
+                document.getElementById('project-title').textContent = proyecto.titulo;
+                document.getElementById('project-user').textContent = proyecto.usuario ? proyecto.usuario.nom_usuario : 'N/A';
+                document.getElementById('project-description').textContent = proyecto.descripcion || 'No hay descripción.';
+                document.getElementById('project-category').textContent = proyecto.categoria || 'N/A';
+                document.getElementById('project-date').textContent = new Date(proyecto.fecha_publi).toLocaleDateString();
+
+                const filesList = document.getElementById('project-files');
+                if (proyecto.archivos && proyecto.archivos.length > 0) {
+                    proyecto.archivos.forEach(archivo => {
+                        const li = document.createElement('li');
+                        li.textContent = `${archivo.tipo_archivo}: ${archivo.url}`;
+                        filesList.appendChild(li);
+                    });
+                } else {
+                    filesList.innerHTML = '<li>No hay archivos asociados.</li>';
+                }
+
+            } catch (error) {
+                console.error('Error al cargar detalles del proyecto:', error);
+                document.getElementById('project-title').textContent = 'Error al cargar el proyecto.';
+            }
+        }
+    </script>
+</body>
+</html>

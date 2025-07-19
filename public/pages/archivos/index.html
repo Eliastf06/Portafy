@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Archivos</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 0; background-color: #f4f4f4; color: #333; }
+        header { background-color: #333; color: #fff; padding: 1em 0; text-align: center; }
+        nav ul { list-style: none; padding: 0; text-align: center; background-color: #eee; margin: 0; }
+        nav ul li { display: inline; margin: 0 15px; }
+        nav ul li a { text-decoration: none; color: #333; font-weight: bold; padding: 10px 0; display: inline-block; }
+        nav ul li a:hover { color: #007bff; }
+        .container { width: 80%; margin: 20px auto; background-color: #fff; padding: 20px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); border-radius: 8px; }
+        .file-item { border: 1px solid #ddd; padding: 15px; margin-bottom: 10px; border-radius: 5px; background-color: #f9f9f9; }
+        .file-item h3 { margin-top: 0; color: #007bff; }
+        .actions a { margin-right: 10px; text-decoration: none; color: #007bff; }
+        .actions button { background-color: #dc3545; color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer; }
+        .actions button:hover { background-color: #c82333; }
+        .add-button { display: inline-block; background-color: #28a745; color: white; padding: 10px 15px; border-radius: 5px; text-decoration: none; margin-bottom: 20px; }
+        .add-button:hover { background-color: #218838; }
+        footer { text-align: center; padding: 20px; margin-top: 30px; background-color: #333; color: #fff; }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Gestor de Portafolios Web</h1>
+    </header>
+    <nav>
+        <ul>
+            <li><a href="/">Inicio</a></li>
+            <li><a href="/pages/proyectos/index.html">Proyectos</a></li>
+            <li><a href="/pages/usuarios/index.html">Usuarios</a></li>
+            <li><a href="/pages/archivos/index.html">Archivos</a></li>
+            <li><a href="/pages/experiencias/index.html">Experiencias</a></li>
+        </ul>
+    </nav>
+    <div class="container">
+        <h2>Archivos</h2>
+        <a href="/pages/archivos/create.html" class="add-button">Crear Nuevo Archivo</a>
+        <div id="archivos-list">
+            </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 Gestor de Portafolios Web. Todos los derechos reservados.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', fetchArchivos);
+
+        async function fetchArchivos() {
+            try {
+                const response = await fetch('/api/archivos');
+                const archivos = await response.json();
+                const archivosList = document.getElementById('archivos-list');
+                archivosList.innerHTML = '';
+                archivos.forEach(archivo => {
+                    const div = document.createElement('div');
+                    div.className = 'file-item';
+                    div.innerHTML = `
+                        <h3>Archivo ID: ${archivo.id_archivo} - Tipo: ${archivo.tipo_archivo}</h3>
+                        <p><strong>Proyecto:</strong> ${archivo.proyecto ? `<a href="/pages/proyectos/show.html?id=${archivo.proyecto.id_proyecto}">${archivo.proyecto.titulo}</a>` : 'N/A'}</p>
+                        <p><strong>URL:</strong> <a href="${archivo.url}" target="_blank">${archivo.url}</a></p>
+                        <div class="actions">
+                            <a href="/pages/archivos/show.html?id=${archivo.id_archivo}">Ver</a>
+                            <a href="/pages/archivos/edit.html?id=${archivo.id_archivo}">Editar</a>
+                            <button onclick="deleteArchivo(${archivo.id_archivo})">Eliminar</button>
+                        </div>
+                    `;
+                    archivosList.appendChild(div);
+                });
+            } catch (error) {
+                console.error('Error al cargar archivos:', error);
+                document.getElementById('archivos-list').innerHTML = '<p>Error al cargar archivos. Inténtalo de nuevo más tarde.</p>';
+            }
+        }
+
+        async function deleteArchivo(id) {
+            if (confirm(`¿Estás seguro de que quieres eliminar el archivo ID ${id}?`)) {
+                try {
+                    const response = await fetch(`/api/archivos/${id}`, {
+                        method: 'DELETE',
+                    });
+                    if (response.ok) {
+                        alert('Archivo eliminado exitosamente.');
+                        fetchArchivos();
+                    } else {
+                        const errorData = await response.json();
+                        alert(`Error al eliminar el archivo: ${errorData.message}`);
+                    }
+                } catch (error) {
+                    console.error('Error al eliminar archivo:', error);
+                    alert('Error al eliminar el archivo. Consulta la consola para más detalles.');
+                }
+            }
+        }
+    </script>
+</body>
+</html>

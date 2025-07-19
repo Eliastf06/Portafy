@@ -1,109 +1,81 @@
-import { Router } from 'express';
-import { PrismaClient } from '@prisma/client';
+// routes/experiencia.routes.js
+import express from 'express';
+const router = express.Router();
+import Experiencia from '../models/experiencia.js';
+import Usuario from '../models/usuario.js';
 
-const router = Router();
-const prisma = new PrismaClient();
-
+// Obtener todas las experiencias laborales
 router.get('/', async (req, res) => {
     try {
-        const experiencias = await prisma.expLbl.findMany({
-            include: { usuario: true }
+        const experiencias = await Experiencia.findAll({
+            include: [
+                { model: Usuario, attributes: ['nom_usuario', 'nombre'] }
+            ]
         });
-        res.json(experiencias);
+        res.status(200).json(experiencias);
     } catch (error) {
-        console.error("Error al obtener experiencias laborales:", error);
-        res.status(500).json({ message: "Error al obtener experiencias laborales", error: error.message });
+        res.status(500).json({ message: 'Error al obtener experiencias', error: error.message });
     }
 });
 
+// Obtener una experiencia laboral por ID
 router.get('/:id', async (req, res) => {
     try {
-        const { id } = req.params;
-        const experiencia = await prisma.expLbl.findUnique({
-            where: { id_exp: parseInt(id) },
-            include: { usuario: true }
+        const experiencia = await Experiencia.findByPk(req.params.id, {
+            include: [
+                { model: Usuario, attributes: ['nom_usuario', 'nombre'] }
+            ]
         });
         if (experiencia) {
-            res.json(experiencia);
+            res.status(200).json(experiencia);
         } else {
-            res.status(404).json({ message: "Experiencia Laboral no encontrada" });
+            res.status(404).json({ message: 'Experiencia no encontrada' });
         }
     } catch (error) {
-        console.error("Error al obtener experiencia laboral por ID:", error);
-        res.status(500).json({ message: "Error al obtener experiencia laboral", error: error.message });
+        res.status(500).json({ message: 'Error al obtener experiencia', error: error.message });
     }
 });
 
+// Crear una nueva experiencia laboral
 router.post('/', async (req, res) => {
     try {
-        const { nom_usuario, empresa, cargo, fecha_inicio, fecha_salida } = req.body;
-        if (!nom_usuario || !empresa || !cargo || !fecha_inicio || !fecha_salida) {
-            return res.status(400).json({ message: "Todos los campos son requeridos para la experiencia laboral." });
-        }
-
-        const usuarioExistente = await prisma.usuario.findUnique({
-            where: { nom_usuario: nom_usuario }
-        });
-        if (!usuarioExistente) {
-            return res.status(404).json({ message: `Usuario con nom_usuario '${nom_usuario}' no encontrado.` });
-        }
-
-        const nuevaExperiencia = await prisma.expLbl.create({
-            data: {
-                nom_usuario,
-                empresa,
-                cargo,
-                fecha_inicio: new Date(fecha_inicio),
-                fecha_salida: new Date(fecha_salida),
-            },
-        });
+        const nuevaExperiencia = await Experiencia.create(req.body);
         res.status(201).json(nuevaExperiencia);
     } catch (error) {
-        console.error("Error al crear experiencia laboral:", error);
-        res.status(500).json({ message: "Error al crear experiencia laboral", error: error.message });
+        res.status(400).json({ message: 'Error al crear experiencia', error: error.message });
     }
 });
 
+// Actualizar una experiencia laboral por ID
 router.put('/:id', async (req, res) => {
     try {
-        const { id } = req.params;
-        const { nom_usuario, empresa, cargo, fecha_inicio, fecha_salida } = req.body;
-
-        const experienciaActualizada = await prisma.expLbl.update({
-            where: { id_exp: parseInt(id) },
-            data: {
-                nom_usuario,
-                empresa,
-                cargo,
-                fecha_inicio: fecha_inicio ? new Date(fecha_inicio) : undefined,
-                fecha_salida: fecha_salida ? new Date(fecha_salida) : undefined,
-            },
+        const [updated] = await Experiencia.update(req.body, {
+            where: { id_exp: req.params.id }
         });
-        res.json(experienciaActualizada);
-    } catch (error) {
-        console.error("Error al actualizar experiencia laboral:", error);
-        if (error.code === 'P2025') {
-            res.status(404).json({ message: "Experiencia Laboral no encontrada para actualizar" });
+        if (updated) {
+            const experienciaActualizada = await Experiencia.findByPk(req.params.id);
+            res.status(200).json(experienciaActualizada);
         } else {
-            res.status(500).json({ message: "Error al actualizar experiencia laboral", error: error.message });
+            res.status(404).json({ message: 'Experiencia no encontrada' });
         }
+    } catch (error) {
+        res.status(400).json({ message: 'Error al actualizar experiencia', error: error.message });
     }
 });
 
+// Eliminar una experiencia laboral por ID
 router.delete('/:id', async (req, res) => {
     try {
-        const { id } = req.params;
-        await prisma.expLbl.delete({
-            where: { id_exp: parseInt(id) },
+        const deleted = await Experiencia.destroy({
+            where: { id_exp: req.params.id }
         });
-        res.status(204).send();
-    } catch (error) {
-        console.error("Error al eliminar experiencia laboral:", error);
-        if (error.code === 'P2025') {
-            res.status(404).json({ message: "Experiencia Laboral no encontrada para eliminar" });
+        if (deleted) {
+            res.status(204).json({ message: 'Experiencia eliminada' });
         } else {
-            res.status(500).json({ message: "Error al eliminar experiencia laboral", error: error.message });
+            res.status(404).json({ message: 'Experiencia no encontrada' });
         }
+    } catch (error) {
+        res.status(500).json({ message: 'Error al eliminar experiencia', error: error.message });
     }
 });
 

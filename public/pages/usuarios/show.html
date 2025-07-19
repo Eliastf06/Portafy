@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalles del Usuario</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 0; background-color: #f4f4f4; color: #333; }
+        header { background-color: #333; color: #fff; padding: 1em 0; text-align: center; }
+        nav ul { list-style: none; padding: 0; text-align: center; background-color: #eee; margin: 0; }
+        nav ul li { display: inline; margin: 0 15px; }
+        nav ul li a { text-decoration: none; color: #333; font-weight: bold; padding: 10px 0; display: inline-block; }
+        nav ul li a:hover { color: #007bff; }
+        .container { width: 80%; margin: 20px auto; background-color: #fff; padding: 20px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); border-radius: 8px; }
+        h2 { color: #007bff; }
+        p { margin-bottom: 10px; }
+        strong { color: #555; }
+        .back-link { display: inline-block; margin-top: 20px; color: #007bff; text-decoration: none; }
+        .back-link:hover { text-decoration: underline; }
+        .profile-img { max-width: 150px; height: auto; border-radius: 50%; margin-bottom: 15px; border: 2px solid #ddd; }
+        footer { text-align: center; padding: 20px; margin-top: 30px; background-color: #333; color: #fff; }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Gestor de Portafolios Web</h1>
+    </header>
+    <nav>
+        <ul>
+            <li><a href="/">Inicio</a></li>
+            <li><a href="/pages/proyectos/index.html">Proyectos</a></li>
+            <li><a href="/pages/usuarios/index.html">Usuarios</a></li>
+            <li><a href="/pages/archivos/index.html">Archivos</a></li>
+            <li><a href="/pages/experiencias/index.html">Experiencias</a></li>
+        </ul>
+    </nav>
+    <div class="container">
+        <h2 id="user-username">Cargando usuario...</h2>
+        <img id="user-profile-pic" class="profile-img" src="" alt="Foto de Perfil">
+        <p><strong>Nombre:</strong> <span id="user-name"></span></p>
+        <p><strong>Email:</strong> <span id="user-email"></span></p>
+        <p><strong>Tipo de Usuario:</strong> <span id="user-type"></span></p>
+        <p><strong>Biografía:</strong> <span id="user-bio"></span></p>
+        <p><strong>Red Social:</strong> <a id="user-social" href="#" target="_blank"></a></p>
+
+        <h3>Proyectos del Usuario:</h3>
+        <ul id="user-projects-list"></ul>
+
+        <h3>Experiencias Laborales:</h3>
+        <ul id="user-experiences-list"></ul>
+
+        <a href="/pages/usuarios/index.html" class="back-link">Volver a la lista de usuarios</a>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 Gestor de Portafolios Web. Todos los derechos reservados.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', fetchUserDetails);
+
+        async function fetchUserDetails() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const username = urlParams.get('nom_usuario');
+
+            if (!username) {
+                document.getElementById('user-username').textContent = 'Error: Nombre de usuario no especificado.';
+                return;
+            }
+
+            try {
+                const response = await fetch(`/api/usuarios/${username}`);
+                if (response.status === 404) {
+                    document.getElementById('user-username').textContent = 'Usuario no encontrado.';
+                    return;
+                }
+                const usuario = await response.json();
+
+                document.getElementById('user-username').textContent = usuario.nom_usuario;
+                document.getElementById('user-name').textContent = usuario.nombre;
+                document.getElementById('user-email').textContent = usuario.email;
+                document.getElementById('user-type').textContent = usuario.tipo_usuario;
+                document.getElementById('user-bio').textContent = usuario.biografia || 'No hay biografía.';
+
+                const socialLink = document.getElementById('user-social');
+                if (usuario.red_social) {
+                    socialLink.href = usuario.red_social;
+                    socialLink.textContent = usuario.red_social;
+                } else {
+                    socialLink.textContent = 'N/A';
+                    socialLink.removeAttribute('href');
+                }
+
+                const profilePic = document.getElementById('user-profile-pic');
+                if (usuario.foto_perfil) {
+                    profilePic.src = usuario.foto_perfil;
+                } else {
+                    profilePic.src = 'https://via.placeholder.com/150'; // Placeholder si no hay foto
+                }
+
+                const projectsList = document.getElementById('user-projects-list');
+                if (usuario.proyectos && usuario.proyectos.length > 0) {
+                    usuario.proyectos.forEach(p => {
+                        const li = document.createElement('li');
+                        li.innerHTML = `<a href="/pages/proyectos/show.html?id=${p.id_proyecto}">${p.titulo}</a>`;
+                        projectsList.appendChild(li);
+                    });
+                } else {
+                    projectsList.innerHTML = '<li>No tiene proyectos asociados.</li>';
+                }
+
+                const experiencesList = document.getElementById('user-experiences-list');
+                if (usuario.experiencias && usuario.experiencias.length > 0) {
+                    usuario.experiencias.forEach(e => {
+                        const li = document.createElement('li');
+                        li.textContent = `${e.cargo} en ${e.empresa} (${new Date(e.fecha_inicio).toLocaleDateString()} - ${new Date(e.fecha_salida).toLocaleDateString()})`;
+                        experiencesList.appendChild(li);
+                    });
+                } else {
+                    experiencesList.innerHTML = '<li>No tiene experiencias laborales asociadas.</li>';
+                }
+
+            } catch (error) {
+                console.error('Error al cargar detalles del usuario:', error);
+                document.getElementById('user-username').textContent = 'Error al cargar el usuario.';
+            }
+        }
+    </script>
+</body>
+</html>

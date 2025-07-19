@@ -12,9 +12,14 @@
   "description": "Mi proyecto de Portafy",
   "dependencies": {
     "@prisma/client": "^6.12.0",
+    "body-parser": "^2.2.0",
     "chalk": "^5.4.1",
+    "cors": "^2.8.5",
     "date-fns": "^4.1.0",
-    "express": "^5.1.0"
+    "express": "^5.1.0",
+    "mysql2": "^3.14.2",
+    "pg": "^8.16.3",
+    "sequelize": "^6.37.7"
   },
   "devDependencies": {
     "prisma": "^6.12.0"
