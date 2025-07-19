@@ -4,7 +4,6 @@ import { PrismaClient } from '@prisma/client';
 const router = Router();
 const prisma = new PrismaClient();
 
-// GET /experiencias => Devuelve todas las experiencias laborales
 router.get('/', async (req, res) => {
     try {
         const experiencias = await prisma.expLbl.findMany({
@@ -17,7 +16,6 @@ router.get('/', async (req, res) => {
     }
 });
 
-// GET /experiencias/:id => Devuelve una experiencia laboral por ID
 router.get('/:id', async (req, res) => {
     try {
         const { id } = req.params;
@@ -36,7 +34,6 @@ router.get('/:id', async (req, res) => {
     }
 });
 
-// POST /experiencias => Crea una nueva experiencia laboral
 router.post('/', async (req, res) => {
     try {
         const { nom_usuario, empresa, cargo, fecha_inicio, fecha_salida } = req.body;
@@ -67,7 +64,6 @@ router.post('/', async (req, res) => {
     }
 });
 
-// PUT /experiencias/:id => Modifica una experiencia laboral
 router.put('/:id', async (req, res) => {
     try {
         const { id } = req.params;
@@ -94,7 +90,6 @@ router.put('/:id', async (req, res) => {
     }
 });
 
-// DELETE /experiencias/:id => Elimina una experiencia laboral
 router.delete('/:id', async (req, res) => {
     try {
         const { id } = req.params;

@@ -4,7 +4,6 @@ import { PrismaClient } from '@prisma/client';
 const router = Router();
 const prisma = new PrismaClient();
 
-// GET /archivos => Devuelve todos los archivos
 router.get('/', async (req, res) => {
     try {
         const archivos = await prisma.archivo.findMany({
@@ -17,7 +16,6 @@ router.get('/', async (req, res) => {
     }
 });
 
-// GET /archivos/:id => Devuelve un solo archivo por ID
 router.get('/:id', async (req, res) => {
     try {
         const { id } = req.params;
@@ -36,7 +34,6 @@ router.get('/:id', async (req, res) => {
     }
 });
 
-// POST /archivos => Crea un nuevo archivo
 router.post('/', async (req, res) => {
     try {
         const { id_proyecto, tipo_archivo, url } = req.body;
@@ -65,7 +62,6 @@ router.post('/', async (req, res) => {
     }
 });
 
-// PUT /archivos/:id => Modifica un archivo
 router.put('/:id', async (req, res) => {
     try {
         const { id } = req.params;
@@ -90,7 +86,6 @@ router.put('/:id', async (req, res) => {
     }
 });
 
-// DELETE /archivos/:id => Elimina un archivo
 router.delete('/:id', async (req, res) => {
     try {
         const { id } = req.params;

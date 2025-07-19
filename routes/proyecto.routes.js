@@ -4,7 +4,6 @@ import { PrismaClient } from '@prisma/client';
 const router = Router();
 const prisma = new PrismaClient();
 
-// GET /proyectos => Devuelve todos los proyectos
 router.get('/', async (req, res) => {
     try {
         const { nom_usuario } = req.query;
@@ -26,7 +25,6 @@ router.get('/', async (req, res) => {
     }
 });
 
-// GET /proyectos/:id => Devuelve un solo proyecto por ID
 router.get('/:id', async (req, res) => {
     try {
         const { id } = req.params;
@@ -45,7 +43,6 @@ router.get('/:id', async (req, res) => {
     }
 });
 
-// POST /proyectos => Crea un nuevo proyecto
 router.post('/', async (req, res) => {
     try {
         const { nom_usuario, titulo, descripcion, categoria } = req.body;
@@ -76,7 +73,6 @@ router.post('/', async (req, res) => {
     }
 });
 
-// PUT /proyectos/:id => Modifica un proyecto existente
 router.put('/:id', async (req, res) => {
     try {
         const { id } = req.params;
@@ -97,7 +93,6 @@ router.put('/:id', async (req, res) => {
     }
 });
 
-// DELETE /proyectos/:id => Elimina un proyecto
 router.delete('/:id', async (req, res) => {
     try {
         const { id } = req.params;

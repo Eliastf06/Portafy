@@ -4,7 +4,6 @@ import { PrismaClient } from '@prisma/client';
 const router = Router();
 const prisma = new PrismaClient();
 
-// GET /usuarios => Devuelve todos los usuarios
 router.get('/', async (req, res) => {
     try {
         const usuarios = await prisma.usuario.findMany({
@@ -20,7 +19,6 @@ router.get('/', async (req, res) => {
     }
 });
 
-// GET /usuarios/:nom_usuario => Devuelve un solo usuario por nom_usuario (PK)
 router.get('/:nom_usuario', async (req, res) => {
     try {
         const { nom_usuario } = req.params;
@@ -42,7 +40,6 @@ router.get('/:nom_usuario', async (req, res) => {
     }
 });
 
-// POST /usuarios => Crea un nuevo usuario
 router.post('/', async (req, res) => {
     try {
         const { nom_usuario, nombre, email, contrasenia, tipo_usuario, foto_perfil, biografia, red_social } = req.body;
@@ -72,7 +69,6 @@ router.post('/', async (req, res) => {
     }
 });
 
-// PUT /usuarios/:nom_usuario => Modifica un usuario existente
 router.put('/:nom_usuario', async (req, res) => {
     try {
         const { nom_usuario } = req.params;
@@ -95,7 +91,6 @@ router.put('/:nom_usuario', async (req, res) => {
     }
 });
 
-// DELETE /usuarios/:nom_usuario => Elimina un usuario
 router.delete('/:nom_usuario', async (req, res) => {
     try {
         const { nom_usuario } = req.params;
