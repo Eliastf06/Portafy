@@ -1,0 +1,62 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Usuario {
+  nom_usuario  String    @id @unique @map("nom_usuario") // PK, Username
+  nombre       String
+  email        String    @unique
+  contrasenia  String    @map("contraseña") // Changed for security/naming conventions
+  tipo_usuario String // programador/visual
+  foto_perfil  String?   @db.Text // Use @db.Text for long strings like URLs in MySQL if needed
+  biografia    String?   @db.Text
+  red_social   String?   @db.Text
+  proyectos    Proyecto[]
+  experiencias ExpLbl[]
+
+  @@map("Usuario") // Maps model name to table name
+}
+
+model Proyecto {
+  id_proyecto   Int      @id @default(autoincrement()) @map("id_proyecto") // PK
+  nom_usuario   String   @map("nom_usuario") // FK
+  usuario       Usuario  @relation(fields: [nom_usuario], references: [nom_usuario])
+  titulo        String   @db.VarChar(255) // Explicitly set length for string fields in MySQL
+  descripcion   String?  @db.Text
+  categoria     String?  @db.VarChar(100)
+  fecha_publi   DateTime @default(now()) @map("fecha_publi") @db.DateTime(0) // For DATETIME type, (0) for no fractional seconds
+
+  archivos      Archivo[]
+
+  @@map("Proyecto")
+}
+
+model Archivo {
+  id_archivo  Int     @id @default(autoincrement()) @map("id_archivo") // PK
+  id_proyecto Int     @map("id_proyecto") // FK
+  proyecto    Proyecto @relation(fields: [id_proyecto], references: [id_proyecto])
+  tipo_archivo String @db.VarChar(50)
+  url         String @db.Text
+
+  @@map("Archivo")
+}
+
+model ExpLbl {
+  id_exp       Int      @id @default(autoincrement()) @map("id_exp") // PK
+  nom_usuario  String   @map("nom_usuario") // FK
+  usuario      Usuario  @relation(fields: [nom_usuario], references: [nom_usuario])
+  empresa      String   @db.VarChar(255)
+  cargo        String   @db.VarChar(255)
+  fecha_inicio DateTime @map("fecha_inicio") @db.DateTime(0)
+  fecha_salida DateTime @map("fecha_salida") @db.DateTime(0)
+
+  @@map("Exp_Lbl")
+}

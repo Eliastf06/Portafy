@@ -11,8 +11,12 @@
   "license": "ISC",
   "description": "Mi proyecto de Portafy",
   "dependencies": {
+    "@prisma/client": "^6.12.0",
     "chalk": "^5.4.1",
     "date-fns": "^4.1.0",
     "express": "^5.1.0"
+  },
+  "devDependencies": {
+    "prisma": "^6.12.0"
   }
 }
