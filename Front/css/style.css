@@ -1,23 +1,23 @@
 /* css/style.css */
 
 :root {
-    /* Colores para el Modo Claro */
-    --clr-light-bg-primary: #FFFFD9;
-    --clr-light-bg-secondary: #FFE082;
-    --clr-light-accent: #FFD722;
-    --clr-light-text-dark: #454545;
-    --clr-light-text-light: #BDBDBD;
-    --clr-light-shadow-primary: rgba(69, 69, 69, 0.2);
-    --clr-light-shadow-secondary: rgba(69, 69, 69, 0.1);
+    /* Colores para el Modo Claro (Tema de Neón de Día Mejorado) */
+    --clr-light-bg-primary: #ffffff; /* Fondo blanco para un lienzo limpio */
+    --clr-light-bg-secondary: #f0f0f0; /* Gris muy claro para elementos secundarios */
+    --clr-light-accent: #ffeb3b; /* Amarillo neón brillante */
+    --clr-light-text-dark: #333333; /* Texto oscuro para máxima legibilidad */
+    --clr-light-text-light: #9e9e9e; /* Texto gris para contraste sutil */
+    --clr-light-shadow-primary: rgba(0, 0, 0, 0.1);
+    --clr-light-shadow-secondary: rgba(0, 0, 0, 0.05);
 
-    /* Colores para el Modo Oscuro */
-    --clr-dark-bg-primary: #051330;
-    --clr-dark-bg-secondary: #1E2B42;
-    --clr-dark-accent: #238491;
-    --clr-dark-text-dark: #CFF9FF; /* Texto más claro */
-    --clr-dark-text-light: #50A1DE; /* Texto más oscuro para contrastar */
-    --clr-dark-shadow-primary: rgba(0, 0, 0, 0.5);
-    --clr-dark-shadow-secondary: rgba(0, 0, 0, 0.3);
+    /* Colores para el Modo Oscuro (Tema de Neón de Noche) */
+    --clr-dark-bg-primary: #0a0a1a;
+    --clr-dark-bg-secondary: #1a1a2e;
+    --clr-dark-accent: #fff01e;
+    --clr-dark-text-dark: #e0e0e0;
+    --clr-dark-text-light: #70708f;
+    --clr-dark-shadow-primary: rgba(255, 240, 30, 0.25);
+    --clr-dark-shadow-secondary: rgba(255, 240, 30, 0.1);
 
     /* Variables de Color por defecto (Modo Claro) */
     --bg-primary: var(--clr-light-bg-primary);
@@ -27,6 +27,12 @@
     --text-color-light: var(--clr-light-text-light);
     --shadow-primary: var(--clr-light-shadow-primary);
     --shadow-secondary: var(--clr-light-shadow-secondary);
+    
+    /* Variables adicionales para el efecto de neón */
+    --neon-yellow: #fff01e;
+    --neon-blue: #00e0ff;
+    --glow-effect: 0 0 5px var(--neon-yellow), 0 0 10px var(--neon-yellow), 0 0 20px var(--neon-yellow);
+    --glow-effect-secondary: 0 0 5px var(--neon-blue), 0 0 10px var(--neon-blue), 0 0 20px var(--neon-blue);
 
     /* Transiciones */
     --transition-speed: 0.3s ease-in-out;
@@ -200,6 +206,11 @@ ul {
 .btn-primary:hover {
     background-color: var(--text-color-light); /* Un tono más suave al pasar el ratón */
 }
+/* CAMBIO: Color de texto del botón en modo claro */
+.btn-primary {
+    color: var(--clr-light-bg-primary); /* Blanco para que resalte en el botón amarillo */
+}
+/* FIN DE CAMBIO */
 
 /* Para los iconos de Font Awesome */
 .fas, .far, .fab {
@@ -224,6 +235,20 @@ ul {
     gap: 15px; /* Espacio entre elementos */
 }
 
+/* MODIFICACIÓN PARA ENLACE 'PORTAFY' */
+.app-logo-link {
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 1.2em;
+    color: var(--text-color-dark);
+    margin-left: 8px;
+    transition: color var(--transition-speed);
+}
+.app-logo-link:hover {
+    color: var(--accent-color);
+}
+/* FIN DE MODIFICACIÓN */
+
 .theme-toggle {
     font-size: 1.8em;
     cursor: pointer;
@@ -235,6 +260,11 @@ ul {
     font-size: 1.2em; /* Ajuste para el texto "Portafy" */
     font-weight: bold;
     text-transform: uppercase;
+}
+/* EFECTO DE RESPLANDOR EN MODO OSCURO */
+body.dark-mode .theme-toggle i {
+    filter: drop-shadow(0 0 5px var(--neon-yellow)) drop-shadow(0 0 10px var(--neon-yellow));
+    color: var(--neon-yellow);
 }
 
 .theme-toggle .light-mode-icon { display: inline-block; }
@@ -277,6 +307,11 @@ body.dark-mode .theme-toggle .dark-mode-icon { display: inline-block; }
     color: var(--text-color-light);
     transition: color var(--transition-speed);
 }
+/* CAMBIO: Color del icono de búsqueda en modo claro */
+.search-icon {
+    color: var(--clr-light-text-dark);
+}
+/* FIN DE CAMBIO */
 
 .main-nav ul {
     display: flex;
@@ -299,14 +334,20 @@ body.dark-mode .theme-toggle .dark-mode-icon { display: inline-block; }
     margin-bottom: 3px;
     transition: color var(--transition-speed);
 }
+/* EFECTO DE RESPLANDOR EN MODO OSCURO */
+body.dark-mode .main-nav .nav-icon i {
+    filter: drop-shadow(0 0 3px var(--neon-blue)) drop-shadow(0 0 6px var(--neon-blue));
+    color: var(--neon-blue);
+}
 
 .main-nav .nav-icon:hover {
     color: var(--accent-color);
 }
 .main-nav .nav-icon:hover i {
     color: var(--accent-color);
+    /* Desactivar resplandor al pasar el ratón para evitar parpadeo */
+    filter: none;
 }
-
 /* Ocultar el texto de navegación en desktop por defecto */
 .main-nav .nav-text-desktop {
     display: none;
@@ -327,6 +368,11 @@ body.dark-mode .theme-toggle .dark-mode-icon { display: inline-block; }
     text-transform: uppercase;
     letter-spacing: 1.5px;
     transition: color var(--transition-speed);
+}
+/* EFECTO DE NEÓN EN MODO OSCURO */
+body.dark-mode .section-title {
+    color: var(--neon-yellow);
+    text-shadow: var(--glow-effect);
 }
 
 .section-subtitle {
@@ -357,10 +403,20 @@ body.dark-mode .theme-toggle .dark-mode-icon { display: inline-block; }
     flex-direction: column;
     cursor: pointer;
 }
+/* EFECTO DE NEÓN EN MODO OSCURO */
+body.dark-mode .portfolio-card {
+    border: 1px solid var(--clr-dark-text-light);
+    box-shadow: 0 0 5px var(--clr-dark-text-light), 0 0 10px var(--clr-dark-shadow-secondary);
+}
 
 .portfolio-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 6px 15px var(--shadow-primary);
+}
+/* EFECTO DE NEÓN EN HOVER EN MODO OSCURO */
+body.dark-mode .portfolio-card:hover {
+    border-color: var(--accent-color);
+    box-shadow: var(--glow-effect);
 }
 
 .project-preview {
@@ -415,10 +471,29 @@ body.dark-mode .project-preview {
     font-weight: bold;
     transition: background-color var(--transition-speed), color var(--transition-speed);
 }
+/* EFECTO DE NEÓN EN MODO OSCURO */
+body.dark-mode .filter-btn {
+    box-shadow: var(--glow-effect-secondary);
+    color: var(--neon-blue);
+    background-color: var(--clr-dark-bg-secondary);
+    border: 1px solid var(--neon-blue);
+}
 
 .filter-btn:hover {
     background-color: var(--text-color-light);
 }
+/* EFECTO DE NEÓN EN HOVER EN MODO OSCURO */
+body.dark-mode .filter-btn:hover {
+    background-color: var(--accent-color);
+    color: var(--clr-dark-bg-primary);
+    box-shadow: var(--glow-effect);
+    border-color: var(--accent-color);
+}
+/* CAMBIO: Color del texto del botón de filtro en modo claro */
+.filter-btn {
+    color: var(--clr-light-bg-primary); /* Texto blanco para resaltar */
+}
+/* FIN DE CAMBIO */
 
 .filter-btn i {
     margin-right: 8px;
@@ -492,6 +567,11 @@ body.dark-mode .project-preview {
     border: 3px solid var(--accent-color); /* Borde de acento */
     transition: border-color var(--transition-speed);
 }
+/* EFECTO DE NEÓN EN MODO OSCURO */
+body.dark-mode .profile-photo-circle {
+    border-color: var(--neon-yellow);
+    box-shadow: var(--glow-effect);
+}
 
 .profile-photo-circle img {
     width: 100%;
@@ -527,7 +607,6 @@ body.dark-mode .project-preview {
     box-shadow: 0 0 0 2px var(--accent-color);
 }
 
-
 .menu-links li {
     margin-bottom: 15px;
 }
@@ -540,10 +619,14 @@ body.dark-mode .project-preview {
     transition: background-color var(--transition-speed), color var(--transition-speed);
     border-radius: 8px;
 }
-
-.menu-links li a:hover {
+/* EFECTO DE NEÓN EN MODO OSCURO */
+body.dark-mode .menu-links li a {
+    color: var(--text-color-light);
+}
+body.dark-mode .menu-links li a:hover {
     background-color: var(--bg-primary);
-    color: var(--accent-color);
+    color: var(--neon-blue);
+    text-shadow: 0 0 5px var(--neon-blue);
 }
 
 .menu-links li a i {
@@ -551,6 +634,15 @@ body.dark-mode .project-preview {
     width: 20px; /* Para alinear los iconos */
     text-align: center;
 }
+body.dark-mode .menu-links li a i {
+    color: var(--neon-blue);
+    filter: drop-shadow(0 0 3px var(--neon-blue));
+}
+body.dark-mode .menu-links li a:hover i {
+    color: var(--neon-blue);
+    filter: drop-shadow(0 0 5px var(--neon-blue));
+}
+
 
 /* Estilos Específicos para Modales */
 .modal-content .profile-icon-placeholder {
@@ -595,6 +687,10 @@ body.dark-mode .modal-content .profile-icon-placeholder .upload-camera-icon {
     margin-bottom: 25px;
     transition: background-color var(--transition-speed), border-color var(--transition-speed);
 }
+/* EFECTO DE NEÓN EN MODO OSCURO */
+body.dark-mode .modal-content .upload-area {
+    border-color: var(--neon-blue);
+}
 
 .modal-content .upload-area:hover {
     border-color: var(--accent-color);
@@ -606,6 +702,11 @@ body.dark-mode .modal-content .profile-icon-placeholder .upload-camera-icon {
     color: var(--text-color-light);
     margin-bottom: 10px;
     transition: color var(--transition-speed);
+}
+/* EFECTO DE NEÓN EN MODO OSCURO */
+body.dark-mode .modal-content .upload-area .upload-icon {
+    color: var(--neon-blue);
+    filter: drop-shadow(0 0 5px var(--neon-blue));
 }
 
 .modal-content .upload-area p {
@@ -629,10 +730,15 @@ body.dark-mode .modal-content .profile-icon-placeholder .upload-camera-icon {
 .text-center a:hover {
     color: var(--accent-color);
 }
-.text-center a i {
-    font-size: 0.8em;
-    vertical-align: middle;
+body.dark-mode .text-center a i {
+    color: var(--neon-blue);
+    filter: drop-shadow(0 0 3px var(--neon-blue));
 }
+/* CAMBIO: Color del icono de enlace en modo claro */
+.text-center a i {
+    color: var(--clr-light-accent);
+}
+/* FIN DE CAMBIO */
 
 
 /* Estilos para la Página de Perfil */
@@ -649,6 +755,10 @@ body.dark-mode .modal-content .profile-icon-placeholder .upload-camera-icon {
     margin-bottom: 50px;
     text-align: center;
     transition: background-color var(--transition-speed), box-shadow var(--transition-speed);
+}
+body.dark-mode .user-profile-section {
+    border: 1px solid var(--clr-dark-text-light);
+    box-shadow: 0 0 5px var(--clr-dark-text-light), 0 0 10px var(--clr-dark-shadow-secondary);
 }
 
 .profile-header {
@@ -667,6 +777,11 @@ body.dark-mode .modal-content .profile-icon-placeholder .upload-camera-icon {
     border: 5px solid var(--accent-color);
     box-shadow: 0 0 0 5px var(--bg-primary); /* Efecto de borde doble */
     transition: border-color var(--transition-speed), box-shadow var(--transition-speed);
+}
+/* EFECTO DE NEÓN EN MODO OSCURO */
+body.dark-mode .profile-photo-lg {
+    border-color: var(--neon-yellow);
+    box-shadow: var(--glow-effect);
 }
 
 .profile-photo-lg img {
@@ -721,10 +836,20 @@ body.dark-mode .modal-content .profile-icon-placeholder .upload-camera-icon {
     transition: transform 0.2s ease, box-shadow 0.2s ease, background-color var(--transition-speed);
     cursor: pointer;
 }
+/* EFECTO DE NEÓN EN MODO OSCURO */
+body.dark-mode .project-card {
+    border: 1px solid var(--clr-dark-text-light);
+    box-shadow: 0 0 5px var(--clr-dark-text-light), 0 0 10px var(--clr-dark-shadow-secondary);
+}
 
 .project-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 6px 15px var(--shadow-primary);
+}
+/* EFECTO DE NEÓN EN HOVER EN MODO OSCURO */
+body.dark-mode .project-card:hover {
+    border-color: var(--accent-color);
+    box-shadow: var(--glow-effect);
 }
 
 .project-image-placeholder {
@@ -754,6 +879,98 @@ body.dark-mode .project-image-placeholder {
     transition: color var(--transition-speed);
 }
 
+
+/* Estilos para el Footer */
+.main-footer {
+    background-color: var(--bg-secondary);
+    padding: 40px 20px 20px;
+    margin-top: auto; /* Empuja el footer hacia abajo */
+    border-top: 1px solid var(--shadow-secondary);
+    transition: background-color var(--transition-speed);
+}
+body.dark-mode .main-footer {
+    border-top: 1px solid var(--clr-dark-text-light);
+}
+
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 30px;
+    padding-bottom: 20px;
+}
+
+.footer-logo h3 {
+    font-size: 1.8em;
+    color: var(--accent-color);
+    margin-bottom: 10px;
+    transition: color var(--transition-speed);
+}
+/* EFECTO DE NEÓN EN MODO OSCURO */
+body.dark-mode .footer-logo h3 {
+    text-shadow: var(--glow-effect);
+}
+
+.footer-logo p {
+    font-size: 0.9em;
+    color: var(--text-color-light);
+    max-width: 300px;
+    line-height: 1.6;
+}
+
+.footer-links h4,
+.footer-social h4 {
+    font-size: 1.2em;
+    color: var(--text-color-dark);
+    margin-bottom: 15px;
+    transition: color var(--transition-speed);
+}
+
+.footer-links ul li {
+    margin-bottom: 8px;
+}
+
+.footer-links a {
+    color: var(--text-color-light);
+    transition: color var(--transition-speed);
+}
+
+.footer-links a:hover {
+    color: var(--accent-color);
+}
+/* EFECTO DE NEÓN EN HOVER EN MODO OSCURO */
+body.dark-mode .footer-links a:hover {
+    color: var(--neon-blue);
+    text-shadow: 0 0 3px var(--neon-blue);
+}
+
+.social-icons a {
+    font-size: 1.5em;
+    margin-right: 15px;
+    color: var(--text-color-light);
+    transition: color var(--transition-speed);
+}
+.social-icons a:hover {
+    color: var(--accent-color);
+}
+/* EFECTO DE NEÓN EN HOVER EN MODO OSCURO */
+body.dark-mode .social-icons a:hover {
+    color: var(--neon-yellow);
+    filter: drop-shadow(0 0 5px var(--neon-yellow));
+}
+
+.footer-bottom {
+    text-align: center;
+    border-top: 1px solid var(--shadow-secondary);
+    padding-top: 20px;
+    margin-top: 20px;
+}
+
+.footer-bottom p {
+    font-size: 0.85em;
+    color: var(--text-color-light);
+}
 
 /* Responsive Design para ambas páginas */
 @media (min-width: 769px) {
@@ -785,7 +1002,7 @@ body.dark-mode .project-image-placeholder {
         justify-content: space-between;
         gap: 20px; /* Ajusta el espacio entre elementos */
     }
-
+    
     .theme-toggle {
         margin-right: auto; /* Empuja el search-bar y nav a la derecha */
     }
@@ -813,6 +1030,10 @@ body.dark-mode .project-image-placeholder {
     }
     /* Ocultar el texto "Portafy" en móviles para dejar más espacio */
     .theme-toggle span {
+        display: none;
+    }
+    /* Muestra el texto "Portafy" en el link separado del theme-toggle */
+    .app-logo-link {
         display: none;
     }
 
@@ -882,6 +1103,31 @@ body.dark-mode .project-image-placeholder {
     .profile-photo-lg {
         margin-bottom: 20px; /* Margen inferior para la foto en móvil */
     }
+
+    /* Responsive para el footer en móviles */
+    .footer-content {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .footer-logo,
+    .footer-links,
+    .footer-social {
+        width: 100%;
+        margin-bottom: 20px;
+    }
+
+    .footer-links ul {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+    }
+
+    .social-icons {
+        display: flex;
+        justify-content: center;
+    }
 }
 
 @media (max-width: 480px) {
@@ -916,5 +1162,9 @@ body.dark-mode .project-image-placeholder {
     .modal-content {
         width: 95%;
         padding: 20px;
+    }
+    .footer-links ul {
+        flex-direction: column;
+        gap: 5px;
     }
 }
