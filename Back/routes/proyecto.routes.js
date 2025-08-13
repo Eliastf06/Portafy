@@ -2,7 +2,7 @@ import { Router } from 'express';
 import { PrismaClient } from '@prisma/client';
 import multer from 'multer';
 import path from 'path';
-import fs from 'fs'; // Importamos el módulo 'fs'
+import fs from 'fs';
 import { fileURLToPath } from 'url';
 
 const router = Router();
@@ -13,7 +13,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const uploadDir = path.join(__dirname, '..', 'uploads');
 
-// Creamos el directorio de uploads si no existe
+// Crea el directorio de uploads si no existe
 if (!fs.existsSync(uploadDir)) {
     fs.mkdirSync(uploadDir, { recursive: true });
 }
