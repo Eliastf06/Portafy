@@ -268,6 +268,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 
                 if (proyectos.length > 0) {
                     proyectos.forEach(proyecto => {
+                        const projectCardLink = document.createElement('a');
+                        projectCardLink.href = `profile.html?username=${proyecto.nom_usuario}`;
+                        projectCardLink.className = 'project-card-link';
+
                         const projectCard = document.createElement('div');
                         projectCard.className = 'project-card';
 
@@ -280,9 +284,11 @@ document.addEventListener('DOMContentLoaded', () => {
                                 <img src="${imageUrl}" alt="Imagen de Proyecto">
                             </div>
                             <h3 class="project-name">${proyecto.titulo}</h3>
-                            <a href="profile.html?username=${proyecto.nom_usuario}" class="project-author">${proyecto.nom_usuario}</a>
+                            <p class="project-author">${proyecto.nom_usuario}</p>
                         `;
-                        projectsGrid.appendChild(projectCard);
+
+                        projectCardLink.appendChild(projectCard);
+                        projectsGrid.appendChild(projectCardLink);
                     });
                 } else {
                     projectsGrid.innerHTML = '<p>No hay proyectos para mostrar.</p>';

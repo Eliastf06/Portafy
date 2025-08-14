@@ -410,6 +410,13 @@ body.dark-mode .section-title {
     }
 }
 
+.project-card-link {
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    color: inherit;
+}
+
 .project-card {
     background-color: var(--bg-secondary);
     border-radius: 15px;
@@ -419,6 +426,7 @@ body.dark-mode .section-title {
     display: flex;
     flex-direction: column;
     cursor: pointer;
+    height: 100%; /* Asegura que la tarjeta ocupe todo el espacio de su celda en la cuadrícula */
 }
 /* EFECTO DE NEÓN EN MODO OSCURO */
 body.dark-mode .project-card {
@@ -1186,6 +1194,36 @@ body.dark-mode .social-icons a:hover {
 }
 
 .modal-login:hover{
+    transition: 0.3s;
+    color: #a49902;
+}
+
+.project-card .project-author {
+    padding: 10px; /* Añade espacio para que no esté pegado al borde */
+    font-size: 1.1em; /* Tamaño de fuente más grande */
+    font-weight: bold; /* Nombre de usuario en negrita */
+    text-align: center; /* Centrar el texto */
+    color: var(--text-color-dark); /* Color del texto por defecto */
+    transition: color var(--transition-speed);
+}
+
+body.dark-mode .project-card .project-author {
+    color: var(--text-color-light); /* Color del texto en modo oscuro */
+}
+
+.project-card:hover .project-author {
+    color: var(--accent-color); /* Color de acento al pasar el cursor sobre la tarjeta */
+}
+
+.editar{
+    font-size: 20px;
+    background-color: #ffeb3b00;
+    color: #ffeb3b;
+    border: #00e1ff00;
+    text-align: center;
+}
+
+.editar:hover{
     transition: 0.3s;
     color: #a49902;
 }
