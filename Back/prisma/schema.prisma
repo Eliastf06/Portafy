@@ -11,51 +11,51 @@ datasource db {
 }
 
 model Usuario {
-  nom_usuario   String    @id @unique
-  nombre        String
-  email         String    @unique
-  contrasena    String
-  tipo_usuario  TipoUsuario
-  foto_perfil   String?
-  biografia     String?   @db.Text
-  red_social    String?
-  proyectos     Proyecto[]
-  experiencias  Exp_Lbl[]
+  nom_usuario  String      @id @unique
+  nombre       String
+  email        String      @unique
+  contrasena   String
+  tipo_usuario TipoUsuario
+  proyectos    Proyecto[]
+  datosPerfil  DatosPerfil?
 
   @@map("usuarios")
 }
 
-model Exp_Lbl {
-  id_exp        Int       @id @default(autoincrement())
-  empresa       String
-  cargo         String
-  fecha_inicio  DateTime
-  fecha_salida  DateTime
-  usuario       Usuario   @relation(fields: [nom_usuario], references: [nom_usuario])
-  nom_usuario   String
+model DatosPerfil {
+  id_datos_perfil Int       @id @default(autoincrement())
+  privacidad      Boolean   @default(false)
+  biografia       String?   @db.Text
+  red_social      String?
+  foto_perfil     String?
+  telefono        String?
+  direccion       String?
+  experiencia     String?   @db.Text // Campo para guardar la experiencia laboral como texto
+  usuario         Usuario   @relation(fields: [nom_usuario], references: [nom_usuario])
+  nom_usuario     String    @unique
 
-  @@map("experiencias_laborales")
+  @@map("datos_perfil")
 }
 
 model Proyecto {
-  id_proyecto   Int       @id @default(autoincrement())
-  titulo        String
-  descripcion   String    @db.Text
-  categoria     String
-  fecha_publi   DateTime  @default(now())
-  usuario       Usuario   @relation(fields: [nom_usuario], references: [nom_usuario])
-  nom_usuario   String
-  archivos      Archivo[]
+  id_proyecto Int      @id @default(autoincrement())
+  titulo      String
+  descripcion String   @db.Text
+  categoria   String
+  fecha_publi DateTime @default(now())
+  usuario     Usuario  @relation(fields: [nom_usuario], references: [nom_usuario])
+  nom_usuario String
+  archivos    Archivo[]
 
   @@map("proyectos")
 }
 
 model Archivo {
-  id_archivo    Int       @id @default(autoincrement())
-  tipo_archivo  String
-  url           String
-  proyecto      Proyecto  @relation(fields: [id_proyecto], references: [id_proyecto])
-  id_proyecto   Int
+  id_archivo  Int      @id @default(autoincrement())
+  tipo_archivo String
+  url          String
+  proyecto     Proyecto @relation(fields: [id_proyecto], references: [id_proyecto])
+  id_proyecto  Int
 
   @@map("archivos")
 }

@@ -48,7 +48,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- Lógica de Modales y Menú Lateral ---
-
     const loginModal = document.getElementById('login-modal');
     const registerModal = document.getElementById('register-modal');
     const uploadModal = document.getElementById('upload-modal');
@@ -112,18 +111,6 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('register-close-btn')?.addEventListener('click', () => closeModal(registerModal));
     document.getElementById('upload-close-btn')?.addEventListener('click', () => closeModal(uploadModal));
     document.getElementById('menu-close-btn')?.addEventListener('click', () => closeModal(sideMenuOverlay));
-
-    // Cierre de modales al hacer clic fuera del contenido
-    modals.forEach(modal => {
-        if (modal) {
-            modal.addEventListener('click', (e) => {
-                // Cierra el modal solo si el clic fue directamente en el overlay y no en el contenido
-                if (e.target === modal) {
-                    closeModal(modal);
-                }
-            });
-        }
-    });
 
     // Lógica de cambio entre modales de login y registro
     document.getElementById('switch-to-register')?.addEventListener('click', (e) => {
@@ -242,7 +229,7 @@ document.addEventListener('DOMContentLoaded', () => {
             } catch (error) {
                 console.error('Error:', error);
                 alert('Ocurrió un error al intentar subir el proyecto. Por favor, asegúrate de que el servidor está funcionando.');
-            }
+                }
         });
     }
 
@@ -257,13 +244,16 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Función para obtener y renderizar proyectos
+    // Función para obtener y renderizar proyectos (solo en index.html)
     const fetchAndRenderProjects = async () => {
+        const projectsGrid = document.getElementById('projects-grid');
+        if (!projectsGrid) {
+            return; // Salir si el elemento no existe
+        }
         try {
             const response = await fetch('http://localhost:3000/proyectos');
             if (response.ok) {
                 const proyectos = await response.json();
-                const projectsGrid = document.getElementById('projects-grid');
                 projectsGrid.innerHTML = ''; // Limpiar el contenido de muestra
                 
                 if (proyectos.length > 0) {
@@ -290,13 +280,14 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         } catch (error) {
             console.error('Error al cargar los proyectos:', error);
-            const projectsGrid = document.getElementById('projects-grid');
             projectsGrid.innerHTML = '<p>Ocurrió un error al cargar los proyectos. Por favor, asegúrate de que el servidor está funcionando.</p>';
         }
     };
 
-    // Llamar a la función para cargar proyectos al iniciar la página
-    fetchAndRenderProjects();
+    // Llamar a la función para cargar proyectos solo si el elemento existe
+    if (document.getElementById('projects-grid')) {
+        fetchAndRenderProjects();
+    }
 });
 
 // Función para actualizar la información del usuario en el menú lateral
@@ -307,14 +298,14 @@ const updateSideMenu = () => {
     const userMenuName = document.getElementById('user-menu-name');
 
     if (user) {
-        loginBtn.style.display = 'none';
-        uploadBtn.style.display = 'block';
+        if (loginBtn) loginBtn.style.display = 'none';
+        if (uploadBtn) uploadBtn.style.display = 'block';
         if (userMenuName) {
             userMenuName.textContent = user.nombre;
         }
     } else {
-        loginBtn.style.display = 'block';
-        uploadBtn.style.display = 'none';
+        if (loginBtn) loginBtn.style.display = 'block';
+        if (uploadBtn) uploadBtn.style.display = 'none';
         if (userMenuName) {
             userMenuName.textContent = 'NOMBRE APELLIDO';
         }
