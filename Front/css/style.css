@@ -115,6 +115,11 @@ ul {
     transform: translateY(-20px);
     opacity: 0;
     transition: transform var(--transition-speed), opacity var(--transition-speed);
+
+    /* --- CAMBIOS PARA EL SCROLL DEL MODAL --- */
+    max-height: 90vh; /* Limita la altura a 90% del viewport */
+    overflow-y: auto; /* Permite el scroll vertical si el contenido es muy largo */
+    /* --- FIN DE CAMBIOS --- */
 }
 
 .modal-overlay.active .modal-content {
@@ -321,7 +326,8 @@ body.dark-mode .theme-toggle .dark-mode-icon { display: inline-block; }
 .main-nav .nav-icon {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: center; /* Asegura el centrado horizontal */
+    text-align: center; /* Asegura que el texto dentro del span esté centrado */
     font-size: 0.8em;
     color: var(--text-color-dark);
     transition: color var(--transition-speed);
@@ -350,7 +356,7 @@ body.dark-mode .main-nav .nav-icon i {
 }
 /* Ocultar el texto de navegación en desktop por defecto */
 .main-nav .nav-text-desktop {
-    display: none;
+    display: block; /* Muestra el texto por defecto, ya que se oculta en mobile */
 }
 /* Mostrar solo el icono en desktop, y el texto en móvil para el menú */
 .main-nav .nav-text-mobile {
@@ -384,16 +390,27 @@ body.dark-mode .section-title {
 }
 
 /* Estilos de la Cuadrícula de Portafolios (Descubrir Usuarios) */
-.user-portfolio-grid {
+.projects-grid, .user-projects-grid {
     display: grid;
-    /* La clave aquí es auto-fit y minmax. Auto-fit intentará encajar tantos elementos como sea posible,
-       y minmax asegura que cada columna tenga al menos 280px de ancho, pero se estire hasta 1fr */
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 30px;
-    padding-bottom: 50px; /* Espacio al final de la página */
+    /* Por defecto, una columna en móviles */
+    grid-template-columns: 1fr;
+    gap: 40px;
+    padding-bottom: 50px;
 }
 
-.portfolio-card {
+/* Media query para pantallas más grandes, forzando 2 y 3 columnas */
+@media (min-width: 768px) {
+    .projects-grid, .user-projects-grid {
+        grid-template-columns: repeat(2, 1fr); /* Dos columnas en pantallas medianas */
+    }
+}
+@media (min-width: 1024px) {
+    .projects-grid, .user-projects-grid {
+        grid-template-columns: repeat(3, 1fr); /* Tres columnas en pantallas grandes */
+    }
+}
+
+.project-card {
     background-color: var(--bg-secondary);
     border-radius: 15px;
     overflow: hidden;
@@ -404,17 +421,17 @@ body.dark-mode .section-title {
     cursor: pointer;
 }
 /* EFECTO DE NEÓN EN MODO OSCURO */
-body.dark-mode .portfolio-card {
+body.dark-mode .project-card {
     border: 1px solid var(--clr-dark-text-light);
     box-shadow: 0 0 5px var(--clr-dark-text-light), 0 0 10px var(--clr-dark-shadow-secondary);
 }
 
-.portfolio-card:hover {
+.project-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 6px 15px var(--shadow-primary);
 }
 /* EFECTO DE NEÓN EN HOVER EN MODO OSCURO */
-body.dark-mode .portfolio-card:hover {
+body.dark-mode .project-card:hover {
     border-color: var(--accent-color);
     box-shadow: var(--glow-effect);
 }
@@ -822,11 +839,6 @@ body.dark-mode .profile-photo-lg {
     font-size: 2em;
 }
 
-.user-projects-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 30px;
-}
 
 .project-card {
     background-color: var(--bg-secondary);
@@ -991,7 +1003,7 @@ body.dark-mode .social-icons a:hover {
 
     /* En desktop, mostrar solo el icono para los elementos de navegación y ocultar el texto móvil */
     .main-nav .nav-icon .nav-text-desktop {
-        display: inline; /* Mostrar el texto específico para desktop */
+        display: block; /* Mostrar el texto específico para desktop */
     }
     .main-nav .nav-icon .nav-text-mobile {
         display: none; /* Ocultar el texto móvil en desktop */

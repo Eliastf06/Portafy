@@ -46,6 +46,7 @@
                     </p>
                     <div id="profile-socials">
                     </div>
+                    <button class="btn-secondary" id="edit-profile-btn" style="margin-top: 10px; display: none;">Editar Perfil</button>
                 </div>
             </div>
 
@@ -54,6 +55,57 @@
             </div>
         </section>
     </main>
+
+    <div class="modal-overlay" id="edit-profile-modal">
+        <div class="modal-content">
+            <span class="modal-close" id="edit-profile-close-btn">&times;</span>
+            <h2>Editar Perfil</h2>
+            <form id="editProfileForm">
+                <div class="form-group">
+                    <label for="editPhoto">Foto de Perfil</label>
+                    <input type="file" id="editPhoto" name="foto_perfil">
+                </div>
+                <div class="form-group">
+                    <label for="editName">Nombre Completo</label>
+                    <input type="text" id="editName" name="nombre">
+                </div>
+                <div class="form-group">
+                    <label for="editOccupation">Ocupación</label>
+                    <select id="editOccupation" name="tipo_usuario">
+                        <option value="programador">Programador</option>
+                        <option value="visual">Visual</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="editBio">Biografía</label>
+                    <textarea id="editBio" name="biografia" placeholder="Cuéntanos sobre ti..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="editSocial">Red Social (URL)</label>
+                    <input type="text" id="editSocial" name="red_social" placeholder="Ej: https://github.com/usuario">
+                </div>
+                <div class="form-group">
+                    <label for="editPhone">Teléfono</label>
+                    <input type="text" id="editPhone" name="telefono" placeholder="Ej: 123-456-7890">
+                </div>
+                <div class="form-group">
+                    <label for="editAddress">Dirección</label>
+                    <input type="text" id="editAddress" name="direccion" placeholder="Ej: Ciudad, País">
+                </div>
+                <div class="form-group">
+                    <label for="editExperience">Experiencia Laboral</label>
+                    <textarea id="editExperience" name="experiencia" placeholder="Ej: Empresa: Google, Cargo: Desarrollador..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="editPrivacy">
+                        <input type="checkbox" id="editPrivacy" name="privacidad">
+                        Perfil Privado (Los proyectos no serán visibles)
+                    </label>
+                </div>
+                <button type="submit" class="btn-primary">Guardar Cambios</button>
+            </form>
+        </div>
+    </div>
 
     <div class="modal-overlay" id="login-modal">
         <div class="modal-content">
@@ -186,7 +238,7 @@
         </div>
     </footer>
 
-    <script src="js/script.js"></script>
     <script src="js/profile.js"></script>
+    <script src="js/scriptp.js"></script>
 </body>
 </html>
