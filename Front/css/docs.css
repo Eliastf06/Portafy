@@ -1,0 +1,178 @@
+/* css/docs.css */
+
+.docs-main {
+    padding: 50px 20px;
+}
+
+.docs-section {
+    padding: 30px;
+    background-color: var(--bg-secondary);
+    border-radius: 20px;
+    box-shadow: 0 4px 15px var(--shadow-primary);
+    transition: background-color var(--transition-speed), box-shadow var(--transition-speed);
+}
+
+.docs-section h1.section-title,
+.docs-section .section-subtitle {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.docs-content {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
+
+.docs-item {
+    background-color: var(--bg-primary);
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 2px 10px var(--shadow-secondary);
+    transition: background-color var(--transition-speed), box-shadow var(--transition-speed);
+}
+
+.docs-item h2 {
+    font-size: 1.8em;
+    color: var(--accent-color);
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.docs-item h3 {
+    font-size: 1.4em;
+    color: var(--text-color-dark);
+    margin-bottom: 15px;
+    text-transform: uppercase;
+}
+
+.docs-item p,
+.docs-item li,
+.docs-item dd {
+    font-size: 1.1em;
+    line-height: 1.6;
+    color: var(--text-color-dark);
+}
+
+.docs-item ul, .docs-item ol, .docs-item dl {
+    margin-left: 25px;
+    margin-top: 10px;
+}
+
+.docs-item li {
+    margin-bottom: 10px;
+}
+
+/* Nuevos estilos para los enlaces de referencia */
+.docs-item a {
+    color: var(--text-color-dark);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.docs-item a:hover {
+    color: var(--accent-color);
+    text-decoration: underline;
+}
+
+.requirement-list, .tech-stack {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    margin-top: 20px;
+}
+
+.requirement-item, .tech-stack > div {
+    flex: 1 1 45%;
+    min-width: 250px;
+}
+
+.ui-guide pre {
+    background-color: var(--bg-secondary);
+    padding: 15px;
+    border-radius: 10px;
+    overflow-x: auto;
+}
+
+.ui-guide code {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 0.9em;
+    color: var(--text-color-light);
+}
+
+/* Estilos para el glosario */
+.docs-item dl {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 20px 25px;
+    margin-top: 20px;
+}
+
+.docs-item dt {
+    font-weight: bold;
+    color: var(--accent-color);
+    font-size: 1.2em;
+    text-transform: uppercase;
+}
+
+.docs-item dd {
+    margin: 0;
+    font-style: italic;
+    color: var(--text-color-light);
+}
+
+/* Estilos mejorados para el índice de contenidos */
+.docs-index {
+    margin-bottom: 40px;
+    background-color: var(--bg-primary); /* Fondo del índice */
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px var(--shadow-primary);
+    border-left: 5px solid var(--accent-color); /* Borde de color destacado */
+    transition: background-color var(--transition-speed), box-shadow var(--transition-speed);
+}
+
+.docs-index h3 {
+    font-size: 1.6em;
+    color: var(--text-color-dark);
+    margin-bottom: 20px;
+    border-bottom: 2px solid var(--text-color-light);
+    padding-bottom: 10px;
+    font-weight: 600;
+}
+
+.docs-index ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.docs-index ul ul {
+    margin-left: 15px;
+    border-left: 2px dashed var(--text-color-light); /* Línia de guía */
+    padding-left: 15px;
+    margin-top: 5px;
+}
+
+.docs-index li a {
+    display: block;
+    padding: 10px 0;
+    color: var(--text-color-dark);
+    text-decoration: none;
+    font-weight: 400;
+    transition: color 0.3s ease, transform 0.2s ease;
+}
+
+.docs-index li a:hover {
+    color: var(--accent-color);
+    transform: translateX(5px); /* Pequeña animación al pasar el cursor */
+}
+
+
+/* Media Queries para responsividad */
+@media (max-width: 768px) {
+    .requirement-item, .tech-stack > div {
+        flex: 1 1 100%;
+    }
+}
