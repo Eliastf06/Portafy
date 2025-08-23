@@ -98,14 +98,7 @@ router.get('/:id', async (req, res) => {
 router.put('/:id', async (req, res) => {
     try {
         const { id } = req.params;
-        const data = req.body; // Ya tienes el cuerpo de la solicitud en req.body
-        
-        // No necesitas esta lógica para validar tipo_usuario a menos que la quieras
-        // if (tipo_usuario === 'programador' || tipo_usuario === 'visual') {
-        //     data.tipo_usuario = tipo_usuario;
-        // }
-        // Se elimina la desestructuración de { nombre, tipo_usuario } para que puedas actualizar otros campos
-
+        const data = req.body;
         const updatedUser = await prisma.usuario.update({
             where: { nom_usuario: id },
             data,

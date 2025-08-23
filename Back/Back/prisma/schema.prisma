@@ -1,0 +1,66 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Usuario {
+  nom_usuario  String      @id @unique
+  nombre       String
+  email        String      @unique
+  contrasena   String
+  tipo_usuario TipoUsuario
+  proyectos    Proyecto[]
+  datosPerfil  DatosPerfil?
+
+  @@map("usuarios")
+}
+
+model DatosPerfil {
+  id_datos_perfil Int       @id @default(autoincrement())
+  privacidad      Boolean   @default(false)
+  biografia       String?   @db.Text
+  red_social      String?
+  foto_perfil     String?
+  telefono        String?
+  direccion       String?
+  experiencia     String?   @db.Text // Campo para guardar la experiencia laboral como texto
+  usuario         Usuario   @relation(fields: [nom_usuario], references: [nom_usuario])
+  nom_usuario     String    @unique
+
+  @@map("datos_perfil")
+}
+
+model Proyecto {
+  id_proyecto Int      @id @default(autoincrement())
+  titulo      String
+  descripcion String   @db.Text
+  categoria   String
+  fecha_publi DateTime @default(now())
+  usuario     Usuario  @relation(fields: [nom_usuario], references: [nom_usuario])
+  nom_usuario String
+  archivos    Archivo[]
+
+  @@map("proyectos")
+}
+
+model Archivo {
+  id_archivo  Int      @id @default(autoincrement())
+  tipo_archivo String
+  url          String
+  proyecto     Proyecto @relation(fields: [id_proyecto], references: [id_proyecto])
+  id_proyecto  Int
+
+  @@map("archivos")
+}
+
+enum TipoUsuario {
+  programador
+  visual
+}
