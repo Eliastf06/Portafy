@@ -33,9 +33,9 @@ router.post('/register', async (req, res) => {
             res.status(500).json({ message: 'Error interno del servidor' });
         }
     }
-}); 
+});
 
-// Ruta para iniciar sesión
+// Ruta para iniciar sesión (la que faltaba)
 router.post('/login', async (req, res) => {
     const { email, contrasena } = req.body;
 
@@ -99,7 +99,6 @@ router.put('/:id', async (req, res) => {
     try {
         const { id } = req.params;
         const data = req.body;
-
         const updatedUser = await prisma.usuario.update({
             where: { nom_usuario: id },
             data,
