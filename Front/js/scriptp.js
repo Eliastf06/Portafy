@@ -47,7 +47,8 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- Lógica de Modales y Menú Lateral ---
+    // --- Lógica de Modales y Menú Lateral (AHORA EN ESTE ARCHIVO) ---
+
     const loginModal = document.getElementById('login-modal');
     const registerModal = document.getElementById('register-modal');
     const uploadModal = document.getElementById('upload-modal');
@@ -112,6 +113,18 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('upload-close-btn')?.addEventListener('click', () => closeModal(uploadModal));
     document.getElementById('menu-close-btn')?.addEventListener('click', () => closeModal(sideMenuOverlay));
 
+    // Cierre de modales al hacer clic fuera del contenido
+    modals.forEach(modal => {
+        if (modal) {
+            modal.addEventListener('click', (e) => {
+                // Cierra el modal solo si el clic fue directamente en el overlay y no en el contenido
+                if (e.target === modal) {
+                    closeModal(modal);
+                }
+            });
+        }
+    });
+
     // Lógica de cambio entre modales de login y registro
     document.getElementById('switch-to-register')?.addEventListener('click', (e) => {
         e.preventDefault();
@@ -125,7 +138,7 @@ document.addEventListener('DOMContentLoaded', () => {
         openModal(loginModal);
     });
     
-    // Lógica de inicio de sesión y registro
+    // Lógica de inicio de sesión y registro (AHORA EN ESTE ARCHIVO)
     const loginForm = document.getElementById('loginForm');
     const registerForm = document.getElementById('registerForm');
 
@@ -163,11 +176,28 @@ document.addEventListener('DOMContentLoaded', () => {
     if (registerForm) {
         registerForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            const nom_usuario = document.getElementById('registerUsername').value;
-            const nombre = document.getElementById('registerName').value;
-            const email = document.getElementById('registerEmail').value;
+            const nom_usuario = document.getElementById('registerUsername').value.trim();
+            const nombre = document.getElementById('registerName').value.trim();
+            const email = document.getElementById('registerEmail').value.trim();
             const contrasena = document.getElementById('registerPassword').value;
+            const confirmarContrasena = document.getElementById('registerConfirmPassword').value;
             const tipo_usuario = document.getElementById('registerType').value;
+
+            // Validación en el frontend
+            if (contrasena !== confirmarContrasena) {
+                alert('Las contraseñas no coinciden.');
+                return;
+            }
+            
+            if (nom_usuario.includes(' ')) {
+                alert('El nombre de usuario no puede contener espacios.');
+                return;
+            }
+
+            if (nom_usuario === '' || nombre === '' || email === '') {
+                alert('Todos los campos son obligatorios y no pueden ser solo espacios.');
+                return;
+            }
 
             try {
                 const response = await fetch('http://localhost:3000/usuarios/register', {
@@ -229,7 +259,7 @@ document.addEventListener('DOMContentLoaded', () => {
             } catch (error) {
                 console.error('Error:', error);
                 alert('Ocurrió un error al intentar subir el proyecto. Por favor, asegúrate de que el servidor está funcionando.');
-                }
+            }
         });
     }
 
@@ -244,20 +274,21 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Función para obtener y renderizar proyectos (solo en index.html)
-    const fetchAndRenderProjects = async () => {
-        const projectsGrid = document.getElementById('projects-grid');
-        if (!projectsGrid) {
-            return; // Salir si el elemento no existe
-        }
+    // Lógica para obtener y renderizar proyectos del perfil
+    const fetchAndRenderUserProjects = async (username) => {
         try {
-            const response = await fetch('http://localhost:3000/proyectos');
+            const response = await fetch(`http://localhost:3000/proyectos/usuario/${username}`);
             if (response.ok) {
                 const proyectos = await response.json();
-                projectsGrid.innerHTML = ''; // Limpiar el contenido de muestra
+                const projectsGrid = document.getElementById('projects-grid');
+                projectsGrid.innerHTML = '';
                 
                 if (proyectos.length > 0) {
                     proyectos.forEach(proyecto => {
+                        const projectCardLink = document.createElement('a');
+                        projectCardLink.href = `profile.html?username=${proyecto.nom_usuario}`;
+                        projectCardLink.className = 'project-card-link';
+
                         const projectCard = document.createElement('div');
                         projectCard.className = 'project-card';
 
@@ -270,24 +301,46 @@ document.addEventListener('DOMContentLoaded', () => {
                                 <img src="${imageUrl}" alt="Imagen de Proyecto">
                             </div>
                             <h3 class="project-name">${proyecto.titulo}</h3>
-                            <a href="profile.html?username=${proyecto.nom_usuario}" class="project-author">${proyecto.nom_usuario}</a>
+                            <p class="project-author">${proyecto.nom_usuario}</p>
                         `;
-                        projectsGrid.appendChild(projectCard);
+
+                        projectCardLink.appendChild(projectCard);
+                        projectsGrid.appendChild(projectCardLink);
                     });
                 } else {
                     projectsGrid.innerHTML = '<p>No hay proyectos para mostrar.</p>';
                 }
+            } else {
+                const errorData = await response.json();
+                console.error('Error al cargar los proyectos del usuario:', errorData.message);
+                const projectsGrid = document.getElementById('projects-grid');
+                projectsGrid.innerHTML = `<p>${errorData.message}</p>`;
             }
         } catch (error) {
             console.error('Error al cargar los proyectos:', error);
+            const projectsGrid = document.getElementById('projects-grid');
             projectsGrid.innerHTML = '<p>Ocurrió un error al cargar los proyectos. Por favor, asegúrate de que el servidor está funcionando.</p>';
         }
     };
-
-    // Llamar a la función para cargar proyectos solo si el elemento existe
-    if (document.getElementById('projects-grid')) {
-        fetchAndRenderProjects();
+    
+    // Llamar a la función para cargar proyectos del usuario si el elemento existe
+    const urlParams = new URLSearchParams(window.location.search);
+    const username = urlParams.get('username');
+    
+    if (username) {
+        fetchAndRenderUserProjects(username);
+    } else {
+        const user = JSON.parse(localStorage.getItem('user'));
+        if (user) {
+            fetchAndRenderUserProjects(user.nom_usuario);
+        } else {
+            const projectsGrid = document.getElementById('projects-grid');
+            if(projectsGrid) {
+                projectsGrid.innerHTML = '<p>No hay un usuario seleccionado. Por favor, inicia sesión para ver tu perfil.</p>';
+            }
+        }
     }
+
 });
 
 // Función para actualizar la información del usuario en el menú lateral

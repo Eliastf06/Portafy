@@ -176,11 +176,28 @@ document.addEventListener('DOMContentLoaded', () => {
     if (registerForm) {
         registerForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            const nom_usuario = document.getElementById('registerUsername').value;
-            const nombre = document.getElementById('registerName').value;
-            const email = document.getElementById('registerEmail').value;
+            const nom_usuario = document.getElementById('registerUsername').value.trim();
+            const nombre = document.getElementById('registerName').value.trim();
+            const email = document.getElementById('registerEmail').value.trim();
             const contrasena = document.getElementById('registerPassword').value;
+            const confirmarContrasena = document.getElementById('registerConfirmPassword').value;
             const tipo_usuario = document.getElementById('registerType').value;
+
+            // Validación en el frontend
+            if (contrasena !== confirmarContrasena) {
+                alert('Las contraseñas no coinciden.');
+                return;
+            }
+
+            if (nom_usuario.includes(' ')) {
+                alert('El nombre de usuario no puede contener espacios.');
+                return;
+            }
+
+            if (nom_usuario === '' || nombre === '' || email === '') {
+                alert('Todos los campos son obligatorios y no pueden ser solo espacios.');
+                return;
+            }
 
             try {
                 const response = await fetch('http://localhost:3000/usuarios/register', {
