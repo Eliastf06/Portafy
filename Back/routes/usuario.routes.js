@@ -5,21 +5,41 @@ import bcrypt from 'bcryptjs';
 const router = Router();
 const prisma = new PrismaClient();
 
+// Función de saneamiento para prevenir XSS/Inyección
+const sanitizeInput = (input) => {
+    if (typeof input !== 'string') {
+        return input;
+    }
+    // Escapa caracteres especiales HTML, etc.
+    return input.replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+};
+
 // Ruta de registro
 router.post('/register', async (req, res) => {
     const { nom_usuario, nombre, email, contrasena, tipo_usuario } = req.body;
 
-    if (!nom_usuario || !nombre || !email || !contrasena || !tipo_usuario) {
-        return res.status(400).json({ message: 'Faltan campos obligatorios' });
+    // Validación más rigurosa y saneamiento
+    if (!nom_usuario || !nombre || !email || !contrasena || !tipo_usuario || 
+        nom_usuario.trim() === '' || nombre.trim() === '' || email.trim() === '') {
+        return res.status(400).json({ message: 'Faltan campos obligatorios o contienen solo espacios.' });
     }
 
     try {
+        // Saneamiento de los datos de entrada
+        const sanitized_nom_usuario = sanitizeInput(nom_usuario.trim());
+        const sanitized_nombre = sanitizeInput(nombre.trim());
+        const sanitized_email = sanitizeInput(email.trim());
+
         const hashedPassword = await bcrypt.hash(contrasena, 10);
         const newUser = await prisma.usuario.create({
             data: {
-                nom_usuario,
-                nombre,
-                email,
+                nom_usuario: sanitized_nom_usuario,
+                nombre: sanitized_nombre,
+                email: sanitized_email,
                 contrasena: hashedPassword,
                 tipo_usuario,
             },
@@ -35,7 +55,7 @@ router.post('/register', async (req, res) => {
     }
 });
 
-// Ruta para iniciar sesión (la que faltaba)
+// Ruta para iniciar sesión
 router.post('/login', async (req, res) => {
     const { email, contrasena } = req.body;
 
@@ -99,6 +119,14 @@ router.put('/:id', async (req, res) => {
     try {
         const { id } = req.params;
         const data = req.body;
+        
+        // Saneamiento de todos los campos que se envían para actualizar
+        for (const key in data) {
+            if (typeof data[key] === 'string') {
+                data[key] = sanitizeInput(data[key]);
+            }
+        }
+        
         const updatedUser = await prisma.usuario.update({
             where: { nom_usuario: id },
             data,
