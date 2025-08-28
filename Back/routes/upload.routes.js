@@ -19,4 +19,12 @@ router.post('/profile-photo', upload.single('profilePhoto'), (req, res) => {
     res.json({ message: 'Archivo subido exitosamente', filePath });
 });
 
+router.post('/project-photo', upload.single('projectPhoto'), (req, res) => {
+    if (!req.file) {
+        return res.status(400).send('No se ha subido ningún archivo.');
+    }
+    const filePath = `/uploads/${req.file.filename}`;
+    res.json({ message: 'Imagen de proyecto subida exitosamente', filePath });
+});
+
 export default router;
