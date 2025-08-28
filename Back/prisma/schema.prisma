@@ -15,7 +15,7 @@ model Usuario {
   nombre       String
   email        String      @unique
   contrasena   String
-  tipo_usuario TipoUsuario
+  tipo_usuario String // <-- Este campo ahora es un String
   proyectos    Proyecto[]
   datosPerfil  DatosPerfil?
 
@@ -30,7 +30,7 @@ model DatosPerfil {
   foto_perfil     String?
   telefono        String?
   direccion       String?
-  experiencia     String?   @db.Text // Campo para guardar la experiencia laboral como texto
+  experiencia     String?   @db.Text
   usuario         Usuario   @relation(fields: [nom_usuario], references: [nom_usuario])
   nom_usuario     String    @unique
 
@@ -38,29 +38,30 @@ model DatosPerfil {
 }
 
 model Proyecto {
-  id_proyecto Int      @id @default(autoincrement())
-  titulo      String
-  descripcion String   @db.Text
-  categoria   String
-  fecha_publi DateTime @default(now())
-  usuario     Usuario  @relation(fields: [nom_usuario], references: [nom_usuario])
-  nom_usuario String
-  archivos    Archivo[]
+  id_proyecto         Int        @id @default(autoincrement())
+  titulo              String
+  descripcion         String     @db.Text
+  categoria           String
+  fecha_publi         DateTime   @default(now())
+  fecha_inicio        DateTime?  @db.Date
+  fecha_finalizacion  DateTime?  @db.Date
+  para_quien_se_hizo  String?
+  enlaces_referencia  String?
+  privacidad          Boolean?   @default(false)
+  usuario             Usuario    @relation(fields: [nom_usuario], references: [nom_usuario])
+  nom_usuario         String
+  archivos            Archivo[]
 
   @@map("proyectos")
 }
 
 model Archivo {
-  id_archivo  Int      @id @default(autoincrement())
+  id_archivo   Int      @id @default(autoincrement())
   tipo_archivo String
   url          String
+  nombre       String   @default("")
   proyecto     Proyecto @relation(fields: [id_proyecto], references: [id_proyecto])
   id_proyecto  Int
 
   @@map("archivos")
-}
-
-enum TipoUsuario {
-  programador
-  visual
 }
