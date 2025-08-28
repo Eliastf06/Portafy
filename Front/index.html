@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,6 +9,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="icon" href="multimedia/logo.png" type="image/png">
 </head>
+
 <body>
     <header class="main-header">
         <div class="container header-content">
@@ -15,7 +17,8 @@
                 <div class="theme-toggle" id="theme-toggle">
                     <i class="fas fa-moon light-mode-icon"></i> <i class="fas fa-sun dark-mode-icon"></i>
                 </div>
-                <a href="index.html" class="app-logo-link" style="font-weight: bold; text-transform: uppercase; font-size: 1.2em; color: var(--text-color-dark); margin-left: 8px; transition: color var(--transition-speed);">Portafy</a>
+                <a href="index.html" class="app-logo-link"
+                    style="font-weight: bold; text-transform: uppercase; font-size: 1.2em; color: var(--text-color-dark); margin-left: 8px; transition: color var(--transition-speed);">Portafy</a>
             </div>
             <div class="search-bar">
                 <input type="text" placeholder="Buscar..." class="search-input">
@@ -23,11 +26,16 @@
             </div>
             <nav class="main-nav">
                 <ul>
-                    <li><a href="docs.html" class="nav-icon"><i class="fas fa-file-alt"></i> <span class="nav-text-desktop">DOCS</span></a></li>
-                    <li><a href="#" class="nav-icon"><i class="far fa-lightbulb"></i> <span class="nav-text-desktop">AYUDA</span></a></li>
-                    <li><a href="#" class="nav-icon" id="login-open-btn"><i class="fas fa-user-circle"></i> <span class="nav-text-desktop">Iniciar</span></a></li>
-                    <li><a href="#" class="nav-icon" id="upload-open-btn"><i class="fas fa-upload"></i> <span class="nav-text-desktop">SUBIR</span></a></li>
-                    <li><a href="#" class="nav-icon menu-toggle" id="menu-toggle-btn"><i class="fas fa-bars"></i> <span class="nav-text-mobile">MENÚ</span></a></li>
+                    <li><a href="docs.html" class="nav-icon"><i class="fas fa-file-alt"></i> <span
+                                class="nav-text-desktop">DOCS</span></a></li>
+                    <li><a href="#" class="nav-icon"><i class="far fa-lightbulb"></i> <span
+                                class="nav-text-desktop">AYUDA</span></a></li>
+                    <li><a href="#" class="nav-icon" id="login-open-btn"><i class="fas fa-user-circle"></i> <span
+                                class="nav-text-desktop">Iniciar</span></a></li>
+                    <li><a href="#" class="nav-icon" id="upload-open-btn"><i class="fas fa-upload"></i> <span
+                                class="nav-text-desktop">SUBIR</span></a></li>
+                    <li><a href="#" class="nav-icon menu-toggle" id="menu-toggle-btn"><i class="fas fa-bars"></i> <span
+                                class="nav-text-mobile">MENÚ</span></a></li>
                 </ul>
             </nav>
         </div>
@@ -38,7 +46,7 @@
             <h1 class="section-title">DESCUBRIR USUARIOS</h1>
             <p class="section-subtitle">Explora y descubre trabajos de otros usuarios</p>
             <div class="projects-grid" id="projects-grid">
-                </div>
+            </div>
         </section>
     </main>
 
@@ -50,8 +58,9 @@
                 <div class="form-group">
                     <input type="email" id="loginEmail" placeholder="Email" required>
                 </div>
-                <div class="form-group">
+                <div class="form-group password-container">
                     <input type="password" id="loginPassword" placeholder="Contraseña" required>
+                    <i class="fas fa-eye password-toggle-icon" id="login-password-toggle"></i>
                 </div>
                 <button type="submit" class="btn-primary">Iniciar Sesión</button>
             </form>
@@ -75,18 +84,16 @@
                 <div class="form-group">
                     <input type="email" id="registerEmail" placeholder="Email" required>
                 </div>
-                <div class="form-group">
+                <div class="form-group password-container">
                     <input type="password" id="registerPassword" placeholder="Contraseña" required>
+                    <i class="fas fa-eye password-toggle-icon" id="register-password-toggle"></i>
                 </div>
-                <div class="form-group">
+                <div class="form-group password-container">
                     <input type="password" id="registerConfirmPassword" placeholder="Confirmar Contraseña" required>
+                    <i class="fas fa-eye password-toggle-icon" id="confirm-password-toggle"></i>
                 </div>
                 <div class="form-group">
-                    <select id="registerType" required>
-                        <option value="" disabled selected>Tipo de usuario</option>
-                        <option value="programador">Programador</option>
-                        <option value="visual">Visual</option>
-                    </select>
+                    <input type="text" id="registerType" placeholder="Tipo de usuario" required>
                 </div>
                 <button type="submit" class="btn-primary">Registrarse</button>
             </form>
@@ -107,11 +114,13 @@
                 </div>
                 <div class="form-group">
                     <label for="projectDescription">Descripción</label>
-                    <textarea id="projectDescription" name="descripcion" placeholder="Descripción detallada del proyecto..." required></textarea>
+                    <textarea id="projectDescription" name="descripcion"
+                        placeholder="Descripción detallada del proyecto..." required></textarea>
                 </div>
                 <div class="form-group">
                     <label for="projectCategory">Categoría</label>
-                    <input type="text" id="projectCategory" name="categoria" placeholder="Ej. UX/UI, Desarrollo Web" required>
+                    <input type="text" id="projectCategory" name="categoria" placeholder="Ej. UX/UI, Desarrollo Web"
+                        required>
                 </div>
                 <div class="form-group">
                     <label for="projectFiles">Archivos del Proyecto (imágenes, videos)</label>
@@ -137,12 +146,10 @@
             <ul class="menu-links">
                 <li><a href="index.html"><i class="fas fa-home"></i> Página principal</a></li>
                 <li><a href="profile.html"><i class="fas fa-user"></i> Perfil</a></li>
-                <li><a href="#"><i class="fas fa-bell"></i> Notificaciones</a></li>
-                <li><a href="#" id="side-menu-upload-btn"><i class="fas fa-cloud-upload-alt"></i> Subir proyecto</a></li>
-                <li><a href="#"><i class="fas fa-users"></i> Seguidos</a></li>
-                <li><a href="#"><i class="fas fa-cog"></i> Configuración</a></li>
+                <li><a href="#" id="side-menu-upload-btn"><i class="fas fa-upload"></i> Subir proyecto</a></li>
                 <li><a href="docs.html"><i class="fas fa-file-alt"></i>Documentación</a></li>
-                <li><a href="#"><i class="fas fa-info-circle"></i> Soporte</a></li>
+                <li><a href="#"><i class="fas fa-wheelchair"></i>Accesibilidad</a></li>
+                <li><a href="#"><i class="fas fa-lightbulb"></i> Soporte</a></li>
                 <li><a href="#" id="logout-btn"><i class="fas fa-sign-out-alt"></i> Cerrar sesión</a></li>
             </ul>
         </div>
@@ -168,8 +175,11 @@
                 <div class="social-icons">
                     <a href="https://www.facebook.com/share/1FzWcFffA8/"><i class="fab fa-facebook-f"></i></a>
                     <a href="https://x.com/eliasluck13?t=wawV_DCWv2wTW_eGKpdeyA&s=08"><i class="fab fa-twitter"></i></a>
-                    <a href="https://www.instagram.com/eliastf.06?igsh=cDhpbmJwd2duMGxk"><i class="fab fa-instagram"></i></a>
-                    <a href="https://www.linkedin.com/in/elias-franco-766407342?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="https://www.instagram.com/eliastf.06?igsh=cDhpbmJwd2duMGxk"><i
+                            class="fab fa-instagram"></i></a>
+                    <a
+                        href="https://www.linkedin.com/in/elias-franco-766407342?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app"><i
+                            class="fab fa-linkedin-in"></i></a>
                 </div>
             </div>
         </div>
@@ -177,7 +187,8 @@
             <p>&copy; 2025 Portafy. Todos los derechos reservados.</p>
         </div>
     </footer>
-
+    <script src="js/login.js"></script>
     <script src="js/script.js"></script>
 </body>
+
 </html>

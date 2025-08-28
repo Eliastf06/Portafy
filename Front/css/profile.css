@@ -1248,3 +1248,31 @@ body.dark-mode .project-card .project-author {
 .password-toggle-icon:hover {
     color: var(--text-color-dark);
 }
+
+.img-view-project{
+    max-width: 100%;
+    height: auto;
+}
+
+
+
+.button-profile{
+    font-size: 17px;
+    background-color: #ffeb3b00;
+    color: #ffeb3b;
+    border: #00e1ff00;
+    border: 0px;
+    text-align: center;
+}
+
+.button-profile:hover{
+    transition: 0.3s;
+    color: #a49902;
+}
+
+
+
+.enlace-refer-profile:hover{
+    transition: 0.3s;
+    color: #ffeb3b;
+}
