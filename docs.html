@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portafy - Documentación</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/docs.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="icon" href="multimedia/logo.png" type="image/png">
+</head>
+
+<body>
+    <header class="main-header">
+        <div class="container header-content">
+            <div style="display: flex; align-items: center;">
+                <div class="theme-toggle" id="theme-toggle">
+                    <i class="fas fa-moon light-mode-icon"></i> <i class="fas fa-sun dark-mode-icon"></i>
+                </div>
+                <a href="index.html" class="app-logo-link"
+                    style="font-weight: bold; text-transform: uppercase; font-size: 1.2em; color: var(--text-color-dark); margin-left: 8px; transition: color var(--transition-speed);">Portafy</a>
+            </div>
+            <div class="search-bar">
+                <input type="text" placeholder="Buscar..." class="search-input">
+                <i class="fas fa-search search-icon"></i>
+            </div>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="docs.html" class="nav-icon"><i class="fas fa-file-alt"></i> <span
+                                class="nav-text-desktop">DOCS</span></a></li>
+                    <li><a href="#" class="nav-icon"><i class="far fa-lightbulb"></i> <span
+                                class="nav-text-desktop">AYUDA</span></a></li>
+                    <li><a href="#" class="nav-icon" id="login-open-btn"><i class="fas fa-user-circle"></i> <span
+                                class="nav-text-desktop">Iniciar</span></a></li>
+                    <li><a href="#" class="nav-icon" id="upload-open-btn"><i class="fas fa-upload"></i> <span
+                                class="nav-text-desktop">SUBIR</span></a></li>
+                    <li><a href="#" class="nav-icon menu-toggle" id="menu-toggle-btn"><i class="fas fa-bars"></i> <span
+                                class="nav-text-mobile">MENÚ</span></a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main-content container docs-main">
+        <section class="docs-section">
+            <h1 class="section-title">Documentación de Portafy</h1>
+            <p class="section-subtitle">Toda la información clave sobre el proyecto.</p>
+
+            <nav class="docs-index">
+                <h3>Índice de Contenidos</h3>
+                <ul>
+                    <li><a href="#vision-general">1. Visión General del Proyecto</a></li>
+                    <li><a href="#requerimientos">2. Requerimientos del Sistema</a>
+                        <ul>
+                            <li><a href="#funcionales">2.1. Requerimientos Funcionales</a></li>
+                            <li><a href="#no-funcionales">2.2. Requerimientos No Funcionales</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#flujo-usuario">3. Flujo de Usuario Básico</a></li>
+                    <li><a href="#arquitectura">4. Arquitectura y Tecnologías</a>
+                        <ul>
+                            <li><a href="#arquitectura-software">4.1. Arquitectura de Software</a></li>
+                            <li><a href="#tecnologias-clave">4.2. Tecnologías Clave</a></li>
+                            <li><a href="#frontend">4.3. Tecnologías del Frontend</a></li>
+                            <li><a href="#backend">4.4. Tecnologías del Backend y Base de Datos</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#glosario">5. Glosario de Términos</a></li>
+                    <li><a href="#equipo-contacto">6. Equipo del Proyecto y Contacto</a></li>
+                </ul>
+            </nav>
+
+            <div class="docs-content">
+                <div class="docs-item" id="vision-general">
+                    <h2>1. Visión General del Proyecto</h2>
+                    <p>Portafy es una plataforma web desarrollada para ayudar a programadores, diseñadores y otros
+                        trabajadores visuales a crear y gestionar sus portafolios en línea de manera sencilla y
+                        eficiente. El principal objetivo es proveer una solución gratuita y accesible para aquellos que
+                        necesitan una presencia profesional en línea para mostrar sus proyectos y trabajos a potenciales
+                        empleadores o a la comunidad.</p>
+                    <p>El sistema permite a los usuarios <strong>cargar sus proyectos</strong>, utilizar
+                        <strong>plantillas de CV personalizables</strong> y <strong>compartir su perfil</strong> de
+                        forma organizada. Esto facilita que el trabajo de los usuarios sea evaluado por terceros, como
+                        profesores o reclutadores, de una forma visualmente atractiva y profesional.</p>
+                </div>
+
+                <div class="docs-item" id="requerimientos">
+                    <h2>2. Requerimientos del Sistema</h2>
+                    <div class="requirement-list">
+                        <div class="requirement-item" id="funcionales">
+                            <h3>2.1. Requerimientos Funcionales</h3>
+                            <p>Estos requisitos definen lo que el sistema debe hacer para cumplir con las necesidades
+                                del usuario:</p>
+                            <ul>
+                                <li><strong>Registro e Inicio de Sesión:</strong> El sistema debe permitir a nuevos
+                                    usuarios registrarse con una cuenta de correo electrónico, nombre y contraseña, así
+                                    como iniciar sesión de forma segura usando <strong><a
+                                            href="https://jwt.io/introduction" target="_blank">JWT (JSON Web
+                                            Token)</a></strong>.</li>
+                                <li><strong>Gestión de Proyectos:</strong> El sistema debe permitir a los usuarios
+                                    <strong>subir, editar y eliminar</strong> sus proyectos, incluyendo contenido
+                                    multimedia como imágenes y videos.</li>
+                                <li><strong>Gestión de Perfil:</strong> El usuario debe poder <strong>visualizar y
+                                        editar su perfil</strong>, así como <strong>compartir</strong> su cuenta a
+                                    través de un enlace público.</li>
+                                <li><strong>Importar/Exportar CV:</strong> Debe existir la funcionalidad para
+                                    <strong>importar y exportar CVs en formato PDF</strong>, utilizando plantillas
+                                    predefinidas.</li>
+                                <li><strong>Opciones de Privacidad:</strong> El sistema debe ofrecer la posibilidad de
+                                    establecer la privacidad de los proyectos, haciéndolos públicos o privados.</li>
+                            </ul>
+                        </div>
+                        <div class="requirement-item" id="no-funcionales">
+                            <h3>2.2. Requerimientos No Funcionales</h3>
+                            <p>Estos requisitos describen cómo el sistema debe funcionar, enfocándose en la experiencia
+                                del usuario y las limitaciones del sistema:</p>
+                            <ul>
+                                <li><strong>Usabilidad:</strong> El sistema debe ser fácil de usar y la interfaz de
+                                    usuario debe ser intuitiva y clara.</li>
+                                <li><strong>Rendimiento:</strong> La plataforma debe tener un tiempo de respuesta rápido
+                                    y ser capaz de manejar un número creciente de usuarios y proyectos sin degradación
+                                    significativa del rendimiento.</li>
+                                <li><strong>Disponibilidad:</strong> El sistema debe estar disponible la mayor parte del
+                                    tiempo, excepto durante mantenimientos programados.</li>
+                                <li><strong>Seguridad:</strong> El sistema debe cumplir con los <strong>estándares de
+                                        seguridad mínimos</strong> definidos por <strong><a
+                                            href="https://owasp.org/www-project-top-ten/"
+                                            target="_blank">OWASP</a></strong> para proteger la información del usuario
+                                    de vulnerabilidades comunes.</li>
+                                <li><strong>Responsividad:</strong> La interfaz de usuario debe ser <strong>totalmente
+                                        responsiva</strong> y funcionar correctamente en una variedad de dispositivos
+                                    (ordenadores de escritorio, tablets y móviles).</li>
+                                <li><strong>Compatibilidad:</strong> El sitio debe ser compatible con los navegadores
+                                    web más comunes (Chrome, Firefox, Safari, Edge).</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="docs-item" id="flujo-usuario">
+                    <h2>3. Flujo de Usuario Básico</h2>
+                    <p>El flujo del usuario se centra en la creación y visualización de portafolios. Los pasos
+                        principales son:</p>
+                    <ol>
+                        <li><strong>Registro o Inicio de Sesión:</strong> El usuario accede a la plataforma y crea una
+                            cuenta o inicia sesión. La autenticación se realiza de forma segura a través de JWT.</li>
+                        <li><strong>Creación del Perfil:</strong> Una vez autenticado, el usuario puede configurar su
+                            perfil, añadiendo información personal y profesional que se mostrará en su portafolio.</li>
+                        <li><strong>Subida de Proyectos:</strong> El usuario sube sus proyectos, proporcionando un
+                            título, una descripción y los archivos multimedia asociados (imágenes, videos, etc.).</li>
+                        <li><strong>Visualización y Compartir:</strong> El portafolio del usuario se genera
+                            automáticamente. El usuario puede ver su perfil, editar sus proyectos o compartir el enlace
+                            con otros a través de redes sociales.</li>
+                        <li><strong>Interacción con otros portafolios:</strong> El usuario puede navegar y descubrir los
+                            proyectos de otros usuarios, fomentando una comunidad y la exposición de sus trabajos.</li>
+                    </ol>
+                </div>
+
+                <div class="docs-item" id="arquitectura">
+                    <h2>4. Arquitectura del Sistema y Tecnologías</h2>
+                    <div class="tech-stack">
+                        <div id="arquitectura-software">
+                            <h3>4.1. Arquitectura de Software</h3>
+                            <p>El sistema sigue una arquitectura de <strong>cliente-servidor</strong>. El frontend (lo
+                                que el usuario ve y con lo que interactúa) y el backend (la lógica del servidor, la base
+                                de datos y la API) están separados. La comunicación entre ambos se realiza mediante una
+                                <strong><a href="https://restfulapi.net/" target="_blank">API RESTful</a></strong>,
+                                utilizando el formato de intercambio de datos <strong><a
+                                        href="https://www.json.org/json-es.html" target="_blank">JSON</a></strong>.</p>
+                            <p>Esto permite que el sistema sea más escalable y modular, ya que cada componente puede ser
+                                desarrollado y actualizado de forma independiente, facilitando la colaboración y el
+                                mantenimiento.</p>
+                        </div>
+                        <div id="tecnologias-clave">
+                            <h3>4.2. Tecnologías Clave</h3>
+                            <p>Las tecnologías utilizadas en este proyecto son estándares de la industria para el
+                                desarrollo web moderno, garantizando compatibilidad y un buen rendimiento.</p>
+                            <h4 id="frontend">4.3. Tecnologías del Frontend</h4>
+                            <ul>
+                                <li><strong><a href="https://developer.mozilla.org/es/docs/Web/HTML"
+                                            target="_blank">HTML5</a>:</strong> Utilizado para estructurar el contenido
+                                    de las páginas web.</li>
+                                <li><strong><a href="https://developer.mozilla.org/es/docs/Web/CSS"
+                                            target="_blank">CSS3</a>:</strong> Encargado del diseño, estilo y
+                                    responsividad. Se implementa con un enfoque de <strong>responsividad suave y
+                                        progresiva</strong> y se utilizan <strong>variables CSS</strong> para una fácil
+                                    gestión del tema (modo claro/oscuro).</li>
+                                <li><strong><a href="https://developer.mozilla.org/es/docs/Web/JavaScript"
+                                            target="_blank">JavaScript</a>:</strong> Añade interactividad al lado del
+                                    cliente, gestiona la comunicación con el servidor a través de la API y controla los
+                                    elementos dinámicos de la interfaz.</li>
+                            </ul>
+                            <h4 id="backend">4.4. Tecnologías del Backend y Base de Datos</h4>
+                            <ul>
+                                <li><strong>API RESTful:</strong> Es el puente entre el frontend y el backend,
+                                    gestionando las peticiones y respuestas para todas las operaciones.</li>
+                                <li><strong>Base de Datos:</strong> Se utiliza un sistema de gestión de bases de datos
+                                    relacionales, <strong><a href="https://dev.mysql.com/doc/" target="_blank">MySQL
+                                            Workbench</a></strong>, para almacenar y gestionar los datos de los
+                                    usuarios, proyectos y perfiles.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="docs-item" id="glosario">
+                    <h2>5. Glosario de Términos</h2>
+                    <dl>
+                        <dt>API</dt>
+                        <dd><strong>Application Programming Interface</strong>. Un conjunto de reglas y protocolos que
+                            permiten que dos aplicaciones se comuniquen entre sí.</dd>
+                        <dt>Backend</dt>
+                        <dd>La "parte trasera" de una aplicación. Incluye la lógica del servidor, la base de datos y la
+                            gestión de la API, que procesa los datos y se comunica con el frontend.</dd>
+                        <dt>Frontend</dt>
+                        <dd>La "parte delantera" de una aplicación. Es la interfaz de usuario con la que el usuario
+                            interactúa directamente, construida con HTML, CSS y JavaScript.</dd>
+                        <dt>JSON</dt>
+                        <dd><strong>JavaScript Object Notation</strong>. Un formato de texto ligero y legible por
+                            humanos, utilizado para el intercambio de datos entre el servidor y el cliente.</dd>
+                        <dt>JWT</dt>
+                        <dd><strong>JSON Web Token</strong>. Un método seguro para transmitir información entre dos
+                            partes como un objeto JSON, utilizado principalmente para la autenticación de usuarios.</dd>
+                        <dt>OWASP</dt>
+                        <dd><strong>Open Web Application Security Project</strong>. Una fundación sin fines de lucro que
+                            trabaja para mejorar la seguridad del software a través de proyectos, herramientas y guías.
+                        </dd>
+                        <dt>RESTful</dt>
+                        <dd>Un estilo de arquitectura de software para sistemas hipermedia distribuidos, basado en los
+                            principios de la arquitectura REST (Representational State Transfer), a menudo utilizado
+                            para APIs web.</dd>
+                        <dt>SRS</dt>
+                        <dd><strong>Software Requirements Specification</strong>. Un documento que describe de manera
+                            completa y detallada los requisitos de un sistema de software.</dd>
+                    </dl>
+                </div>
+
+                <div class="docs-item" id="equipo-contacto">
+                    <h2>6. Equipo del Proyecto y Contacto</h2>
+                    <p>Este proyecto fue desarrollado por un equipo de estudiantes, con el apoyo de varios profesores de
+                        la EEST N°4 de Berazategui.</p>
+                    <ul>
+                        <li><strong>Autores:</strong> Elias Franco, Valentin Ferreyra, Rodrigo Arguello</li>
+                        <li><strong>Profesores:</strong> Diego Pezet, Victoria Moscardini, Mauro Russomando, Gustavo
+                            Maugeri, Nicolás Calderón, José Yedro</li>
+                        <li><strong>Curso:</strong> 7º 4ª</li>
+                        <li><strong>Fecha de Versión 1.0:</strong> 24 de junio de 2025</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div class="modal-overlay" id="login-modal">
+        <div class="modal-content">
+            <span class="modal-close" id="login-close-btn">&times;</span>
+            <h2>Iniciar Sesión</h2>
+            <form id="loginForm">
+                <div class="form-group">
+                    <input type="email" id="loginEmail" placeholder="Email" required>
+                </div>
+                <div class="form-group password-container">
+                    <input type="password" id="loginPassword" placeholder="Contraseña" required>
+                    <i class="fas fa-eye password-toggle-icon" id="login-password-toggle"></i>
+                </div>
+                <button type="submit" class="btn-primary">Iniciar Sesión</button>
+            </form>
+            <div class="switch-form-text"><br>
+                <p>¿No tienes una cuenta? <a href="#" id="switch-to-register" class="modal-login">Regístrate</a></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="register-modal">
+        <div class="modal-content">
+            <span class="modal-close" id="register-close-btn">&times;</span>
+            <h2>Registrarse</h2>
+            <form id="registerForm">
+                <div class="form-group">
+                    <input type="text" id="registerUsername" placeholder="Nombre de usuario" required>
+                </div>
+                <div class="form-group">
+                    <input type="text" id="registerName" placeholder="Nombre completo" required>
+                </div>
+                <div class="form-group">
+                    <input type="email" id="registerEmail" placeholder="Email" required>
+                </div>
+                <div class="form-group password-container">
+                    <input type="password" id="registerPassword" placeholder="Contraseña" required>
+                    <i class="fas fa-eye password-toggle-icon" id="register-password-toggle"></i>
+                </div>
+                <div class="form-group password-container">
+                    <input type="password" id="registerConfirmPassword" placeholder="Confirmar Contraseña" required>
+                    <i class="fas fa-eye password-toggle-icon" id="confirm-password-toggle"></i>
+                </div>
+                <div class="form-group">
+                    <input type="text" id="registerType" placeholder="Tipo de usuario" required>
+                </div>
+                <button type="submit" class="btn-primary">Registrarse</button>
+            </form>
+            <div class="switch-form-text"><br>
+                <p>¿Ya tienes una cuenta? <a href="#" id="switch-to-login" class="modal-login">Inicia sesión</a></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="upload-modal">
+        <div class="modal-content">
+            <span class="modal-close" id="upload-close-btn">&times;</span>
+            <h2>Subir Proyecto</h2>
+            <form id="uploadProjectForm" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="projectTitle">Título del Proyecto</label>
+                    <input type="text" id="projectTitle" name="titulo" placeholder="Ej. Diseño de Portafy" required>
+                </div>
+                <div class="form-group">
+                    <label for="projectDescription">Descripción</label>
+                    <textarea id="projectDescription" name="descripcion"
+                        placeholder="Descripción detallada del proyecto..." required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="projectCategory">Categoría</label>
+                    <input type="text" id="projectCategory" name="categoria" placeholder="Ej. UX/UI, Desarrollo Web"
+                        required>
+                </div>
+                <div class="form-group">
+                    <label for="projectFiles">Archivos del Proyecto (imágenes, videos)</label>
+                    <input type="file" id="projectFiles" name="archivos" multiple required>
+                </div>
+                <button type="submit" class="btn-primary">Subir Proyecto</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="menu-overlay" id="side-menu-overlay">
+        <div class="side-menu">
+            <span class="menu-close-btn" id="menu-close-btn">&times;</span>
+            <div class="menu-header">
+                <div class="profile-photo-circle">
+                    <img src="multimedia/default-profile.png" alt="Foto de perfil">
+                </div>
+                <h3 id="user-menu-name">NOMBRE APELLIDO</h3>
+            </div>
+            <div class="menu-search-bar">
+                <input type="text" placeholder="Buscar...">
+            </div>
+            <ul class="menu-links">
+                <li><a href="index.html"><i class="fas fa-home"></i> Página principal</a></li>
+                <li><a href="profile.html"><i class="fas fa-user"></i> Perfil</a></li>
+                <li><a href="#" id="side-menu-upload-btn"><i class="fas fa-upload"></i> Subir proyecto</a></li>
+                <li><a href="docs.html"><i class="fas fa-file-alt"></i>Documentación</a></li>
+                <li><a href="#"><i class="fas fa-wheelchair"></i>Accesibilidad</a></li>
+                <li><a href="#"><i class="fas fa-lightbulb"></i> Soporte</a></li>
+                <li><a href="#" id="logout-btn"><i class="fas fa-sign-out-alt"></i> Cerrar sesión</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <footer class="main-footer">
+        <div class="container footer-content">
+            <div class="footer-logo">
+                <h3>Portafy</h3>
+                <p>Tu plataforma para descubrir y compartir portafolios creativos.</p>
+            </div>
+            <div class="footer-links">
+                <h4>Enlaces Rápidos</h4>
+                <ul>
+                    <li><a href="index.html">Descubrir</a></li>
+                    <li><a href="profile.html">Mi Perfil</a></li>
+                    <li><a href="docs.html">Documentación</a></li>
+                    <li><a href="#">Ayuda</a></li>
+                </ul>
+            </div>
+            <div class="footer-social">
+                <h4>Síguenos</h4>
+                <div class="social-icons">
+                    <a href="https://www.facebook.com/share/1FzWcFffA8/"><i class="fab fa-facebook-f"></i></a>
+                    <a href="https://x.com/eliasluck13?t=wawV_DCWv2wTW_eGKpdeyA&s=08"><i class="fab fa-twitter"></i></a>
+                    <a href="https://www.instagram.com/eliastf.06?igsh=cDhpbmJwd2duMGxk"><i
+                            class="fab fa-instagram"></i></a>
+                    <a
+                        href="https://www.linkedin.com/in/elias-franco-766407342?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app"><i
+                            class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Portafy. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+    <script src="js/login.js"></script>
+    <script src="js/script.js"></script>
+    <script src="js/docs.js"></script>
+</body>
+
+</html>

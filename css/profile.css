@@ -1,0 +1,1278 @@
+/* css/style.css */
+
+:root {
+    /* Colores para el Modo Claro (Tema de Neón de Día Mejorado) */
+    --clr-light-bg-primary: #ffffff; /* Fondo blanco para un lienzo limpio */
+    --clr-light-bg-secondary: #f0f0f0; /* Gris muy claro para elementos secundarios */
+    --clr-light-accent: #ffeb3b; /* Amarillo neón brillante */
+    --clr-light-text-dark: #333333; /* Texto oscuro para máxima legibilidad */
+    --clr-light-text-light: #727272; /* Texto gris para contraste sutil */
+    --clr-light-shadow-primary: rgba(0, 0, 0, 0.1);
+    --clr-light-shadow-secondary: rgba(0, 0, 0, 0.05);
+
+    /* Colores para el Modo Oscuro (Tema de Neón de Noche) */
+    --clr-dark-bg-primary: #0a0a1a;
+    --clr-dark-bg-secondary: #1a1a2e;
+    --clr-dark-accent: #fff01e;
+    --clr-dark-text-dark: #e0e0e0;
+    --clr-dark-text-light: #70708f;
+    --clr-dark-shadow-primary: rgba(255, 240, 30, 0.25);
+    --clr-dark-shadow-secondary: rgba(255, 240, 30, 0.1);
+
+    /* Variables de Color por defecto (Modo Claro) */
+    --bg-primary: var(--clr-light-bg-primary);
+    --bg-secondary: var(--clr-light-bg-secondary);
+    --accent-color: var(--clr-light-accent);
+    --text-color-dark: var(--clr-light-text-dark);
+    --text-color-light: var(--clr-light-text-light);
+    --shadow-primary: var(--clr-light-shadow-primary);
+    --shadow-secondary: var(--clr-light-shadow-secondary);
+    
+    /* Variables adicionales para el efecto de neón */
+    --neon-yellow: #fff01e;
+    --neon-blue: #00e0ff;
+    --glow-effect: 0 0 5px var(--neon-yellow), 0 0 10px var(--neon-yellow), 0 0 20px var(--neon-yellow);
+    --glow-effect-secondary: 0 0 5px var(--neon-blue), 0 0 10px var(--neon-blue), 0 0 20px var(--neon-blue);
+
+    /* Transiciones */
+    --transition-speed: 0.3s ease-in-out;
+}
+
+/* Modo Oscuro (se activa con la clase .dark-mode en el body) */
+body.dark-mode {
+    --bg-primary: var(--clr-dark-bg-primary);
+    --bg-secondary: var(--clr-dark-bg-secondary);
+    --accent-color: var(--clr-dark-accent);
+    --text-color-dark: var(--clr-dark-text-dark);
+    --text-color-light: var(--clr-dark-text-light);
+    --shadow-primary: var(--clr-dark-shadow-primary);
+    --shadow-secondary: var(--clr-dark-shadow-secondary);
+}
+
+/* Estilos Globales */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif; /* Puedes cambiar la fuente si lo deseas */
+}
+
+body {
+    background-color: var(--bg-primary);
+    color: var(--text-color-dark);
+    transition: background-color var(--transition-speed), color var(--transition-speed);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+ul {
+    list-style: none;
+}
+
+/* Contenedor principal para centrar el contenido */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Estilos para Formularios y Modales (comunes a todos) */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity var(--transition-speed), visibility var(--transition-speed);
+}
+
+.modal-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.modal-content {
+    background-color: var(--bg-primary);
+    border-radius: 15px;
+    padding: 30px;
+    position: relative;
+    max-width: 400px;
+    width: 90%;
+    box-shadow: 0 5px 15px var(--shadow-primary);
+    transform: translateY(-20px);
+    opacity: 0;
+    transition: transform var(--transition-speed), opacity var(--transition-speed);
+
+    /* --- CAMBIOS PARA EL SCROLL DEL MODAL --- */
+    max-height: 90vh; /* Limita la altura a 90% del viewport */
+    overflow-y: auto; /* Permite el scroll vertical si el contenido es muy largo */
+    /* --- FIN DE CAMBIOS --- */
+}
+
+.modal-overlay.active .modal-content {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+.modal-close {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    font-size: 24px;
+    color: var(--text-color-light);
+    cursor: pointer;
+    transition: color var(--transition-speed);
+}
+
+.modal-close:hover {
+    color: var(--text-color-dark);
+}
+
+.modal-content h2 {
+    text-align: center;
+    margin-bottom: 25px;
+    color: var(--text-color-dark);
+}
+
+.form-group {
+    margin-bottom: 15px;
+    position: relative;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    color: var(--text-color-dark);
+    font-weight: bold;
+    font-size: 0.9em;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group input[type="password"],
+.form-group input[type="tel"],
+.form-group textarea,
+.form-group select {
+    width: 100%;
+    padding: 12px 15px;
+    border: none;
+    border-radius: 8px;
+    background-color: var(--bg-secondary);
+    color: var(--text-color-dark);
+    font-size: 1em;
+    transition: background-color var(--transition-speed), color var(--transition-speed), box-shadow 0.2s ease;
+}
+
+.form-group input[type="text"]::placeholder,
+.form-group input[type="email"]::placeholder,
+.form-group input[type="password"]::placeholder,
+.form-group input[type="tel"]::placeholder,
+.form-group textarea::placeholder {
+    color: var(--text-color-light);
+}
+
+.form-group input[type="text"]:focus,
+.form-group input[type="email"]:focus,
+.form-group input[type="password"]:focus,
+.form-group input[type="tel"]:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px var(--accent-color);
+}
+
+.btn-primary {
+    background-color: var(--accent-color);
+    color: var(--text-color-dark);
+    padding: 12px 20px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1em;
+    cursor: pointer;
+    width: 100%;
+    transition: background-color var(--transition-speed), color var(--transition-speed);
+    font-weight: bold;
+}
+
+.btn-primary:hover {
+    background-color: var(--text-color-light); /* Un tono más suave al pasar el ratón */
+}
+/* CAMBIO: Color de texto del botón en modo claro */
+.btn-primary {
+    color: var(--clr-light-bg-primary); /* Blanco para que resalte en el botón amarillo */
+}
+/* FIN DE CAMBIO */
+
+/* Para los iconos de Font Awesome */
+.fas, .far, .fab {
+    transition: color var(--transition-speed);
+}
+
+/* Estilos Específicos para la Cabecera (Header) */
+.main-header {
+    background-color: var(--bg-secondary);
+    padding: 10px 0;
+    box-shadow: 0 2px 10px var(--shadow-primary);
+    position: sticky;
+    top: 0;
+    z-index: 500; /* Asegura que la cabecera esté por encima del contenido */
+    transition: background-color var(--transition-speed);
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px; /* Espacio entre elementos */
+}
+
+/* MODIFICACIÓN PARA ENLACE 'PORTAFY' */
+.app-logo-link {
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 1.2em;
+    color: var(--text-color-dark);
+    margin-left: 8px;
+    transition: color var(--transition-speed);
+}
+.app-logo-link:hover {
+    color: var(--accent-color);
+}
+/* FIN DE MODIFICACIÓN */
+
+.theme-toggle {
+    font-size: 1.8em;
+    cursor: pointer;
+    color: var(--text-color-dark);
+    transition: color var(--transition-speed);
+    display: flex; /* Para alinear el icono y el texto */
+    align-items: center;
+    gap: 8px; /* Espacio entre icono y texto */
+    font-size: 1.2em; /* Ajuste para el texto "Portafy" */
+    font-weight: bold;
+    text-transform: uppercase;
+}
+/* EFECTO DE RESPLANDOR EN MODO OSCURO */
+body.dark-mode .theme-toggle i {
+    filter: drop-shadow(0 0 5px var(--neon-yellow)) drop-shadow(0 0 10px var(--neon-yellow));
+    color: var(--neon-yellow);
+}
+
+.theme-toggle .light-mode-icon { display: inline-block; }
+.theme-toggle .dark-mode-icon { display: none; }
+body.dark-mode .theme-toggle .light-mode-icon { display: none; }
+body.dark-mode .theme-toggle .dark-mode-icon { display: inline-block; }
+
+
+.search-bar {
+    position: relative;
+    flex-grow: 1; /* Permite que la barra de búsqueda ocupe el espacio disponible */
+    max-width: 400px;
+}
+
+.search-input {
+    width: 100%;
+    padding: 8px 15px 8px 40px; /* Espacio para el icono de búsqueda */
+    border: none;
+    border-radius: 20px;
+    background-color: var(--bg-primary);
+    color: var(--text-color-dark);
+    font-size: 1em;
+    transition: background-color var(--transition-speed), color var(--transition-speed), box-shadow 0.2s ease;
+}
+
+.search-input::placeholder {
+    color: var(--text-color-light);
+}
+
+.search-input:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px var(--accent-color);
+}
+
+.search-icon {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-color-light);
+    transition: color var(--transition-speed);
+}
+/* CAMBIO: Color del icono de búsqueda en modo claro */
+.search-icon {
+    color: var(--clr-light-text-dark);
+}
+/* FIN DE CAMBIO */
+
+.main-nav ul {
+    display: flex;
+    gap: 20px;
+}
+
+.main-nav .nav-icon {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Asegura el centrado horizontal */
+    text-align: center; /* Asegura que el texto dentro del span esté centrado */
+    font-size: 0.8em;
+    color: var(--text-color-dark);
+    transition: color var(--transition-speed);
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+.main-nav .nav-icon i {
+    font-size: 1.5em;
+    margin-bottom: 3px;
+    transition: color var(--transition-speed);
+}
+/* EFECTO DE RESPLANDOR EN MODO OSCURO */
+body.dark-mode .main-nav .nav-icon i {
+    filter: drop-shadow(0 0 3px var(--neon-blue)) drop-shadow(0 0 6px var(--neon-blue));
+    color: var(--neon-blue);
+}
+
+.main-nav .nav-icon:hover {
+    color: var(--accent-color);
+}
+.main-nav .nav-icon:hover i {
+    color: var(--accent-color);
+    /* Desactivar resplandor al pasar el ratón para evitar parpadeo */
+    filter: none;
+}
+/* Ocultar el texto de navegación en desktop por defecto */
+.main-nav .nav-text-desktop {
+    display: block; /* Muestra el texto por defecto, ya que se oculta en mobile */
+}
+/* Mostrar solo el icono en desktop, y el texto en móvil para el menú */
+.main-nav .nav-text-mobile {
+    display: none; /* Oculto en desktop */
+}
+
+
+/* Estilos para Títulos de Sección */
+.section-title {
+    text-align: center;
+    font-size: 2.2em;
+    margin-bottom: 10px;
+    color: var(--accent-color);
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    transition: color var(--transition-speed);
+}
+/* EFECTO DE NEÓN EN MODO OSCURO */
+body.dark-mode .section-title {
+    color: var(--neon-yellow);
+    text-shadow: var(--glow-effect);
+}
+
+.section-subtitle {
+    text-align: center;
+    font-size: 1.1em;
+    color: var(--text-color-light);
+    margin-bottom: 40px;
+    transition: color var(--transition-speed);
+}
+
+/* Estilos de la Cuadrícula de Portafolios (Descubrir Usuarios) */
+.projects-grid, .user-projects-grid {
+    display: grid;
+    /* Por defecto, una columna en móviles */
+    grid-template-columns: 1fr;
+    gap: 40px;
+    padding-bottom: 50px;
+}
+
+/* Media query para pantallas más grandes, forzando 2 y 3 columnas */
+@media (min-width: 768px) {
+    .projects-grid, .user-projects-grid {
+        grid-template-columns: repeat(2, 1fr); /* Dos columnas en pantallas medianas */
+    }
+}
+@media (min-width: 1024px) {
+    .projects-grid, .user-projects-grid {
+        grid-template-columns: repeat(3, 1fr); /* Tres columnas en pantallas grandes */
+    }
+}
+
+.project-card-link {
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    color: inherit;
+}
+
+.project-card {
+    background-color: var(--bg-secondary);
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 4px 10px var(--shadow-secondary);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background-color var(--transition-speed);
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+    height: 100%; /* Asegura que la tarjeta ocupe todo el espacio de su celda en la cuadrícula */
+}
+/* EFECTO DE NEÓN EN MODO OSCURO */
+body.dark-mode .project-card {
+    border: 1px solid var(--clr-dark-text-light);
+    box-shadow: 0 0 5px var(--clr-dark-text-light), 0 0 10px var(--clr-dark-shadow-secondary);
+}
+
+.project-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 15px var(--shadow-primary);
+}
+/* EFECTO DE NEÓN EN HOVER EN MODO OSCURO */
+body.dark-mode .project-card:hover {
+    border-color: var(--accent-color);
+    box-shadow: var(--glow-effect);
+}
+
+.project-preview {
+    background-color: var(--text-color-light); /* Color de fondo temporal para la previsualización */
+    height: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--text-color-dark);
+    font-weight: bold;
+    font-size: 1.2em;
+    transition: background-color var(--transition-speed), color var(--transition-speed);
+}
+/* En modo oscuro, la previsualización debería ser más oscura */
+body.dark-mode .project-preview {
+    background-color: var(--clr-dark-text-light);
+    color: var(--clr-dark-bg-primary);
+}
+
+
+.user-info {
+    padding: 15px;
+    text-align: center;
+}
+
+.user-name {
+    font-size: 1.5em;
+    color: var(--text-color-dark);
+    margin-bottom: 5px;
+    transition: color var(--transition-speed);
+}
+
+.user-occupation {
+    font-size: 0.9em;
+    color: var(--text-color-light);
+    transition: color var(--transition-speed);
+}
+
+.filter-bar {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.filter-btn {
+    background-color: var(--accent-color);
+    color: var(--text-color-dark);
+    padding: 10px 25px;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 1em;
+    font-weight: bold;
+    transition: background-color var(--transition-speed), color var(--transition-speed);
+}
+/* EFECTO DE NEÓN EN MODO OSCURO */
+body.dark-mode .filter-btn {
+    box-shadow: var(--glow-effect-secondary);
+    color: var(--neon-blue);
+    background-color: var(--clr-dark-bg-secondary);
+    border: 1px solid var(--neon-blue);
+}
+
+.filter-btn:hover {
+    background-color: var(--text-color-light);
+}
+/* EFECTO DE NEÓN EN HOVER EN MODO OSCURO */
+body.dark-mode .filter-btn:hover {
+    background-color: var(--accent-color);
+    color: var(--clr-dark-bg-primary);
+    box-shadow: var(--glow-effect);
+    border-color: var(--accent-color);
+}
+/* CAMBIO: Color del texto del botón de filtro en modo claro */
+.filter-btn {
+    color: var(--clr-light-bg-primary); /* Texto blanco para resaltar */
+}
+/* FIN DE CAMBIO */
+
+.filter-btn i {
+    margin-right: 8px;
+}
+
+/* Estilos para el Menú Lateral */
+.menu-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity var(--transition-speed), visibility var(--transition-speed);
+    display: flex;
+    justify-content: flex-end; /* Alinea el menú a la derecha */
+}
+
+.menu-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.side-menu {
+    width: 300px;
+    background-color: var(--bg-secondary);
+    padding: 25px;
+    box-shadow: -5px 0 15px var(--shadow-primary);
+    transform: translateX(100%);
+    transition: transform var(--transition-speed), background-color var(--transition-speed);
+    height: 100%;
+    overflow-y: auto; /* Para menús largos */
+    position: relative;
+}
+
+.menu-overlay.active .side-menu {
+    transform: translateX(0);
+}
+
+.menu-close-btn {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    font-size: 28px;
+    color: var(--text-color-light);
+    cursor: pointer;
+    transition: color var(--transition-speed);
+}
+
+.menu-close-btn:hover {
+    color: var(--text-color-dark);
+}
+
+.menu-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 30px;
+    padding-top: 20px; /* Espacio para el botón de cerrar */
+}
+
+.profile-photo-circle {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin-bottom: 10px;
+    border: 3px solid var(--accent-color); /* Borde de acento */
+    transition: border-color var(--transition-speed);
+}
+/* EFECTO DE NEÓN EN MODO OSCURO */
+body.dark-mode .profile-photo-circle {
+    border-color: var(--neon-yellow);
+    box-shadow: var(--glow-effect);
+}
+
+.profile-photo-circle img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.menu-header h3 {
+    color: var(--text-color-dark);
+    font-size: 1.4em;
+    transition: color var(--transition-speed);
+}
+
+.menu-search-bar {
+    margin-bottom: 30px;
+}
+
+.menu-search-bar input {
+    width: 100%;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 20px;
+    background-color: var(--bg-primary);
+    color: var(--text-color-dark);
+    transition: background-color var(--transition-speed), color var(--transition-speed);
+}
+
+.menu-search-bar input::placeholder {
+    color: var(--text-color-light);
+}
+.menu-search-bar input:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px var(--accent-color);
+}
+
+.menu-links li {
+    margin-bottom: 15px;
+}
+
+.menu-links li a {
+    display: block;
+    padding: 10px 15px;
+    color: var(--text-color-dark);
+    font-size: 1.1em;
+    transition: background-color var(--transition-speed), color var(--transition-speed);
+    border-radius: 8px;
+}
+/* EFECTO DE NEÓN EN MODO OSCURO */
+body.dark-mode .menu-links li a {
+    color: var(--text-color-light);
+}
+body.dark-mode .menu-links li a:hover {
+    background-color: var(--bg-primary);
+    color: var(--neon-blue);
+    text-shadow: 0 0 5px var(--neon-blue);
+}
+
+.menu-links li a i {
+    margin-right: 15px;
+    width: 20px; /* Para alinear los iconos */
+    text-align: center;
+}
+body.dark-mode .menu-links li a i {
+    color: var(--neon-blue);
+    filter: drop-shadow(0 0 3px var(--neon-blue));
+}
+body.dark-mode .menu-links li a:hover i {
+    color: var(--neon-blue);
+    filter: drop-shadow(0 0 5px var(--neon-blue));
+}
+
+
+/* Estilos Específicos para Modales */
+.modal-content .profile-icon-placeholder {
+    font-size: 80px;
+    color: var(--text-color-light);
+    text-align: center;
+    margin-bottom: 20px;
+    position: relative;
+    transition: color var(--transition-speed);
+}
+
+.modal-content .profile-icon-placeholder i {
+    color: var(--text-color-light);
+    transition: color var(--transition-speed);
+}
+
+.modal-content .profile-icon-placeholder .upload-camera-icon {
+    position: absolute;
+    bottom: 0;
+    right: 50%;
+    transform: translateX(50%) translateY(20px); /* Ajuste para colocarlo en la esquina inferior derecha del círculo */
+    font-size: 30px;
+    color: var(--accent-color); /* Color del icono de cámara */
+    background-color: var(--bg-primary);
+    border-radius: 50%;
+    padding: 5px;
+    border: 3px solid var(--accent-color);
+    cursor: pointer;
+    transition: color var(--transition-speed), background-color var(--transition-speed), border-color var(--transition-speed);
+}
+body.dark-mode .modal-content .profile-icon-placeholder .upload-camera-icon {
+    border-color: var(--clr-dark-accent);
+}
+
+.modal-content .upload-area {
+    background-color: var(--bg-secondary);
+    border: 2px dashed var(--text-color-light);
+    border-radius: 10px;
+    padding: 40px 20px;
+    text-align: center;
+    cursor: pointer;
+    margin-bottom: 25px;
+    transition: background-color var(--transition-speed), border-color var(--transition-speed);
+}
+/* EFECTO DE NEÓN EN MODO OSCURO */
+body.dark-mode .modal-content .upload-area {
+    border-color: var(--neon-blue);
+}
+
+.modal-content .upload-area:hover {
+    border-color: var(--accent-color);
+    background-color: var(--bg-primary);
+}
+
+.modal-content .upload-area .upload-icon {
+    font-size: 3em;
+    color: var(--text-color-light);
+    margin-bottom: 10px;
+    transition: color var(--transition-speed);
+}
+/* EFECTO DE NEÓN EN MODO OSCURO */
+body.dark-mode .modal-content .upload-area .upload-icon {
+    color: var(--neon-blue);
+    filter: drop-shadow(0 0 5px var(--neon-blue));
+}
+
+.modal-content .upload-area p {
+    color: var(--text-color-dark);
+    font-weight: bold;
+    transition: color var(--transition-speed);
+}
+
+/* Alineación para enlaces de registro/login */
+.text-center {
+    text-align: center;
+}
+.mt-3 {
+    margin-top: 15px;
+}
+.text-center a {
+    color: var(--text-color-dark);
+    font-weight: bold;
+    transition: color var(--transition-speed);
+}
+.text-center a:hover {
+    color: var(--accent-color);
+}
+body.dark-mode .text-center a i {
+    color: var(--neon-blue);
+    filter: drop-shadow(0 0 3px var(--neon-blue));
+}
+/* CAMBIO: Color del icono de enlace en modo claro */
+.text-center a i {
+    color: var(--clr-light-accent);
+}
+/* FIN DE CAMBIO */
+
+
+/* Estilos para la Página de Perfil */
+.profile-page-content {
+    padding-top: 50px; /* Espacio debajo del header */
+    padding-bottom: 50px;
+}
+
+.user-profile-section {
+    background-color: var(--bg-secondary);
+    border-radius: 15px;
+    box-shadow: 0 4px 15px var(--shadow-secondary);
+    padding: 40px;
+    margin-bottom: 50px;
+    text-align: center;
+    transition: background-color var(--transition-speed), box-shadow var(--transition-speed);
+}
+body.dark-mode .user-profile-section {
+    border: 1px solid var(--clr-dark-text-light);
+    box-shadow: 0 0 5px var(--clr-dark-text-light), 0 0 10px var(--clr-dark-shadow-secondary);
+}
+
+.profile-header {
+    display: flex;
+    flex-direction: column; /* Apilado en móvil, cambia a fila en desktop */
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.profile-photo-lg {
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin-bottom: 20px;
+    border: 5px solid var(--accent-color);
+    box-shadow: 0 0 0 5px var(--bg-primary); /* Efecto de borde doble */
+    transition: border-color var(--transition-speed), box-shadow var(--transition-speed);
+}
+/* EFECTO DE NEÓN EN MODO OSCURO */
+body.dark-mode .profile-photo-lg {
+    border-color: var(--neon-yellow);
+    box-shadow: var(--glow-effect);
+}
+
+.profile-photo-lg img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.profile-info {
+    max-width: 600px;
+}
+
+.profile-name {
+    font-size: 2.5em;
+    color: var(--text-color-dark);
+    margin-bottom: 5px;
+    transition: color var(--transition-speed);
+}
+
+.profile-occupation {
+    font-size: 1.2em;
+    color: var(--text-color-light);
+    margin-bottom: 15px;
+    transition: color var(--transition-speed);
+}
+
+.profile-description {
+    font-size: 1em;
+    color: var(--text-color-dark);
+    line-height: 1.6;
+    transition: color var(--transition-speed);
+}
+
+.projects-title {
+    margin-top: 0; /* Ya tiene un margin-bottom en section-title */
+    margin-bottom: 40px;
+    color: var(--text-color-dark); /* Color más oscuro para este título */
+    font-size: 2em;
+}
+
+
+.project-card {
+    background-color: var(--bg-secondary);
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 4px 10px var(--shadow-secondary);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background-color var(--transition-speed);
+    cursor: pointer;
+}
+/* EFECTO DE NEÓN EN MODO OSCURO */
+body.dark-mode .project-card {
+    border: 1px solid var(--clr-dark-text-light);
+    box-shadow: 0 0 5px var(--clr-dark-text-light), 0 0 10px var(--clr-dark-shadow-secondary);
+}
+
+.project-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 15px var(--shadow-primary);
+}
+/* EFECTO DE NEÓN EN HOVER EN MODO OSCURO */
+body.dark-mode .project-card:hover {
+    border-color: var(--accent-color);
+    box-shadow: var(--glow-effect);
+}
+
+.project-image-placeholder {
+    width: 100%;
+    height: 200px; /* Altura fija para las imágenes */
+    background-color: var(--text-color-light); /* Color de fondo temporal */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    transition: background-color var(--transition-speed);
+}
+.project-image-placeholder img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Asegura que la imagen cubra el área sin distorsionarse */
+}
+body.dark-mode .project-image-placeholder {
+    background-color: var(--clr-dark-text-light); /* Color más oscuro para el modo oscuro */
+}
+
+.project-name {
+    padding: 15px;
+    font-size: 1.2em;
+    color: var(--text-color-dark);
+    text-align: center;
+    transition: color var(--transition-speed);
+}
+
+
+/* Estilos para el Footer */
+.main-footer {
+    background-color: var(--bg-secondary);
+    padding: 40px 20px 20px;
+    margin-top: auto; /* Empuja el footer hacia abajo */
+    border-top: 1px solid var(--shadow-secondary);
+    transition: background-color var(--transition-speed);
+}
+body.dark-mode .main-footer {
+    border-top: 1px solid var(--clr-dark-text-light);
+}
+
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 30px;
+    padding-bottom: 20px;
+}
+
+.footer-logo h3 {
+    font-size: 1.8em;
+    color: var(--accent-color);
+    margin-bottom: 10px;
+    transition: color var(--transition-speed);
+}
+/* EFECTO DE NEÓN EN MODO OSCURO */
+body.dark-mode .footer-logo h3 {
+    text-shadow: var(--glow-effect);
+}
+
+.footer-logo p {
+    font-size: 0.9em;
+    color: var(--text-color-light);
+    max-width: 300px;
+    line-height: 1.6;
+}
+
+.footer-links h4,
+.footer-social h4 {
+    font-size: 1.2em;
+    color: var(--text-color-dark);
+    margin-bottom: 15px;
+    transition: color var(--transition-speed);
+}
+
+.footer-links ul li {
+    margin-bottom: 8px;
+}
+
+.footer-links a {
+    color: var(--text-color-light);
+    transition: color var(--transition-speed);
+}
+
+.footer-links a:hover {
+    color: var(--accent-color);
+}
+/* EFECTO DE NEÓN EN HOVER EN MODO OSCURO */
+body.dark-mode .footer-links a:hover {
+    color: var(--neon-blue);
+    text-shadow: 0 0 3px var(--neon-blue);
+}
+
+.social-icons a {
+    font-size: 1.5em;
+    margin-right: 15px;
+    color: var(--text-color-light);
+    transition: color var(--transition-speed);
+}
+.social-icons a:hover {
+    color: var(--accent-color);
+}
+/* EFECTO DE NEÓN EN HOVER EN MODO OSCURO */
+body.dark-mode .social-icons a:hover {
+    color: var(--neon-yellow);
+    filter: drop-shadow(0 0 5px var(--neon-yellow));
+}
+
+.footer-bottom {
+    text-align: center;
+    border-top: 1px solid var(--shadow-secondary);
+    padding-top: 20px;
+    margin-top: 20px;
+}
+
+.footer-bottom p {
+    font-size: 0.85em;
+    color: var(--text-color-light);
+}
+
+/* Responsive Design para ambas páginas */
+@media (min-width: 769px) {
+    .profile-header {
+        flex-direction: row; /* En desktop, la foto y info en fila */
+        text-align: left;
+        gap: 40px;
+    }
+
+    .profile-photo-lg {
+        margin-bottom: 0; /* Quitar margen inferior en desktop */
+        flex-shrink: 0; /* Evita que la foto se encoja */
+    }
+
+    .search-bar {
+        max-width: 600px; /* La barra de búsqueda puede ser más ancha en desktop */
+    }
+
+    /* En desktop, mostrar solo el icono para los elementos de navegación y ocultar el texto móvil */
+    .main-nav .nav-icon .nav-text-desktop {
+        display: block; /* Mostrar el texto específico para desktop */
+    }
+    .main-nav .nav-icon .nav-text-mobile {
+        display: none; /* Ocultar el texto móvil en desktop */
+    }
+    
+    /* Asegurar que la barra de búsqueda esté centrada y el resto de elementos a los lados en desktop */
+    .header-content {
+        justify-content: space-between;
+        gap: 20px; /* Ajusta el espacio entre elementos */
+    }
+    
+    .theme-toggle {
+        margin-right: auto; /* Empuja el search-bar y nav a la derecha */
+    }
+
+    .main-nav {
+        margin-left: auto; /* Empuja el nav a la derecha */
+    }
+}
+
+@media (max-width: 768px) {
+    /* Ajustes para el header en móvil */
+    .header-content {
+        flex-wrap: nowrap; /* Evitar que los elementos salten de línea en el header principal */
+        justify-content: space-between; /* Distribuir elementos a lo largo del header */
+        align-items: center;
+        gap: 10px; /* Reducir el espacio entre elementos */
+        padding: 10px 15px; /* Ajustar padding para móviles */
+    }
+
+    .theme-toggle {
+        font-size: 1.5em; /* Icono de tema más grande */
+        margin-right: 0; /* Quitar margen que lo empujaba antes */
+        order: 1; /* Ordenar el elemento primero */
+        flex-shrink: 0; /* Evitar que se encoja */
+    }
+    /* Ocultar el texto "Portafy" en móviles para dejar más espacio */
+    .theme-toggle span {
+        display: none;
+    }
+    /* Muestra el texto "Portafy" en el link separado del theme-toggle */
+    .app-logo-link {
+        display: none;
+    }
+
+    .search-bar {
+        order: 2; /* Segundo elemento */
+        flex-grow: 1; /* Permite que ocupe el espacio restante */
+        max-width: unset; /* Quitar el max-width para que se adapte */
+    }
+    .search-input {
+        width: 100%;
+        padding: 8px 10px 8px 35px; /* Ajustar padding para icono de búsqueda */
+        font-size: 0.9em;
+    }
+    .search-icon {
+        left: 10px; /* Mover el icono más a la izquierda */
+        font-size: 1.2em;
+    }
+
+    .main-nav {
+        order: 3; /* Tercer elemento */
+        margin-left: 0; /* Quitar margen que lo empujaba antes */
+        flex-shrink: 0; /* Evitar que se encoja */
+    }
+
+    .main-nav ul {
+        gap: 0; /* Eliminar el gap entre los elementos de la lista nav */
+        /* Eliminamos flex-wrap y justify-content para que solo el botón de menú sea visible */
+    }
+
+    /* Ocultar los primeros 3 elementos de navegación (Iniciar, Perfil, Subir) en móviles */
+    .main-nav ul li:nth-child(1),
+    .main-nav ul li:nth-child(2),
+    .main-nav ul li:nth-child(3) {
+        display: none;
+    }
+
+    /* Asegurar que el botón de menú hamburguesa se muestre correctamente */
+    .main-nav .nav-icon.menu-toggle {
+        flex-direction: row; /* Icono y texto del menú en fila */
+        font-size: 1em; /* Ajustar tamaño de fuente */
+        padding: 5px 10px; /* Añadir padding para que sea clicable */
+        border-radius: 5px;
+        background-color: transparent; /* Fondo transparente por defecto */
+    }
+    .main-nav .nav-icon.menu-toggle i {
+        font-size: 1.5em; /* Tamaño del icono */
+        margin-bottom: 0; /* Eliminar margen inferior */
+        margin-right: 5px; /* Pequeño margen entre icono y texto */
+    }
+
+    /* Mostrar el texto "MENÚ" solo en móvil */
+    .main-nav .nav-text-mobile {
+        display: inline;
+    }
+    /* Ocultar el texto específico de desktop en móvil */
+    .main-nav .nav-text-desktop {
+        display: none;
+    }
+
+    /* Otros ajustes para móviles */
+    .profile-header {
+        flex-direction: column; /* Apilado en móvil */
+        text-align: center;
+        gap: 20px; /* Espacio entre foto y texto */
+    }
+
+    .profile-photo-lg {
+        margin-bottom: 20px; /* Margen inferior para la foto en móvil */
+    }
+
+    /* Responsive para el footer en móviles */
+    .footer-content {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .footer-logo,
+    .footer-links,
+    .footer-social {
+        width: 100%;
+        margin-bottom: 20px;
+    }
+
+    .footer-links ul {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+    }
+
+    .social-icons {
+        display: flex;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 10px;
+    }
+
+    .section-title {
+        font-size: 1.8em;
+    }
+
+    .section-subtitle {
+        font-size: 0.9em;
+    }
+
+    .profile-name {
+        font-size: 2em;
+    }
+
+    .profile-occupation {
+        font-size: 1em;
+    }
+
+    .user-profile-section {
+        padding: 25px;
+    }
+
+    .side-menu {
+        width: 100%; /* El menú lateral ocupa todo el ancho en móviles muy pequeños */
+    }
+
+    .modal-content {
+        width: 95%;
+        padding: 20px;
+    }
+    .footer-links ul {
+        flex-direction: column;
+        gap: 5px;
+    }
+}
+
+.modal-login{
+    color: #ffee00;
+}
+
+.modal-login:hover{
+    transition: 0.3s;
+    color: #a49902;
+}
+
+.project-card .project-author {
+    padding: 10px; /* Añade espacio para que no esté pegado al borde */
+    font-size: 1.1em; /* Tamaño de fuente más grande */
+    font-weight: bold; /* Nombre de usuario en negrita */
+    text-align: center; /* Centrar el texto */
+    color: var(--text-color-dark); /* Color del texto por defecto */
+    transition: color var(--transition-speed);
+}
+
+body.dark-mode .project-card .project-author {
+    color: var(--text-color-light); /* Color del texto en modo oscuro */
+}
+
+.project-card:hover .project-author {
+    color: var(--accent-color); /* Color de acento al pasar el cursor sobre la tarjeta */
+}
+
+.editar{
+    font-size: 20px;
+    background-color: #ffeb3b00;
+    color: #ffeb3b;
+    border: #00e1ff00;
+    border: 0px;
+    text-align: center;
+}
+
+.editar:hover{
+    transition: 0.3s;
+    color: #a49902;
+}
+
+/* Nuevos estilos para los campos de contraseña */
+.password-container {
+    position: relative;
+}
+
+.password-toggle-icon {
+    position: absolute;
+    top: 50%;
+    right: 15px;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: var(--text-color-light);
+    transition: color var(--transition-speed);
+}
+
+.password-toggle-icon:hover {
+    color: var(--text-color-dark);
+}
+
+.img-view-project{
+    max-width: 100%;
+    height: auto;
+}
+
+
+
+.button-profile{
+    font-size: 17px;
+    background-color: #ffeb3b00;
+    color: #ffeb3b;
+    border: #00e1ff00;
+    border: 0px;
+    text-align: center;
+}
+
+.button-profile:hover{
+    transition: 0.3s;
+    color: #a49902;
+}
+
+
+
+.enlace-refer-profile:hover{
+    transition: 0.3s;
+    color: #ffeb3b;
+}

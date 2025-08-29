@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portafy - Descubre Portafolios</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="icon" href="multimedia/logo.png" type="image/png">
+</head>
+
+<body>
+    <header class="main-header">
+        <div class="container header-content">
+            <div style="display: flex; align-items: center;">
+                <div class="theme-toggle" id="theme-toggle">
+                    <i class="fas fa-moon light-mode-icon"></i> <i class="fas fa-sun dark-mode-icon"></i>
+                </div>
+                <a href="index.html" class="app-logo-link"
+                    style="font-weight: bold; text-transform: uppercase; font-size: 1.2em; color: var(--text-color-dark); margin-left: 8px; transition: color var(--transition-speed);">Portafy</a>
+            </div>
+            <div class="search-bar">
+                <input type="text" placeholder="Buscar..." class="search-input">
+                <i class="fas fa-search search-icon"></i>
+            </div>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="docs.html" class="nav-icon"><i class="fas fa-file-alt"></i> <span
+                                class="nav-text-desktop">DOCS</span></a></li>
+                    <li><a href="#" class="nav-icon"><i class="far fa-lightbulb"></i> <span
+                                class="nav-text-desktop">AYUDA</span></a></li>
+                    <li><a href="#" class="nav-icon" id="login-open-btn"><i class="fas fa-user-circle"></i> <span
+                                class="nav-text-desktop">Iniciar</span></a></li>
+                    <li><a href="#" class="nav-icon" id="upload-open-btn"><i class="fas fa-upload"></i> <span
+                                class="nav-text-desktop">SUBIR</span></a></li>
+                    <li><a href="#" class="nav-icon menu-toggle" id="menu-toggle-btn"><i class="fas fa-bars"></i> <span
+                                class="nav-text-mobile">MENÚ</span></a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main-content container">
+        <section class="projects-section">
+            <h1 class="section-title">DESCUBRIR USUARIOS</h1>
+            <p class="section-subtitle">Explora y descubre trabajos de otros usuarios</p>
+            <div class="projects-grid" id="projects-grid">
+            </div>
+        </section>
+    </main>
+
+    <div class="modal-overlay" id="login-modal">
+        <div class="modal-content">
+            <span class="modal-close" id="login-close-btn">&times;</span>
+            <h2>Iniciar Sesión</h2>
+            <form id="loginForm">
+                <div class="form-group">
+                    <input type="email" id="loginEmail" placeholder="Email" required>
+                </div>
+                <div class="form-group password-container">
+                    <input type="password" id="loginPassword" placeholder="Contraseña" required>
+                    <i class="fas fa-eye password-toggle-icon" id="login-password-toggle"></i>
+                </div>
+                <button type="submit" class="btn-primary">Iniciar Sesión</button>
+            </form>
+            <div class="switch-form-text"><br>
+                <p>¿No tienes una cuenta? <a href="#" id="switch-to-register" class="modal-login">Regístrate</a></p>
+                <p><a href="#" id="show-forgot-password" class="modal-login">Recuperar Contraseña</a></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="register-modal">
+        <div class="modal-content">
+            <span class="modal-close" id="register-close-btn">&times;</span>
+            <h2>Registrarse</h2>
+            <form id="registerForm">
+                <div class="form-group">
+                    <input type="text" id="registerUsername" placeholder="Nombre de usuario" required>
+                </div>
+                <div class="form-group">
+                    <input type="text" id="registerName" placeholder="Nombre completo" required>
+                </div>
+                <div class="form-group">
+                    <input type="email" id="registerEmail" placeholder="Email" required>
+                </div>
+                <div class="form-group password-container">
+                    <input type="password" id="registerPassword" placeholder="Contraseña" required>
+                    <i class="fas fa-eye password-toggle-icon" id="register-password-toggle"></i>
+                </div>
+                <div class="form-group password-container">
+                    <input type="password" id="registerConfirmPassword" placeholder="Confirmar Contraseña" required>
+                    <i class="fas fa-eye password-toggle-icon" id="confirm-password-toggle"></i>
+                </div>
+                <div class="form-group">
+                    <select id="registerType" required>
+                        <option value="" disabled selected>Selecciona tu tipo de usuario</option>
+                        <option value="Animador/a 2D o 3D">Animador/a 2D o 3D</option>
+                        <option value="Artista Visual">Artista Visual</option>
+                        <option value="Base de Datos">Base de Datos</option>
+                        <option value="Camarógrafo / Videógrafo">Camarógrafo / Videógrafo</option>
+                        <option value="Desarrollador Web">Desarrollador Web</option>
+                        <option value="Diseñador/a de Interiores">Diseñador/a de Interiores</option>
+                        <option value="Diseñador/a de Juegos">Diseñador/a de Juegos</option>
+                        <option value="Diseñador/a de Moda">Diseñador/a de Moda</option>
+                        <option value="Diseñador/a de Packaging">Diseñador/a de Packaging</option>
+                        <option value="Diseñador Gráfico">Diseñador Gráfico</option>
+                        <option value="Diseñador UI/UX">Diseñador UI/UX</option>
+                        <option value="Diseñador Web">Diseñador Web</option>
+                        <option value="Director/a de Arte">Director/a de Arte</option>
+                        <option value="Editor/a de Video">Editor/a de Video</option>
+                        <option value="Fotógrafo/a">Fotógrafo/a</option>
+                        <option value="Ilustrador/a">Ilustrador/a</option>
+                        <option value="Modelador/a 3D">Modelador/a 3D</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn-primary">Registrarse</button>
+            </form>
+            <div class="switch-form-text"><br>
+                <p>¿Ya tienes una cuenta? <a href="#" id="switch-to-login" class="modal-login">Inicia sesión</a></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="forgot-password-modal">
+        <div class="modal-content">
+            <a href="#" class="modal-close"><i class="fas fa-times"></i></a>
+            <h2>Recuperar Contraseña</h2>
+            <form id="forgotPasswordForm">
+                <p>Ingresa tu correo electrónico para recibir un enlace de recuperación.</p>
+                <div class="form-group">
+                    <label for="forgotPasswordEmail">Email:</label>
+                    <input type="email" id="forgotPasswordEmail" name="email" required>
+                </div>
+                <button type="submit" class="btn-primary">Enviar Enlace</button>
+            </form>
+            <div class="modal-footer">
+                <p>¿Ya tienes una cuenta? <a href="#" id="show-login-from-forgot">Iniciar Sesión</a></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="reset-password-modal">
+        <div class="modal-content">
+            <a href="#" class="modal-close"><i class="fas fa-times"></i></a>
+            <h2>Restablecer Contraseña</h2>
+            <form id="resetPasswordForm">
+                <div class="form-group">
+                    <label for="newPassword">Nueva Contraseña:</label>
+                    <div class="password-container">
+                        <input type="password" id="newPassword" name="newPassword" required>
+                        <i class="fas fa-eye toggle-password" id="toggleNewPassword"></i>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="confirmNewPassword">Confirmar Contraseña:</label>
+                    <div class="password-container">
+                        <input type="password" id="confirmNewPassword" name="confirmNewPassword" required>
+                        <i class="fas fa-eye toggle-password" id="toggleConfirmNewPassword"></i>
+                    </div>
+                </div>
+                <button type="submit" class="btn-primary">Restablecer</button>
+            </form>
+            <div class="modal-footer">
+                <p>¿Ya tienes una cuenta? <a href="#" id="show-login-from-reset">Iniciar Sesión</a></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="upload-modal">
+        <div class="modal-content">
+            <span class="modal-close" id="upload-close-btn">&times;</span>
+            <h2>Subir Proyecto</h2>
+            <form id="uploadProjectForm" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="projectTitle">Título del Proyecto</label>
+                    <input type="text" id="projectTitle" name="titulo" placeholder="Ej. Diseño de Portafy" required>
+                </div>
+                <div class="form-group">
+                    <label for="projectDescription">Descripción</label>
+                    <textarea id="projectDescription" name="descripcion"
+                        placeholder="Descripción detallada del proyecto..." required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="projectCategory">Categoría</label>
+                    <input type="text" id="projectCategory" name="categoria" placeholder="Ej. UX/UI, Desarrollo Web"
+                        required>
+                </div>
+                <div class="form-group">
+                    <label for="projectFiles">Archivos del Proyecto (imágenes, videos)</label>
+                    <input type="file" id="projectFiles" name="archivos" multiple required>
+                </div>
+                <button type="submit" class="btn-primary">Subir Proyecto</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="menu-overlay" id="side-menu-overlay">
+        <div class="side-menu">
+            <span class="menu-close-btn" id="menu-close-btn">&times;</span>
+            <div class="menu-header">
+                <div class="profile-photo-circle">
+                    <img src="multimedia/default-profile.png" alt="Foto de perfil">
+                </div>
+                <h3 id="user-menu-name">NOMBRE APELLIDO</h3>
+            </div>
+            <div class="menu-search-bar">
+                <input type="text" placeholder="Buscar...">
+            </div>
+            <ul class="menu-links">
+                <li><a href="index.html"><i class="fas fa-home"></i> Página principal</a></li>
+                <li><a href="profile.html"><i class="fas fa-user"></i> Perfil</a></li>
+                <li><a href="#" id="side-menu-upload-btn"><i class="fas fa-upload"></i> Subir proyecto</a></li>
+                <li><a href="docs.html"><i class="fas fa-file-alt"></i>Documentación</a></li>
+                <li><a href="#"><i class="fas fa-wheelchair"></i>Accesibilidad</a></li>
+                <li><a href="#"><i class="fas fa-lightbulb"></i> Soporte</a></li>
+                <li><a href="#" id="logout-btn"><i class="fas fa-sign-out-alt"></i> Cerrar sesión</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <footer class="main-footer">
+        <div class="container footer-content">
+            <div class="footer-logo">
+                <h3>Portafy</h3>
+                <p>Tu plataforma para descubrir y compartir portafolios creativos.</p>
+            </div>
+            <div class="footer-links">
+                <h4>Enlaces Rápidos</h4>
+                <ul>
+                    <li><a href="index.html">Descubrir</a></li>
+                    <li><a href="profile.html">Mi Perfil</a></li>
+                    <li><a href="docs.html">Documentación</a></li>
+                    <li><a href="#">Ayuda</a></li>
+                </ul>
+            </div>
+            <div class="footer-social">
+                <h4>Síguenos</h4>
+                <div class="social-icons">
+                    <a href="https://www.facebook.com/share/1FzWcFffA8/"><i class="fab fa-facebook-f"></i></a>
+                    <a href="https://x.com/eliasluck13?t=wawV_DCWv2wTW_eGKpdeyA&s=08"><i class="fab fa-twitter"></i></a>
+                    <a href="https://www.instagram.com/eliastf.06?igsh=cDhpbmJwd2duMGxk"><i
+                            class="fab fa-instagram"></i></a>
+                    <a
+                        href="https://www.linkedin.com/in/elias-franco-766407342?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app"><i
+                            class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Portafy. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+    <script src="js/login.js"></script>
+    <script src="js/script.js"></script>
+</body>
+
+</html>
