@@ -1,0 +1,48 @@
+tablas alojadas en una base de datos en supabase.com
+usuarios:
+nom_usuario[PK] text
+nombre text
+email text
+tipo_usuario text
+is_admin bool
+
+proyectos:
+id_proyecto[PK] int4
+titulo text
+descripcion text
+categoria text
+fecha_publi timestamptz
+fecha_inicio date
+fecha_finalizacion date
+para_quien_se_hizo text
+enlaces_referencia text
+privacidad bool
+nom_usuario[FK] text
+
+archivos:
+id_archivo[PK] int4
+tipo_archivo text
+url text
+nombre text
+id_proyecto[FK] int4
+
+datos_perfil:
+id_datos_perfil[PK] int4
+privacidad bool
+biografia text
+red_social text
+foto_perfil text
+telefono text
+direccion text
+experiencia text
+nom_usuario[FK] text
+
+Claves de la API de Supabase
+API URL: https://jswkmnuorlblrbiqrjev.supabase.co
+
+anon public key: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Impzd2ttbnVvcmxibHJiaXFyamV2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTY0Nzk2NzMsImV4cCI6MjA3MjA1NTY3M30.99o21exAf0J53tJ6-aknK80AAHkyoTw83gp9d0NWvUc
+
+service_role: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Impzd2ttbnVvcmxibHJiaXFyamV2Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc1NjQ3OTY3MywiZXhwIjoyMDcyMDU1NjczfQ.KQRjXqMXu9duLC76AjGShQTK5LAaxhUCGyl6eo1DmDU
+
+Legacy JWT secret: F45Phb5aHtb/SdQs9jWNMubcfpxqJB3XoaK9vLZ0RYW5S4Jt8BDWu2M/ZKXZYCEm5aidDV5O/MwaDaRa1vjT2w==
+
