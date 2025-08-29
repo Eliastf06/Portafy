@@ -46,3 +46,30 @@ service_role: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZ
 
 Legacy JWT secret: F45Phb5aHtb/SdQs9jWNMubcfpxqJB3XoaK9vLZ0RYW5S4Jt8BDWu2M/ZKXZYCEm5aidDV5O/MwaDaRa1vjT2w==
 
+Politicas RLS delas tablas:
+usuarios:
+delete_if_admin
+insert_if_self
+select_all_if_admin
+select_if_self
+update_if_self
+
+proyectos:
+delete_if_owner_or_admin
+insert_if_owner
+select_is_owner
+select_public_or_admin
+update_if_owner
+
+archivos:
+delete_if_owner
+insert_if_owner
+select_if_project_public_or_owner
+update_if_owner
+
+datos_perfil:
+delete_if_self_or_admin
+insert_if_self
+select_if_self
+select_public_or_admin
+update_if_self
