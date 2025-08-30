@@ -48,28 +48,28 @@ Legacy JWT secret: F45Phb5aHtb/SdQs9jWNMubcfpxqJB3XoaK9vLZ0RYW5S4Jt8BDWu2M/ZKXZY
 
 Politicas RLS delas tablas:
 usuarios:
-delete_if_admin
-insert_if_self
-select_all_if_admin
-select_if_self
-update_if_self
+delete_if_admin		Applied to authenticated
+insert_if_self		Applied to authenticated
+select_all_if_admin	Applied to authenticated
+select_if_self		Applied to authenticated
+update_if_self		Applied to authenticated
 
 proyectos:
-delete_if_owner_or_admin
-insert_if_owner
-select_is_owner
-select_public_or_admin
-update_if_owner
+delete_if_owner_or_admin	Applied to authenticated
+insert_if_owner			Applied to authenticated
+select_is_owner			Applied to authenticated
+select_public_or_admin		Applied to authenticated
+update_if_owner			Applied to authenticated
 
 archivos:
-delete_if_owner
-insert_if_owner
-select_if_project_public_or_owner
-update_if_owner
+delete_if_owner				Applied to authenticated
+insert_if_owner				Applied to authenticated
+select_if_project_public_or_owner	Applied to authenticated
+update_if_owner				Applied to authenticated
 
 datos_perfil:
-delete_if_self_or_admin
-insert_if_self
-select_if_self
-select_public_or_admin
-update_if_self
+delete_if_self_or_admin		Applied to authenticated
+insert_if_self			Applied to authenticated
+select_if_self			Applied to authenticated
+select_public_or_admin		Applied to authenticated
+update_if_self			Applied to authenticated
