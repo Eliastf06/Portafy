@@ -1237,7 +1237,7 @@ body.dark-mode .project-card .project-author {
 
 .password-toggle-icon {
     position: absolute;
-    top: 50%;
+    top: 67%;
     right: 15px;
     transform: translateY(-50%);
     cursor: pointer;
@@ -1248,3 +1248,5 @@ body.dark-mode .project-card .project-author {
 .password-toggle-icon:hover {
     color: var(--text-color-dark);
 }
+
+

@@ -1,0 +1,133 @@
+Quiero q uses de referencia los archivos q te pase (esos archivos funcionan bien y estan relacionados con supabase) para hacer q el registro/inicio de sesión sea funcional, tambien la carga de un proyecto nuevo, teniendo en cuenta que la base de datos esta alojada en Supabase. El codigo que se encargara de que el registro/inicio de sesión funcione estara en js/users.js
+
+ten en cuenta que el formulario de login esta en todos los archivos html, ya que es un modal, lo mismo con el de subir un nuevo proyecto, estos ya tienen implementada su funcion de modales y esta en un asrchivo que se encarga de los modales, vos solo tenes hacer q funcione con la base de datos
+Te dejo los datos que podrias necesitar.
+NO CAMBIES NADA, SOLO HAZ QUE LOS FORMULARIOS FUNCIONEN
+
+tablas alojadas en una base de datos en supabase.com
+usuarios:
+nom_usuario[PK] text
+nombre text 
+email text
+tipo_usuario text
+is_admin bool
+
+proyectos:
+id_proyecto[PK] int4
+titulo text
+descripcion text
+categoria text
+fecha_publi timestamptz
+fecha_inicio date
+fecha_finalizacion date
+para_quien_se_hizo text
+enlaces_referencia text
+privacidad bool
+nom_usuario[FK] text
+
+archivos:
+id_archivo[PK] int4
+tipo_archivo text
+url text
+nombre text
+id_proyecto[FK] int4
+
+datos_perfil:
+id_datos_perfil[PK] int4
+privacidad bool
+biografia text
+red_social text
+foto_perfil text
+telefono text
+direccion text
+experiencia text
+nom_usuario[FK] text
+
+Claves de la API de Supabase
+API URL: https://fikdyystxmsmwioyyegt.supabase.co
+
+anon public key: 
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZpa2R5eXN0eG1zbXdpb3l5ZWd0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTY3NjgxODksImV4cCI6MjA3MjM0NDE4OX0.QAfKSJfUbwT5NhGRiNHoA83JzW7BXT9u15d5oaeAlro
+
+service_role: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZpa2R5eXN0eG1zbXdpb3l5ZWd0Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc1Njc2ODE4OSwiZXhwIjoyMDcyMzQ0MTg5fQ.e5VvZhoQkSX78gNToiUTse6Th2Y7spao--Qq4YyZtMs
+
+Legacy JWT secret: dvnfIDzv3Vpdpvw3ocDOjrSSnhlW00w0OsUsdH04GfTtJspOv6Gp1M4LJnA5jEYQmI8mXX7Fh0JWMpAxJEQMKg==
+
+Politicas RLS de las tablas:
+archivos:
+Admins tienen control total sobre archivos			comando: ALL 		aplied to authenticated
+Archivos visibles si el proyecto es publico			comando: SELECT		aplied to public
+Creador de proyecto puede agregar archivos			comando: INSERT		aplied to authenticated
+Creador de proyecto puede modificar y eliminar archivos		comando: UPDATE		aplied to authenticated
+Creador de proyecto puede ver archivos				comando: SELECT		aplied to authenticated
+
+proyectos:
+Admins tienen control total sobre proyectos		comando: ALL		aplied to authenticated
+Creador puede ver sus proyectos				comando: SELECT		aplied to authenticated
+Solo creador puede actualizar				comando: UPDATE		aplied to authenticated
+Solo creador puede eliminar				comando: DELETE		aplied to authenticated
+Solo usuarios autenticados pueden crear proyectos	comando: INSERT		aplied to authenticated
+Todos pueden ver proyectos públicos			comando: SELECT		aplied to public
+
+datos_perfil:
+Admins tienen control total sobre perfiles		comando: ALL		aplied to authenticated
+Todos pueden ver perfiles públicos			comando: SELECT		aplied to public
+Usuarios autenticados pueden crear perfil		comando: INSERT		aplied to authenticated
+Usuarios pueden actualizar su propio perfil		comando: UPDATE		aplied to authenticated
+Usuarios pueden eliminar su propio perfil		comando: DELETE 	aplied to authenticated
+Usuarios pueden ver su propio perfil			comando: SELECT		aplied to authenticated
+
+usuarios: 
+Admins pueden ver y actualizar todos los datos		comando: ALL		aplied to authenticated
+Pueden actualizar sus propios datos			comando: UPDATE		aplied to authenticated
+Pueden ver sus priopios datos				comando: SELECT		aplied to authenticated
+
+
+Buckets:
+perfiles: sirve para almacenar las fotos de perfil de los usuarios
+polticas:
+Política de INSERT: Solo permite a los usuarios autenticados subir una foto de perfil. Además, obliga a que el nombre del archivo sea el mismo que el ID de usuario (auth.uid()), lo que garantiza que nadie pueda subir una foto con el nombre de otra persona.
+Política de SELECT: Permite a cada usuario ver su propia foto de perfil. Esto asegura que la foto sea privada para su propietario.
+Política de DELETE: Permite a los usuarios eliminar su propia foto de perfil, evitando que puedan borrar la de otros.
+
+proyectos_imagenes: sirve para almacenar las fotos de los proyectos
+políticas:
+Política de INSERT: Solo permite a los usuarios subir imágenes a un proyecto del que son dueños. La política verifica que el ID del proyecto en el nombre del archivo (split_part(name, '/', 1)) pertenezca al usuario que está subiendo el archivo.
+Política de SELECT (para todos): Permite que cualquier usuario (autenticado o no) pueda ver las imágenes de un proyecto si la columna privacidad de ese proyecto está configurada como FALSE.
+Política de SELECT (para el dueño): Permite al creador del proyecto ver todas las imágenes de su propio proyecto, independientemente de su configuración de privacidad.
+Política de DELETE: Solo el dueño del proyecto puede eliminar las imágenes que le pertenecen.
+
+
+
+
+
+Bien, ahora quiero que hagas una validación para todos los campos, si quieres puedes hacer un nuevo archivo para manejar la validación:
+registrarse/Iniciar sesión:
+nombre de usuario: este campo no debe contener espacios ni tampoco los siguientes simbolos/caracteres: '":;,<>/\()@{}[]`´¬|°\\?¿¡!=+*~^#$%&¨
+nombre completo: este campo no debe contener espacios al princio ni al final, tampoco debe tener mas de un espacio entre cada palabra, este campo solo puede contener letras, ya sean mayusculas o minisculas, no debe aceptarse nada q no sean letras.
+email: este campo debe tener un dominio valido, no mas de un "@", el correo no pueden ser solo numeros, no debe contener espacios ni tampoco los siguientes simbolos/caracteres: '":;,<>/\(){}[]`´¬|°\\?¿¡!=+*~^#$%&¨
+contraseña: este campo no debe contener espacios ni tampoco los siguientes simbolos/caracteres: '":;,<>/\()@{}[]`´¬|°\\?¿¡=*~^%¨
+
+subir proyecto
+titulo del proyecto: este campo no debe contener espacios al princio ni al final, tampoco debe tener mas de un espacio entre cada palabra, este campo solo puede contener letras (ya sean mayusculas o minisculas) y numeros, no debe aceptarse nada q no sean letras o números.
+descripción: este campo no debe contener espacios al princio ni al final, tampoco debe tener mas de un espacio entre cada palabra, este campo solo puede contener letras (ya sean mayusculas o minisculas), numeros o los siguientes simbolos/caracteres: "=,.:°, no debe aceptarse nada más.
+archivos del proyecto: solo pueden aceptarse archivos .png o .jpg
+
+barra de busqueda: este campo no debe contener espacios al princio ni al final, tampoco debe tener mas de un espacio entre cada palabra, este campo solo puede contener letras (ya sean mayusculas o minisculas) y numeros, no debe aceptarse nada q no sean letras o números.
+
+editar perfil:
+biografia: este campo no debe contener espacios al princio ni al final, tampoco debe tener mas de un espacio entre cada palabra, este campo solo puede contener letras (ya sean mayusculas o minisculas), numeros o los siguientes simbolos/caracteres: ",.:°, no debe aceptarse nada más.
+red soscial: este campo no debe contener espacios y debe ser una url aceptable, si es una url peligrosa no admitirla.
+telefono: este campo no debe contener espacios, este campo solo puede contener números, no debe aceptarse nada q no sean números.
+dirección: este campo no debe contener espacios al princio ni al final, tampoco debe tener mas de un espacio entre cada palabra, este campo solo puede contener letras (ya sean mayusculas o minisculas), numeros o los siguientes simbolos/caracteres: ",.:°, no debe aceptarse nada más.
+experiencia: este campo no debe contener espacios al princio ni al final, tampoco debe tener mas de un espacio entre cada palabra, este campo solo puede contener letras (ya sean mayusculas o minisculas), numeros o los siguientes simbolos/caracteres: ",.:°, no debe aceptarse nada más.
+foto de perfil: solo pueden aceptarse archivos .png o .jpg
+
+editar proyecto:
+titulo: este campo no debe contener espacios al princio ni al final, tampoco debe tener mas de un espacio entre cada palabra, este campo solo puede contener letras (ya sean mayusculas o minisculas) y numeros, no debe aceptarse nada q no sean letras o números.
+descripción: este campo no debe contener espacios al princio ni al final, tampoco debe tener mas de un espacio entre cada palabra, este campo solo puede contener letras (ya sean mayusculas o minisculas), numeros o los siguientes simbolos/caracteres: "=,.:°, no debe aceptarse nada más.
+imagen del proyecto: solo pueden aceptarse archivos .png o .jpg
+fecha de inicio: no puede ser una fecha antes del año 1980 ni tampoco puede ser una fecha despues de la fecha actual
+fecha de finalización: no puede ser una fecha antes del año 1980 ni tampoco puede ser una fecha despues de la fecha actual
+para quien se realizo: este campo no debe contener espacios al princio ni al final, tampoco debe tener mas de un espacio entre cada palabra, este campo solo puede contener letras, ya sean mayusculas o minisculas, no debe aceptarse nada q no sean letras.
+enlaces de referencia: este campo no debe contener espacios y debe ser una url aceptable, si es una url peligrosa no admitirla.

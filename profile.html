@@ -21,7 +21,7 @@
                     style="font-weight: bold; text-transform: uppercase; font-size: 1.2em; color: var(--text-color-dark); margin-left: 8px; transition: color var(--transition-speed);">Portafy</a>
             </div>
             <div class="search-bar">
-                <input type="text" placeholder="Buscar..." class="search-input">
+                <input type="text" placeholder="Buscar..." class="search-input" id="barra-busqueda">
                 <i class="fas fa-search search-icon"></i>
             </div>
             <nav class="main-nav">
@@ -30,9 +30,9 @@
                                 class="nav-text-desktop">DOCS</span></a></li>
                     <li><a href="#" class="nav-icon"><i class="far fa-lightbulb"></i> <span
                                 class="nav-text-desktop">AYUDA</span></a></li>
-                    <li><a href="#" class="nav-icon" id="login-open-btn"><i class="fas fa-user-circle"></i> <span
+                    <li><a href="signin.html" class="nav-icon"><i class="fas fa-user-circle"></i> <span
                                 class="nav-text-desktop">Iniciar</span></a></li>
-                    <li><a href="#" class="nav-icon" id="upload-open-btn"><i class="fas fa-upload"></i> <span
+                    <li><a href="upload-project.html" class="nav-icon"><i class="fas fa-upload"></i> <span
                                 class="nav-text-desktop">SUBIR</span></a></li>
                     <li><a href="#" class="nav-icon menu-toggle" id="menu-toggle-btn"><i class="fas fa-bars"></i> <span
                                 class="nav-text-mobile">MENÚ</span></a></li>
@@ -57,8 +57,7 @@
                     </p>
                     <div id="profile-socials">
                     </div>
-                    <button class="btn-secondary editar" id="edit-profile-btn"
-                        style="margin-top: 10px; display: none;">Editar Perfil</button>
+                    <a class="editar" id="edit-profile-btn" href="edit-profile.html">Editar Perfil</a>
                 </div>
             </div>
 
@@ -68,195 +67,14 @@
         </section>
     </main>
 
-    <div class="modal-overlay" id="edit-profile-modal">
-        <div class="modal-content">
-            <span class="modal-close" id="edit-profile-close-btn">&times;</span>
-            <h2>Editar Perfil</h2>
-            <form id="editProfileForm">
-                <div class="form-group">
-                    <label for="nombre-perfil">Nombre Completo</label>
-                    <input type="text" id="nombre-perfil" name="nombre">
-                </div>
-                <div class="form-group">
-                    <label for="email-perfil">Email</label>
-                    <input type="email" id="email-perfil" name="email">
-                </div>
-                <div class="form-group">
-                    <label for="biografia-perfil">Biografía</label>
-                    <textarea id="biografia-perfil" name="biografia"></textarea>
-                </div>
-                <div class="form-group">
-                    <label for="red-social-perfil">Red Social</label>
-                    <input type="text" id="red-social-perfil" name="red_social">
-                </div>
-                <div class="form-group">
-                    <label for="telefono-perfil">Teléfono</label>
-                    <input type="text" id="telefono-perfil" name="telefono">
-                </div>
-                <div class="form-group">
-                    <label for="direccion-perfil">Dirección</label>
-                    <input type="text" id="direccion-perfil" name="direccion">
-                </div>
-                <div class="form-group">
-                    <label for="experiencia-perfil">Experiencia</label>
-                    <textarea id="experiencia-perfil" name="experiencia"></textarea>
-                </div>
-                <div class="form-group">
-                    <label for="foto-perfil-input">Foto de Perfil</label>
-                    <input type="file" id="foto-perfil-input" name="profilePhoto">
-                </div>
-                <div class="form-group">
-                    <label for="privacidad-perfil">Privacidad</label>
-                    <select id="privacidad-perfil" name="privacidad">
-                        <option value="false">Público</option>
-                        <option value="true">Privado</option>
-                    </select>
-                </div>
-                <button type="submit" class="btn-primary">Guardar Cambios</button>
-            </form>
-        </div>
-    </div>
-
-    <div class="modal-overlay" id="edit-project-modal">
-        <div class="modal-content">
-            <span class="modal-close" id="edit-project-close-btn">&times;</span>
-            <h2>Editar Proyecto</h2>
-            <form id="editProjectForm">
-                <input type="hidden" id="edit-project-id" name="id_proyecto">
-                <div class="form-group">
-                    <label for="edit-project-title">Título</label>
-                    <input type="text" id="edit-project-title" name="titulo" required>
-                </div>
-                <div class="form-group">
-                    <label for="edit-project-description">Descripción</label>
-                    <textarea id="edit-project-description" name="descripcion" rows="4" required></textarea>
-                </div>
-                <div class="form-group">
-                    <label for="edit-project-photo">Imagen del Proyecto:</label>
-                    <img id="edit-project-image-preview" src="" alt="Vista previa de la imagen"
-                        style="max-width: 100%; height: auto; margin-bottom: 10px; display: none;">
-                    <input type="file" id="edit-project-photo-input" name="projectPhoto" accept="image/*">
-                </div>
-                <div class="form-group">
-                    <label for="edit-project-category">Categoría</label>
-                    <input type="text" id="edit-project-category" name="categoria" required>
-                </div>
-                <div class="form-group">
-                    <label for="edit-project-start-date">Fecha de inicio</label>
-                    <input type="date" id="edit-project-start-date" name="fecha_inicio">
-                </div>
-                <div class="form-group">
-                    <label for="edit-project-end-date">Fecha de finalización</label>
-                    <input type="date" id="edit-project-end-date" name="fecha_finalizacion">
-                </div>
-                <div class="form-group">
-                    <label for="edit-project-client">Para quién se realizó</label>
-                    <input type="text" id="edit-project-client" name="para_quien_se_hizo">
-                </div>
-                <div class="form-group">
-                    <label for="edit-project-links">Enlaces de referencia</label>
-                    <input type="text" id="edit-project-links" name="enlaces_referencia" placeholder="URL, URL, ...">
-                </div>
-                <div class="form-group">
-                    <label for="edit-project-privacy">Privacidad</label>
-                    <select id="edit-project-privacy" name="privacidad">
-                        <option value="false">Público</option>
-                        <option value="true">Privado</option>
-                    </select>
-                </div>
-                <button type="submit" class="btn-primary">Guardar Cambios</button>
-            </form>
-        </div>
-    </div>
-
     <div class="modal-overlay" id="view-project-modal">
         <div class="modal-content">
             <span class="modal-close" id="view-project-close-btn">&times;</span>
             <div id="project-details-content">
             </div>
-            <button id="delete-project-btn" class="btn-secondary delete-btn button-profile" style="margin-top: 20px;">Eliminar
+            <button id="delete-project-btn" class="btn-secondary delete-btn button-profile"
+                style="margin-top: 20px;">Eliminar
                 Proyecto</button>
-        </div>
-    </div>
-
-    <div class="modal-overlay" id="login-modal">
-        <div class="modal-content">
-            <span class="modal-close" id="login-close-btn">&times;</span>
-            <h2>Iniciar Sesión</h2>
-            <form id="loginForm">
-                <div class="form-group">
-                    <input type="email" id="loginEmail" placeholder="Email" required>
-                </div>
-                <div class="form-group password-container">
-                    <input type="password" id="loginPassword" placeholder="Contraseña" required>
-                    <i class="fas fa-eye password-toggle-icon" id="login-password-toggle"></i>
-                </div>
-                <button type="submit" class="btn-primary">Iniciar Sesión</button>
-            </form>
-            <div class="switch-form-text"><br>
-                <p>¿No tienes una cuenta? <a href="#" id="switch-to-register" class="modal-login">Regístrate</a></p>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal-overlay" id="register-modal">
-        <div class="modal-content">
-            <span class="modal-close" id="register-close-btn">&times;</span>
-            <h2>Registrarse</h2>
-            <form id="registerForm">
-                <div class="form-group">
-                    <input type="text" id="registerUsername" placeholder="Nombre de usuario" required>
-                </div>
-                <div class="form-group">
-                    <input type="text" id="registerName" placeholder="Nombre completo" required>
-                </div>
-                <div class="form-group">
-                    <input type="email" id="registerEmail" placeholder="Email" required>
-                </div>
-                <div class="form-group password-container">
-                    <input type="password" id="registerPassword" placeholder="Contraseña" required>
-                    <i class="fas fa-eye password-toggle-icon" id="register-password-toggle"></i>
-                </div>
-                <div class="form-group password-container">
-                    <input type="password" id="registerConfirmPassword" placeholder="Confirmar Contraseña" required>
-                    <i class="fas fa-eye password-toggle-icon" id="confirm-password-toggle"></i>
-                </div>
-                <div class="form-group">
-                    <input type="text" id="registerType" placeholder="Tipo de usuario" required>
-                </div>
-                <button type="submit" class="btn-primary">Registrarse</button>
-            </form>
-            <div class="switch-form-text"><br>
-                <p>¿Ya tienes una cuenta? <a href="#" id="switch-to-login" class="modal-login">Inicia sesión</a></p>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal-overlay" id="upload-modal">
-        <div class="modal-content">
-            <span class="modal-close" id="upload-close-btn">&times;</span>
-            <h2>Subir Proyecto</h2>
-            <form id="uploadProjectForm" enctype="multipart/form-data">
-                <div class="form-group">
-                    <label for="projectTitle">Título del Proyecto</label>
-                    <input type="text" id="projectTitle" name="titulo" placeholder="Ej. Diseño de Portafy" required>
-                </div>
-                <div class="form-group">
-                    <label for="projectDescription">Descripción</label>
-                    <textarea id="projectDescription" name="descripcion"
-                        placeholder="Descripción detallada del proyecto..." required></textarea>
-                </div>
-                <div class="form-group">
-                    <label for="projectCategory">Categoría</label>
-                    <input type="text" id="projectCategory" name="categoria" placeholder="Ej. UX/UI, Desarrollo Web"
-                        required>
-                </div>
-                <div class="form-group">
-                    <label for="projectFiles">Archivos del Proyecto (imágenes, videos)</label>
-                    <input type="file" id="projectFiles" name="archivos" multiple required>
-                </div>
-                <button type="submit" class="btn-primary">Subir Proyecto</button>
-            </form>
         </div>
     </div>
 
@@ -270,10 +88,11 @@
                 <h3 id="user-menu-name">NOMBRE APELLIDO</h3>
             </div>
             <div class="menu-search-bar">
-                <input type="text" placeholder="Buscar...">
+                <input type="text" placeholder="Buscar..." id="barra-busqueda">
             </div>
             <ul class="menu-links">
                 <li><a href="index.html"><i class="fas fa-home"></i> Página principal</a></li>
+                <li><a href="signin.html"><i class="fas fa-user"></i> Iniciar</a></li>
                 <li><a href="profile.html"><i class="fas fa-user"></i> Perfil</a></li>
                 <li><a href="#" id="side-menu-upload-btn"><i class="fas fa-upload"></i> Subir proyecto</a></li>
                 <li><a href="docs.html"><i class="fas fa-file-alt"></i>Documentación</a></li>
@@ -316,9 +135,9 @@
             <p>&copy; 2025 Portafy. Todos los derechos reservados.</p>
         </div>
     </footer>
-    <script src="js/profile.js"></script>
-    <script src="js/loginp.js"></script>
-    <script src="js/scriptp.js"></script>
+    <script type="module" src="js/script.js"></script>
+    <script type="module" src="js/profile.js"></script>
+    <script src="js/modales.js"></script>
 </body>
 
 </html>

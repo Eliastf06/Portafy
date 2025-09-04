@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subir Nuevo Proyecto</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="css/upload.css">
+    <link rel="shortcut icon" href="img/globe-solid.webp" />
+</head>
+
+<body>
+    </header>
+
+    <main class="add-proyect-main-content">
+        <div class="add-proyect-card">
+            <h2>Subir Nuevo Proyecto</h2>
+            <p id="proyect-upload-message" class="proyect-upload-message" style="display: none;"></p>
+            <form id="add-proyect-form">
+                <div class="form-group">
+                    <label for="proyect-name"><i class="fas fa-box"></i>Título del Proyecto</label>
+                    <input type="text" id="proyect-name" placeholder="Ej: Desarrollo de pagina" required>
+                </div>
+                <div class="form-group">
+                    <label for="proyect-description"><i class="fas fa-align-left"></i>Descripción</label>
+                    <textarea id="proyect-description" rows="5" required
+                        placeholder="Ingresa la descripción detallada del proyecto."></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="proyect-category"><i class="fas fa-tags"></i> Categoría del Proyecto</label>
+                    <select id="proyect-category" name="proyect-category" required>
+                        <option value="" disabled selected>Selecciona tu tipo de proyecto</option>
+                        <option value="Animación 2D o 3D">Animación 2D o 3D</option>
+                        <option value="Arte Visual">Arte Visual</option>
+                        <option value="Base de Datos">Base de Datos</option>
+                        <option value="Grabación">Grabación</option>
+                        <option value="Desarrollo Web">Desarrollo Web</option>
+                        <option value="Diseño Interiores">Diseño de Interiores</option>
+                        <option value="Diseño de Juegos">Diseño de Juegos</option>
+                        <option value="Diseñado de Moda">Diseñado de Moda</option>
+                        <option value="Diseño de Packaging">Diseño de Packaging</option>
+                        <option value="Diseño Gráfico">Diseño Gráfico</option>
+                        <option value="Diseño UI/UX">Diseño UI/UX</option>
+                        <option value="Diseño Web">Diseño Web</option>
+                        <option value="Direción de Arte">Direción de Arte</option>
+                        <option value="Edición de Video">Edición de Video</option>
+                        <option value="Fotografía">Fotografía</option>
+                        <option value="Ilustración">Ilustración</option>
+                        <option value="Modelado 3D">Modelado 3D</option>
+                        <option value="Otro">Otro</option>
+                        </select>
+                </div>
+                <div class="form-group file-upload-group">
+                    <label for="proyect-image" class="file-upload-label"><i class="fas fa-cloud-upload-alt"></i>
+                        Imagen del Proyecto (PNG, JPG)</label>
+                    <input type="file" id="proyect-image" accept="image/*" required>
+                    <span id="file-name-display" class="file-status">Ningún archivo seleccionado</span>
+                    <img id="image-preview" src="#" alt="Previsualización de la imagen" style="display: none;">
+                </div>
+                <button type="submit" class="btn-submit"><i class="fas fa-upload"></i> Subir Proyecto</button>
+            </form>
+            <a href="index.html" class="btn-back-to-home"><i class="fas fa-arrow-left"></i> Volver a la Pagina Principal</a>
+        </div>
+    </main>
+
+    <script type="module" src="js/upload-project.js"></script>
+
+</body>
+
+</html>
