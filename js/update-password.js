@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const confirmPasswordInput = document.getElementById('confirm-password');
     const appMessageElement = document.getElementById('app-message');
 
-    // Ocultar el formulario al inicio para evitar que se vea antes de validar la sesión
+    // Ocultar el formulario al inicio
     updatePasswordForm.style.display = 'none';
 
     function showMessage(message, type = 'success') {
@@ -44,26 +44,16 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     });
 
-    // Escuchar cambios en la autenticación para detectar la sesión de recuperación
-    supabase.auth.onAuthStateChange((event, session) => {
-        if (event === 'PASSWORD_RECOVERY') {
-            console.log('Sesión de recuperación detectada.', session);
-            // Mostrar el formulario solo si la sesión es válida
-            if (session) {
-                updatePasswordForm.style.display = 'block';
-            } else {
-                showMessage('Sesión de recuperación inválida. Redirigiendo...', 'error');
-                setTimeout(() => window.location.href = 'signin.html', 3000);
-            }
-        } else if (event === 'SIGNED_IN' && session) {
-            // Manejar si el usuario ya está autenticado por otro medio
-            updatePasswordForm.style.display = 'block';
-        } else {
-            // Si no es un evento de recuperación, redirigir al inicio de sesión
-            showMessage('No hay sesión de recuperación válida. Redirigiendo...', 'error');
-            setTimeout(() => window.location.href = 'signin.html', 3000);
-        }
-    });
+    // Validar si existe una sesión de recuperación al cargar la página
+    const { data: { user } } = await supabase.auth.getUser();
+
+    if (user) {
+        updatePasswordForm.style.display = 'block';
+    } else {
+        showMessage('No se encontró una sesión de recuperación. Redirigiendo...', 'error');
+        setTimeout(() => window.location.href = 'signin.html', 3000);
+        return;
+    }
 
     updatePasswordForm.addEventListener('submit', async (e) => {
         e.preventDefault();
