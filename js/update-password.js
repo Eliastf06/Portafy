@@ -7,7 +7,7 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
 
 const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
     const updatePasswordForm = document.getElementById('updatePasswordForm');
     const newPasswordInput = document.getElementById('new-password');
     const confirmPasswordInput = document.getElementById('confirm-password');
@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
             appMessageElement.style.display = 'none';
         }, 5000);
     }
-    
+
     // Función para alternar la visibilidad de la contraseña
     document.querySelectorAll('.toggle-password').forEach(toggle => {
         toggle.addEventListener('click', () => {
@@ -40,6 +40,25 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     });
+
+    // CORRECCIÓN: Manejar la sesión desde la URL
+    const { data: { session }, error: sessionError } = await supabase.auth.getSessionFromUrl();
+
+    if (sessionError) {
+        console.error("Error al obtener la sesión de la URL:", sessionError);
+        showMessage("No se pudo obtener la sesión de recuperación. Por favor, intenta de nuevo.", "error");
+        setTimeout(() => window.location.href = 'signin.html', 3000);
+        return;
+    }
+
+    if (!session) {
+        showMessage("No se encontró ninguna sesión de recuperación. Redirigiendo...", "error");
+        setTimeout(() => window.location.href = 'signin.html', 3000);
+        return;
+    }
+
+    // Si la sesión es válida, se muestra el formulario
+    updatePasswordForm.style.display = 'block';
 
     updatePasswordForm.addEventListener('submit', async (e) => {
         e.preventDefault();
@@ -75,23 +94,6 @@ document.addEventListener('DOMContentLoaded', () => {
         } catch (err) {
             console.error("Ocurrió un error inesperado:", err);
             showMessage("Ocurrió un error inesperado al actualizar la contraseña.", "error");
-        }
-    });
-
-    // Escuchar cambios en el estado de autenticación para asegurar que la sesión esté cargada
-    supabase.auth.onAuthStateChange((event, session) => {
-        if (event === 'PASSWORD_RECOVERY' || event === 'SIGNED_IN' || event === 'USER_UPDATED') {
-            console.log('Sesión de recuperación o usuario autenticado.', session);
-            // Mostrar el formulario si la sesión es válida
-            if (session) {
-                updatePasswordForm.style.display = 'block';
-            }
-        } else {
-            console.log('No hay sesión de recuperación, redirigiendo...');
-            // Si no hay sesión válida, redirigir al inicio de sesión
-            setTimeout(() => {
-                window.location.href = 'signin.html';
-            }, 3000);
         }
     });
 });
