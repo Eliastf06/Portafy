@@ -189,3 +189,21 @@ button[type="submit"]:hover {
     outline: none;
     box-shadow: 0 0 0 3px var(--accent-color);
 }
+
+.btn-back-to-home {
+    display: inline-block;
+    margin-top: 25px;
+    color: var(--primary-blue); /* Usando variable */
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+.btn-back-to-home:hover {
+    color: var(--primary-blue); /* Usando variable */
+    text-decoration: underline;
+}
+
+.btn-back-to-home i {
+    margin-right: 5px;
+}

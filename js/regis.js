@@ -51,7 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
         showMessage('Registrando usuario...', 'black');
 
         try {
-            // Paso 1: Registrar el usuario y pasar todos los datos adicionales
+            // Registrar el usuario y pasar todos los datos adicionales
             const { data, error: authError } = await supabase.auth.signUp({
                 email: email,
                 password: password,

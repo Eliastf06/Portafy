@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <h3 class="project-title">${project.titulo}</h3>
                     <div class="project-author">
                         <span class="author-name">
-                            ${project.usuarios?.nom_usuario || 'Autor desconocido'}
+                            ${project.authorName || 'Autor desconocido'}
                         </span>
                     </div>
                 </div>
@@ -42,8 +42,8 @@ document.addEventListener('DOMContentLoaded', () => {
             
             // Redirigir al perfil del usuario al hacer clic en la tarjeta
             projectCard.addEventListener('click', () => {
-                if (project.usuarios?.nom_usuario) {
-                    window.location.href = `profile.html?username=${project.usuarios.nom_usuario}`;
+                if (project.authorName) {
+                    window.location.href = `profile.html?username=${project.authorName}`;
                 }
             });
         });
@@ -53,28 +53,53 @@ document.addEventListener('DOMContentLoaded', () => {
     const fetchAndRenderPublicProjects = async () => {
         projectsGrid.innerHTML = '<p>Cargando proyectos...</p>';
         try {
-            const { data, error } = await supabase
+            // Se realiza la consulta sin la unión para obtener los datos de proyectos y archivos
+            const { data: projectsData, error: projectsError } = await supabase
                 .from('proyectos')
                 .select(`
+                    id,
                     titulo,
                     privacidad,
-                    usuarios(nom_usuario),
                     archivos(url)
                 `)
                 .eq('privacidad', false);
             
-            if (error) {
-                console.error('Error al cargar los proyectos:', error);
-                projectsGrid.innerHTML = `<p>Ocurrió un error al cargar los proyectos: ${error.message}</p>`;
-                return;
+            if (projectsError) {
+                throw projectsError;
             }
 
-            const publicProjects = data.filter(project => !project.privacidad);
+            // Mapear los proyectos para obtener una lista de los IDs de usuario
+            const userIds = projectsData.map(p => p.id);
+            const uniqueUserIds = [...new Set(userIds)];
+
+            // Se realiza una segunda consulta para obtener los nombres de usuario
+            const { data: usersData, error: usersError } = await supabase
+                .from('usuarios')
+                .select(`
+                    id,
+                    nom_usuario
+                `)
+                .in('id', uniqueUserIds);
+            
+            if (usersError) {
+                throw usersError;
+            }
+
+            // Crear un mapa de IDs de usuario a nombres de usuario para un acceso rápido
+            const usersMap = new Map(usersData.map(user => [user.id, user.nom_usuario]));
+            
+            // Unir los datos de los proyectos y los nombres de usuario
+            const finalProjects = projectsData.map(project => ({
+                ...project,
+                authorName: usersMap.get(project.id)
+            }));
+            
+            const publicProjects = finalProjects.filter(project => !project.privacidad);
             renderProjects(publicProjects);
 
         } catch (error) {
             console.error('Error al cargar los proyectos:', error);
-            projectsGrid.innerHTML = '<p>Ocurrió un error inesperado. Por favor, inténtalo de nuevo.</p>';
+            projectsGrid.innerHTML = `<p>Ocurrió un error al cargar los proyectos: ${error.message}</p>`;
         }
     };
     

@@ -15,6 +15,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     const fotoPerfilInput = document.getElementById('foto-perfil-input');
     const nombrePerfilInput = document.getElementById('nombre-perfil');
+    const nombreUserInput = document.getElementById('nombre-user');
     const biografiaPerfilInput = document.getElementById('biografia-perfil');
     const redSocialInput = document.getElementById('red-social-perfil');
     const telefonoInput = document.getElementById('telefono-perfil');
@@ -26,7 +27,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const showMessage = (message, type = 'success') => {
         if (profileMessage) {
             profileMessage.textContent = message;
-            profileMessage.className = `profile-message-${type}`;
+            profileMessage.className = `profile-message ${type}`;
             profileMessage.style.display = 'block';
             setTimeout(() => {
                 profileMessage.style.display = 'none';
@@ -34,64 +35,59 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     };
 
-    // 1. Cargar los datos del perfil actual del usuario
     const loadProfileData = async () => {
-        const { data: { user } } = await supabase.auth.getUser();
+        try {
+            const { data: { user } } = await supabase.auth.getUser();
+            if (!user) {
+                showMessage('Debes iniciar sesión para editar tu perfil.', 'error');
+                window.location.href = 'signin.html';
+                return;
+            }
 
-        if (!user) {
-            showMessage('Debes iniciar sesión para editar tu perfil.', 'error');
-            // Redirige al usuario a la página de inicio de sesión
-            window.location.href = 'signin.html'; 
-            return;
-        }
+            // Cargar datos de la tabla 'usuarios'
+            const { data: userData, error: userError } = await supabase
+                .from('usuarios')
+                .select('nombre, nom_usuario, tipo_usuario')
+                .eq('id', user.id)
+                .maybeSingle();
 
-        // Cargar datos de la tabla 'usuarios'
-        const { data: userData, error: userError } = await supabase
-            .from('usuarios')
-            .select('nombre, nom_usuario, tipo_usuario')
-            .eq('id', user.id)
-            .maybeSingle();
+            if (userError) throw userError;
 
-        if (userError || !userData) {
-            console.error('Error al cargar datos de usuario:', userError);
-            showMessage('Error al cargar la información del usuario.', 'error');
-            return;
-        }
+            // Cargar datos de la tabla 'datos_perfil'
+            const { data: perfilData, error: perfilError } = await supabase
+                .from('datos_perfil')
+                .select('*')
+                .eq('id', user.id)
+                .maybeSingle();
 
-        // Cargar datos de la tabla 'datos_perfil'
-        const { data: perfilData, error: perfilError } = await supabase
-            .from('datos_perfil')
-            .select('*')
-            .eq('id', user.id)
-            .maybeSingle();
+            if (perfilError && perfilError.code !== 'PGRST116') throw perfilError;
 
-        if (perfilError) {
-            console.error('Error al cargar datos de perfil:', perfilError);
-            showMessage('Error al cargar la información del perfil.', 'error');
-            return;
-        }
-
-        // Rellenar los campos del formulario con los datos existentes
-        nombrePerfilInput.value = userData?.nombre || '';
-        biografiaPerfilInput.value = perfilData?.biografia || '';
-        redSocialInput.value = perfilData?.red_social || '';
-        telefonoInput.value = perfilData?.telefono || '';
-        direccionInput.value = perfilData?.direccion || '';
-        experienciaInput.value = perfilData?.experiencia || '';
-        userTypeInput.value = userData?.tipo_usuario || '';
-        
-        if (perfilData?.privacidad !== undefined) {
-            privacidadPerfilInput.value = perfilData.privacidad.toString();
-        }
-
-        const fotoPerfilUrl = perfilData?.foto_perfil;
-        if (fotoPerfilUrl && fotoPerfilPreview) {
-            fotoPerfilPreview.src = fotoPerfilUrl;
-            fotoPerfilPreview.style.display = 'block';
+            // Rellenar los campos del formulario
+            if (userData) {
+                if (nombrePerfilInput) nombrePerfilInput.value = userData.nombre || '';
+                if (nombreUserInput) nombreUserInput.value = userData.nom_usuario || '';
+                if (userTypeInput) userTypeInput.value = userData.tipo_usuario || '';
+            }
+            if (perfilData) {
+                if (biografiaPerfilInput) biografiaPerfilInput.value = perfilData.biografia || '';
+                if (redSocialInput) redSocialInput.value = perfilData.red_social || '';
+                if (telefonoInput) telefonoInput.value = perfilData.telefono || '';
+                if (direccionInput) direccionInput.value = perfilData.direccion || '';
+                if (experienciaInput) experienciaInput.value = perfilData.experiencia || '';
+                if (privacidadPerfilInput) privacidadPerfilInput.value = perfilData.privacidad ? 'true' : 'false';
+                
+                // Cargar la foto de perfil actual si existe
+                if (perfilData.foto_perfil && fotoPerfilPreview) {
+                    fotoPerfilPreview.src = perfilData.foto_perfil;
+                    fotoPerfilPreview.style.display = 'block';
+                }
+            }
+        } catch (error) {
+            console.error('Error al cargar datos del perfil:', error);
+            showMessage('Ocurrió un error al cargar tu perfil.', 'error');
         }
     };
 
-    // Event listener para la selección de la foto de perfil
     if (fotoPerfilInput && fotoPerfilPreview) {
         fotoPerfilInput.addEventListener('change', (event) => {
             const file = event.target.files[0];
@@ -106,83 +102,100 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     }
 
-    // 2. Manejar el envío del formulario
-    editProfileForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        showMessage('Guardando cambios...', 'black');
-        
-        const { data: { user } } = await supabase.auth.getUser();
-        if (!user) {
-            showMessage('Error: No estás autenticado.', 'error');
-            return;
-        }
+    if (editProfileForm) {
+        editProfileForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            showMessage('Guardando cambios...', 'black');
+            
+            try {
+                const { data: { user } } = await supabase.auth.getUser();
+                if (!user) {
+                    showMessage('Error: No estás autenticado.', 'error');
+                    return;
+                }
 
-        const fotoPerfilFile = fotoPerfilInput.files[0];
-        let fotoPerfilUrl = null;
+                const fotoPerfilFile = fotoPerfilInput.files[0];
+                let fotoPerfilUrl = null;
 
-        try {
-            if (fotoPerfilFile) {
-                const fileExtension = fotoPerfilFile.name.split('.').pop();
-                const filePath = `${user.id}.${fileExtension}`;
-                const { error: uploadError } = await supabase.storage
-                    .from('perfiles')
-                    .upload(filePath, fotoPerfilFile, { upsert: true });
+                if (fotoPerfilFile) {
+                    const fileExtension = fotoPerfilFile.name.split('.').pop();
+                    const filePath = `${user.id}.${fileExtension}`;
+                    
+                    const { error: uploadError } = await supabase.storage
+                        .from('perfiles')
+                        .upload(filePath, fotoPerfilFile, { upsert: true });
 
-                if (uploadError) throw uploadError;
+                    if (uploadError) {
+                        throw uploadError;
+                    }
+                    
+                    const { data: publicUrlData } = supabase.storage
+                        .from('perfiles')
+                        .getPublicUrl(filePath);
+                    
+                    fotoPerfilUrl = publicUrlData.publicUrl;
+                }
+                
+                const perfilDataToSave = {
+                    biografia: biografiaPerfilInput ? biografiaPerfilInput.value.trim() : null,
+                    red_social: redSocialInput ? redSocialInput.value.trim() : null,
+                    telefono: telefonoInput ? telefonoInput.value.trim() : null,
+                    direccion: direccionInput ? direccionInput.value.trim() : null,
+                    experiencia: experienciaInput ? experienciaInput.value.trim() : null,
+                    privacidad: privacidadPerfilInput ? privacidadPerfilInput.value === 'true' : false
+                };
+                
+                if (fotoPerfilUrl) {
+                    perfilDataToSave.foto_perfil = fotoPerfilUrl;
+                }
 
-                const { data: publicUrlData } = supabase.storage.from('perfiles').getPublicUrl(filePath);
-                fotoPerfilUrl = publicUrlData.publicUrl;
-            }
+                // Lógica de upsert (actualizar o insertar) con un enfoque más directo
+                const { data: existingProfile, error: selectError } = await supabase
+                    .from('datos_perfil')
+                    .select('id')
+                    .eq('id', user.id);
 
-            const updateData = {
-                id: user.id,
-                biografia: biografiaPerfilInput.value.trim(),
-                red_social: redSocialInput.value.trim(),
-                telefono: telefonoInput.value.trim(),
-                direccion: direccionInput.value.trim(),
-                experiencia: experienciaInput.value.trim(),
-                privacidad: privacidadPerfilInput.value === 'true',
-            };
+                if (selectError) throw selectError;
 
-            if (fotoPerfilUrl) {
-                updateData.foto_perfil = fotoPerfilUrl;
-            }
-
-            // Primero intentar actualizar, si no existe, insertar
-            const { error: perfilUpdateError } = await supabase
-                .from('datos_perfil')
-                .update(updateData)
-                .eq('id', user.id);
-
-            if (perfilUpdateError) {
-                // Si el error indica que no se encontró la fila, intenta insertar
-                if (perfilUpdateError.code === 'PGRST102') {
+                if (existingProfile && existingProfile.length > 0) {
+                    // Si el perfil ya existe, actualizamos
+                    const { error: updateError } = await supabase
+                        .from('datos_perfil')
+                        .update(perfilDataToSave)
+                        .eq('id', user.id);
+                    if (updateError) throw updateError;
+                } else {
+                    // Si no existe, insertamos una nueva fila
                     const { error: insertError } = await supabase
                         .from('datos_perfil')
-                        .insert([updateData]);
+                        .insert([{ ...perfilDataToSave, id: user.id }]);
                     if (insertError) throw insertError;
-                } else {
-                    throw perfilUpdateError;
                 }
+
+                // Actualizar el nombre y tipo de usuario en la tabla de usuarios
+                const userUpdateData = {
+                    nombre: nombrePerfilInput ? nombrePerfilInput.value.trim() : null,
+                    nom_usuario: nombreUserInput ? nombreUserInput.value.trim() : null, 
+                    tipo_usuario: userTypeInput ? userTypeInput.value.trim() : null
+                };
+
+                const { error: userUpdateError } = await supabase
+                    .from('usuarios')
+                    .update(userUpdateData)
+                    .eq('id', user.id);
+                
+                if (userUpdateError) {
+                    throw userUpdateError;
+                }
+
+                showMessage('Perfil actualizado exitosamente.', 'success');
+
+            } catch (error) {
+                console.error('Error al actualizar el perfil:', error);
+                showMessage('Ocurrió un error al guardar los cambios. Inténtalo de nuevo.', 'error');
             }
-
-            // Actualizar el nombre y tipo de usuario en la tabla de usuarios
-            const { error: userUpdateError } = await supabase
-                .from('usuarios')
-                .update({ 
-                    nombre: nombrePerfilInput.value.trim(),
-                    tipo_usuario: userTypeInput.value.trim()
-                })
-                .eq('id', user.id);
-            
-            if (userUpdateError) throw userUpdateError;
-
-            showMessage('Perfil actualizado exitosamente.', 'success');
-        } catch (error) {
-            console.error('Error al actualizar el perfil:', error);
-            showMessage('Ocurrió un error al guardar los cambios. Inténtalo de nuevo.', 'error');
-        }
-    });
+        });
+    }
 
     loadProfileData();
 });

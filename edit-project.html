@@ -26,7 +26,7 @@
                 <div class="form-group file-upload-group">
                     <label for="proyect-image" class="file-upload-label"><i class="fas fa-cloud-upload-alt"></i>
                         Imagen del Proyecto (PNG, JPG)</label>
-                    <input type="file" id="proyect-image" accept="image/*" required>
+                    <input type="file" id="proyect-image" accept="image/*">
                     <span id="file-name-display" class="file-status">Ningún archivo seleccionado</span>
                     <img id="image-preview" src="#" alt="Previsualización de la imagen" style="display: none;">
                 </div>
@@ -77,13 +77,12 @@
                         <option value="true">Privado</option>
                     </select>
                 </div>
-                <button type="submit" class="btn-submit"><i class="fas fa-upload"></i>Guardar Cambios</button>
+                <button type="submit" class="btn-submit"><i class="fas fa-save"></i>Guardar Cambios</button>
             </form>
+            <button id="delete-project-btn" class="btn-delete"><i class="fas fa-trash"></i>Eliminar Proyecto</button>
             <a href="profile.html" class="btn-back-to-home"><i class="fas fa-arrow-left"></i> Volver al Perfil</a>
         </div>
-
-    <script type="module" src="js/upload-project.js"></script>
-
+        <script type="module" src="js/edit-project.js"></script>
 </body>
 
 </html>

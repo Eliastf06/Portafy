@@ -1,3 +1,5 @@
+// js/signin.js
+
 // Importa createClient directamente desde el CDN como un módulo
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
 
@@ -70,31 +72,12 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    forgotPasswordLink.addEventListener('click', async (e) => {
+    // CORRECCIÓN: el enlace ahora redirige a una página de recuperación
+    forgotPasswordLink.addEventListener('click', (e) => {
         e.preventDefault();
-        const email = prompt("Por favor, ingresa tu email para restablecer la contraseña:");
-        if (!email) {
-            showMessage("Restablecimiento de contraseña cancelado.", "error");
-            return;
-        }
-
-        showMessage("Enviando enlace de restablecimiento...", "black");
-        try {
-            const { error } = await supabase.auth.resetPasswordForEmail(email, {
-                redirectTo: window.location.origin + '/update-password.html'
-            });
-            if (error) {
-                console.error("Error al enviar restablecimiento:", error);
-                showMessage(`Error al enviar restablecimiento: ${error.message}`, "error");
-            } else {
-                showMessage("Se ha enviado un enlace para restablecer tu contraseña a tu email. Revisa tu bandeja de entrada y la carpeta de spam.", "success");
-            }
-        } catch (err) {
-            console.error("Error inesperado al restablecer:", err);
-            showMessage("Ocurrió un error inesperado al restablecer la contraseña.", "error");
-        }
+        window.location.href = 'recover-password.html';
     });
-
+    
     (async () => {
         try {
             const { data: { user } } = await supabase.auth.getUser();
@@ -106,7 +89,4 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error("Error al obtener el estado de autenticación:", error);
         }
     })();
-
-    
-
 });

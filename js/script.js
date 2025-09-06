@@ -56,6 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // Si no hay un usuario logueado
             // Mostrar el botón de "Iniciar Sesión"
             if (loginNav) loginNav.style.display = 'flex';
+            if (loginSideMenu) loginSideMenu.style.display = 'flex';
 
             // Ocultar el botón de "Subir" en la barra de navegación
             if (uploadNav) uploadNav.style.display = 'none';

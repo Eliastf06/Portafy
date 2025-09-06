@@ -34,27 +34,24 @@ document.addEventListener('DOMContentLoaded', async () => {
     let usernameToLoad;
     let isOwnProfile = false;
 
-    // Obtener el usuario autenticado
     const { data: { user } } = await supabase.auth.getUser();
 
     try {
         let userData;
         if (usernameFromUrl) {
-            // Caso 1: Se está visualizando otro perfil
             const { data: fetchedUserData, error: userError } = await supabase
                 .from('usuarios')
                 .select('id, nombre, nom_usuario, tipo_usuario')
-                .eq('nom_usuario', usernameFromUrl)
-                .maybeSingle(); 
-
-            if (userError || !fetchedUserData) {
+                .eq('nom_usuario', usernameFromUrl);
+            
+            if (userError || !fetchedUserData || fetchedUserData.length === 0) {
                 showMessage('Usuario no encontrado o error en la carga.', 'error');
                 return;
             }
-            userData = fetchedUserData;
+            // Tomar el primer resultado para evitar el error de múltiples filas
+            userData = fetchedUserData[0]; 
 
         } else {
-            // Caso 2: El usuario visita su propio perfil a través de un enlace estático
             if (!user) {
                 showMessage('Por favor, inicia sesión para ver tu perfil.', 'error');
                 if (editProfileBtn) editProfileBtn.style.display = 'none';
@@ -90,13 +87,11 @@ document.addEventListener('DOMContentLoaded', async () => {
             return;
         }
 
-        // 1. Rellenar los campos del perfil con los datos correctos
         if (profilePhoto) profilePhoto.src = perfilData?.foto_perfil || 'multimedia/default-profile.png';
         if (profileName) profileName.textContent = userData?.nombre || 'Nombre no disponible';
         if (profileOccupation) profileOccupation.textContent = userData?.tipo_usuario || 'Sin ocupación';
         if (profileDescription) profileDescription.textContent = perfilData?.biografia || 'Sin biografía.';
 
-        // 2. Rellenar los links de redes sociales
         if (profileSocials) {
             if (perfilData?.red_social || perfilData?.telefono || perfilData?.direccion) {
                 profileSocials.innerHTML = `
@@ -108,11 +103,12 @@ document.addEventListener('DOMContentLoaded', async () => {
                 profileSocials.innerHTML = '';
             }
         }
-
-        // 3. Cargar y mostrar los proyectos del usuario
+        
+        // CORRECCIÓN: Se añade id_proyectos a la consulta de proyectos
         const { data: projectsData, error: projectsError } = await supabase
             .from('proyectos')
             .select(`
+                id_proyectos,
                 titulo,
                 privacidad,
                 archivos(url)
@@ -143,6 +139,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     </div>
                     <div class="project-content">
                         <h3 class="project-title">${project.titulo}</h3>
+                        ${isOwnProfile ? `<div class="project-actions"><a href="edit-project.html?id=${project.id_proyectos}" class="edit-project-btn"><i class="fas fa-edit"></i></a></div>` : ''}
                     </div>
                 `;
                 projectsGrid.appendChild(projectCard);
@@ -150,7 +147,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         };
         renderProjects(projectsData);
         
-        // 4. Manejar la visibilidad del botón de edición
         if (editProfileBtn) {
              if (isOwnProfile) {
                 editProfileBtn.style.display = 'block';

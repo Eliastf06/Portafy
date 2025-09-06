@@ -29,7 +29,7 @@
     --shadow-secondary: var(--clr-light-shadow-secondary);
     
     /* Variables adicionales para el efecto de neón */
-    --neon-yellow: #fff01e;
+    --neon-yellow: #fff01e9a;
     --neon-blue: #00e0ff;
     --glow-effect: 0 0 5px var(--neon-yellow), 0 0 10px var(--neon-yellow), 0 0 20px var(--neon-yellow);
     --glow-effect-secondary: 0 0 5px var(--neon-blue), 0 0 10px var(--neon-blue), 0 0 20px var(--neon-blue);
