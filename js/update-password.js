@@ -13,6 +13,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     const confirmPasswordInput = document.getElementById('confirm-password');
     const appMessageElement = document.getElementById('app-message');
 
+    // Ocultar el formulario al inicio para evitar que se vea antes de validar la sesión
+    updatePasswordForm.style.display = 'none';
+
     function showMessage(message, type = 'success') {
         appMessageElement.textContent = message;
         appMessageElement.style.color = type === 'success' ? 'green' : (type === 'error' ? 'red' : 'black');
@@ -41,24 +44,26 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     });
 
-    // CORRECCIÓN: Manejar la sesión desde la URL
-    const { data: { session }, error: sessionError } = await supabase.auth.getSessionFromUrl();
-
-    if (sessionError) {
-        console.error("Error al obtener la sesión de la URL:", sessionError);
-        showMessage("No se pudo obtener la sesión de recuperación. Por favor, intenta de nuevo.", "error");
-        setTimeout(() => window.location.href = 'signin.html', 3000);
-        return;
-    }
-
-    if (!session) {
-        showMessage("No se encontró ninguna sesión de recuperación. Redirigiendo...", "error");
-        setTimeout(() => window.location.href = 'signin.html', 3000);
-        return;
-    }
-
-    // Si la sesión es válida, se muestra el formulario
-    updatePasswordForm.style.display = 'block';
+    // Escuchar cambios en la autenticación para detectar la sesión de recuperación
+    supabase.auth.onAuthStateChange((event, session) => {
+        if (event === 'PASSWORD_RECOVERY') {
+            console.log('Sesión de recuperación detectada.', session);
+            // Mostrar el formulario solo si la sesión es válida
+            if (session) {
+                updatePasswordForm.style.display = 'block';
+            } else {
+                showMessage('Sesión de recuperación inválida. Redirigiendo...', 'error');
+                setTimeout(() => window.location.href = 'signin.html', 3000);
+            }
+        } else if (event === 'SIGNED_IN' && session) {
+            // Manejar si el usuario ya está autenticado por otro medio
+            updatePasswordForm.style.display = 'block';
+        } else {
+            // Si no es un evento de recuperación, redirigir al inicio de sesión
+            showMessage('No hay sesión de recuperación válida. Redirigiendo...', 'error');
+            setTimeout(() => window.location.href = 'signin.html', 3000);
+        }
+    });
 
     updatePasswordForm.addEventListener('submit', async (e) => {
         e.preventDefault();
