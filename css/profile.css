@@ -1276,3 +1276,12 @@ body.dark-mode .project-card .project-author {
     transition: 0.3s;
     color: #ffeb3b;
 }
+
+.red-social-icon{
+    font-size: 25px;
+}
+
+.red-social-icon:hover{
+    color: #ffeb3b;
+    transition: 0.4s;
+}
