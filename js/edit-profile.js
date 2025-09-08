@@ -1,6 +1,7 @@
 // js/edit-profile.js
 
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
+import { validateProfile } from './edit-profile-valid.js';
 
 // Asegúrate de que estas credenciales sean las correctas de tu proyecto
 const SUPABASE_URL = 'https://fikdyystxmsmwioyyegt.supabase.co';
@@ -105,6 +106,23 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (editProfileForm) {
         editProfileForm.addEventListener('submit', async (e) => {
             e.preventDefault();
+            
+            const username = nombreUserInput.value;
+            const fullName = nombrePerfilInput.value;
+            const biography = biografiaPerfilInput.value;
+            const socialUrl = redSocialInput.value;
+            const phone = telefonoInput.value;
+            const address = direccionInput.value;
+            const experience = experienciaInput.value;
+            const fotoPerfilFile = fotoPerfilInput.files[0];
+            
+            // VALIDACIÓN DE CAMPOS con la nueva función
+            const validationError = validateProfile(username, fullName, biography, socialUrl, phone, address, experience, fotoPerfilFile);
+            if (validationError) {
+                showMessage(validationError, 'error');
+                return;
+            }
+
             showMessage('Guardando cambios...', 'black');
             
             try {
@@ -114,7 +132,6 @@ document.addEventListener('DOMContentLoaded', async () => {
                     return;
                 }
 
-                const fotoPerfilFile = fotoPerfilInput.files[0];
                 let fotoPerfilUrl = null;
 
                 if (fotoPerfilFile) {

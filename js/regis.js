@@ -1,5 +1,8 @@
+// js/regis.js
+
 // Importa createClient directamente desde el CDN como un módulo
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
+import { validateRegistration } from './regis-valid.js';
 
 // Credenciales de Supabase
 const SUPABASE_URL = 'https://fikdyystxmsmwioyyegt.supabase.co';
@@ -32,19 +35,24 @@ document.addEventListener('DOMContentLoaded', () => {
     registerForm.addEventListener('submit', async (e) => {
         e.preventDefault();
 
-        const username = usernameInput.value.trim();
-        const registerName = registerNameInput.value.trim();
+        // Elimina el .trim() de la validación inicial
+        const username = usernameInput.value;
+        const registerName = registerNameInput.value;
         const email = emailInput.value.trim();
         const password = passwordInput.value.trim();
         const confirmPassword = confirmPasswordInput.value.trim();
         const userType = registerTypeInput.value.trim();
 
-        if (password !== confirmPassword) {
-            showMessage('Las contraseñas no coinciden.', 'error');
+        // VALIDACIÓN DE CAMPOS con la nueva función
+        const validationError = validateRegistration(username, registerName, email, password, confirmPassword);
+        if (validationError) {
+            showMessage(validationError, 'error');
             return;
         }
-        if (!username || !registerName || !email || !password || !userType) {
-            showMessage('Por favor, completa todos los campos.', 'error');
+        
+        // Si no hay un tipo de usuario seleccionado
+        if (!userType) {
+            showMessage('Por favor, selecciona tu tipo de proyecto.', 'error');
             return;
         }
 

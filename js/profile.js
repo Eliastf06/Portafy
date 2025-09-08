@@ -26,6 +26,38 @@ document.addEventListener('DOMContentLoaded', async () => {
             profileMessage.style.display = 'block';
         }
     };
+    
+    // Función para determinar la clase del icono de la red social
+    const getSocialIconClass = (url) => {
+        const urlLower = url.toLowerCase();
+        if (urlLower.includes('github.com')) {
+            return 'fab fa-github';
+        } else if (urlLower.includes('linkedin.com')) {
+            return 'fab fa-linkedin';
+        } else if (urlLower.includes('twitter.com') || urlLower.includes('x.com')) {
+            return 'fab fa-x';
+        } else if (urlLower.includes('instagram.com')) {
+            return 'fab fa-instagram';
+        } else if (urlLower.includes('facebook.com')) {
+            return 'fab fa-facebook';
+        } else if (urlLower.includes('tiktok.com')) {
+            return 'fab fa-tiktok';
+        } else if (urlLower.includes('twitch.tv')) {
+            return 'fab fa-twitch';
+        } else if (urlLower.includes('youtube.com')) {
+            return 'fab fa-youtube';
+        } else if (urlLower.includes('discord.gg') || urlLower.includes('discord.com')) {
+            return 'fab fa-discord';
+        } else if (urlLower.includes('t.me') || urlLower.includes('telegram.org')) {
+            return 'fab fa-telegram-plane';
+        } else if (urlLower.includes('reddit.com')) {
+            return 'fab fa-reddit';
+        } else if (urlLower.includes('snapchat.com')) {
+            return 'fab fa-snapchat-ghost';
+        } else {
+            return 'fas fa-link';
+        }
+    };
 
     const urlParams = new URLSearchParams(window.location.search);
     const usernameFromUrl = urlParams.get('username');
@@ -94,8 +126,10 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         if (profileSocials) {
             if (perfilData?.red_social || perfilData?.telefono || perfilData?.direccion) {
+                // Se utiliza la nueva función para obtener el icono
+                const socialIconClass = perfilData.red_social ? getSocialIconClass(perfilData.red_social) : 'fas fa-link';
                 profileSocials.innerHTML = `
-                    ${perfilData.red_social ? `<p><i class="fas fa-link"></i> <a href="${perfilData.red_social}" target="_blank">${perfilData.red_social}</a></p>` : ''}
+                    ${perfilData.red_social ? `<p><a href="${perfilData.red_social}" target="_blank"><i class="${socialIconClass} red-social-icon"></i></a></p>` : ''}
                     ${perfilData.telefono ? `<p><i class="fas fa-phone"></i> ${perfilData.telefono}</p>` : ''}
                     ${perfilData.direccion ? `<p><i class="fas fa-map-marker-alt"></i> ${perfilData.direccion}</p>` : ''}
                 `;

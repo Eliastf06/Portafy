@@ -7,6 +7,9 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
 
 const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
+// Caracteres prohibidos para la contraseña
+const PROHIBITED_CHARS_PASSWORD = /['":;,<>/\(\)@\{\}\[\]`´¬\|°\\?¿¡=!*~^%¨]/;
+
 document.addEventListener('DOMContentLoaded', async () => {
     const updatePasswordForm = document.getElementById('updatePasswordForm');
     const newPasswordInput = document.getElementById('new-password');
@@ -46,7 +49,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Validar si existe una sesión de recuperación al cargar la página
     const { data: { user } } = await supabase.auth.getUser();
-
     if (user) {
         updatePasswordForm.style.display = 'block';
     } else {
@@ -58,8 +60,20 @@ document.addEventListener('DOMContentLoaded', async () => {
     updatePasswordForm.addEventListener('submit', async (e) => {
         e.preventDefault();
 
-        const newPassword = newPasswordInput.value.trim();
-        const confirmPassword = confirmPasswordInput.value.trim();
+        const newPassword = newPasswordInput.value;
+        const confirmPassword = confirmPasswordInput.value;
+
+        // Validar que la contraseña no contenga espacios
+        if (newPassword.includes(' ')) {
+            showMessage('La contraseña no puede contener espacios.', 'error');
+            return;
+        }
+
+        // Validar que la contraseña no contenga caracteres prohibidos
+        if (PROHIBITED_CHARS_PASSWORD.test(newPassword)) {
+            showMessage('La contraseña contiene caracteres no permitidos.', 'error');
+            return;
+        }
 
         if (newPassword !== confirmPassword) {
             showMessage('Las contraseñas no coinciden.', 'error');

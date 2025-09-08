@@ -1,6 +1,7 @@
 // js/edit-project.js
 
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
+import { validateEditProjectForm } from './edit-project-valid.js';
 
 const SUPABASE_URL = 'https://fikdyystxmsmwioyyegt.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZpa2R5eXN0eG1zbXdpb3l5ZWd0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTY3NjgxODksImV4cCI6MjA3MjM0NDE4OX0.QAfKSJfUbwT5NhGRiNHoA83JzW7BXT9u15d5oaeAlro';
@@ -42,6 +43,30 @@ document.addEventListener('DOMContentLoaded', async () => {
         messageContainer.style.marginTop = '10px';
         editProjectForm.parentNode.insertBefore(messageContainer, editProjectForm.nextSibling);
         setTimeout(() => messageContainer.remove(), 5000);
+    };
+
+    // Función para mostrar errores de validación (CORREGIDA)
+    const showValidationErrors = (errors) => {
+        const existingErrors = document.querySelectorAll('.validation-error');
+        existingErrors.forEach(el => el.remove());
+
+        for (const key in errors) {
+            // Se corrige la forma de construir el ID para que coincida con el HTML
+            const inputId = key === 'startDate' ? 'edit-project-start-date' :
+                            key === 'endDate' ? 'edit-project-end-date' :
+                            `edit-project-${key}`;
+            const inputElement = document.getElementById(inputId);
+            
+            if (inputElement) {
+                const errorElement = document.createElement('p');
+                errorElement.classList.add('validation-error');
+                errorElement.textContent = `Error: ${errors[key]}`;
+                errorElement.style.color = 'red';
+                errorElement.style.marginTop = '5px';
+                errorElement.style.fontSize = '0.9em';
+                inputElement.parentNode.insertBefore(errorElement, inputElement.nextSibling);
+            }
+        }
     };
 
     // Cargar los datos del proyecto
@@ -121,19 +146,37 @@ document.addEventListener('DOMContentLoaded', async () => {
     editProjectForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         
-        showMessage('Guardando cambios...');
-        
-        const title = document.getElementById('edit-project-title').value.trim();
-        const description = document.getElementById('edit-project-description').value.trim();
+        // Recoger los datos del formulario para la validación
+        const title = document.getElementById('edit-project-title').value;
+        const description = document.getElementById('edit-project-description').value;
         const category = document.getElementById('proyect-category').value;
-        const startDate = document.getElementById('edit-project-start-date').value || null;
-        const endDate = document.getElementById('edit-project-end-date').value || null;
-        const client = document.getElementById('edit-project-client').value.trim() || null;
-        const links = document.getElementById('edit-project-links').value.trim() || null;
+        const startDate = document.getElementById('edit-project-start-date').value;
+        const endDate = document.getElementById('edit-project-end-date').value;
+        const client = document.getElementById('edit-project-client').value;
+        const links = document.getElementById('edit-project-links').value;
         const privacy = document.getElementById('edit-project-privacy').value === 'true';
+        const imageFile = proyectImageInput.files[0];
+
+        // Validar los datos
+        const validationResult = validateEditProjectForm({
+            title,
+            description,
+            imageFile,
+            startDate,
+            endDate,
+            client,
+            links
+        });
+
+        if (!validationResult.isValid) {
+            showValidationErrors(validationResult.errors);
+            return; // Detener el proceso si la validación falla
+        }
+
+        // Si la validación es exitosa, proceder
+        showMessage('Guardando cambios...');
 
         let newImageUrl = null;
-        const imageFile = proyectImageInput.files[0];
 
         try {
             // Si el usuario subió una nueva imagen
@@ -143,7 +186,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     .from('proyectos_imagenes')
                     .upload(`${projectId}/${imageFile.name}`, imageFile, {
                         cacheControl: '3600',
-                        upsert: true // CORRECCIÓN: Se cambió a true para sobrescribir
+                        upsert: true
                     });
                 
                 if (uploadError) throw uploadError;

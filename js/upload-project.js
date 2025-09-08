@@ -1,6 +1,7 @@
 // js/upload-project.js
 
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
+import { validateProjectUpload } from './upload-valid.js';
 
 // Asegúrate de que estas credenciales sean las correctas de tu proyecto
 const SUPABASE_URL = 'https://fikdyystxmsmwioyyegt.supabase.co';
@@ -58,9 +59,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     addProyectForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         
-        const title = titleInput.value.trim();
-        const description = descriptionInput.value.trim();
-        const category = categoryInput.value.trim();
+        const title = titleInput.value;
+        const description = descriptionInput.value;
+        const category = categoryInput.value;
         const imageFile = proyectImageInput.files[0];
 
         // Recopilar valores de campos opcionales
@@ -76,8 +77,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         const referenceLinks = referenceLinksInput ? referenceLinksInput.value.trim() : null;
         const privacy = privacyInput ? privacyInput.checked : false;
 
-        if (!imageFile) {
-            showMessage('Por favor, selecciona una imagen para tu proyecto.', 'error');
+        // VALIDACIÓN DE CAMPOS con la nueva función
+        const validationError = validateProjectUpload(title, description, imageFile);
+        if (validationError) {
+            showMessage(validationError, 'error');
             return;
         }
 
@@ -90,9 +93,9 @@ document.addEventListener('DOMContentLoaded', async () => {
                 .from('proyectos')
                 .insert([
                     {
-                        titulo: title,
-                        descripcion: description,
-                        categoria: category,
+                        titulo: title.trim(),
+                        descripcion: description.trim(),
+                        categoria: category.trim(),
                         fecha_publi: new Date().toISOString(),
                         fecha_inicio: startDate,
                         fecha_finalizacion: endDate,
