@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         setTimeout(() => {
             appMessageElement.style.display = 'none';
         }, 5000);
-    }
+    } 
 
     // Función para alternar la visibilidad de la contraseña
     document.querySelectorAll('.toggle-password').forEach(toggle => {

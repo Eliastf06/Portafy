@@ -29,8 +29,8 @@ export const validateEditProjectForm = (formData) => {
 
     // Validación de la descripción
     const trimmedDescription = description.trim();
-    if (trimmedDescription.length > 0 && !/^[a-zA-Z0-9=,.:°]+(?:[ ][a-zA-Z0-9=,.:°]+)*$/.test(trimmedDescription)) {
-        errors.description = "La descripción solo puede contener letras, números y los símbolos =, . : °. No debe tener espacios al principio o final, ni más de un espacio entre palabras.";
+    if (trimmedDescription.length > 0 && !/^[a-zA-Z0-9=,.:°"]+(?:[ ][a-zA-Z0-9=,.:°"]+)*$/.test(trimmedDescription)) {
+        errors.description = "La descripción solo puede contener letras, números y los símbolos =, . : ° . No debe tener espacios al principio o final, ni más de un espacio entre palabras.";
     } else if (trimmedDescription.length === 0) {
         errors.description = "La descripción no puede estar vacía.";
     }

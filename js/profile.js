@@ -27,7 +27,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     };
     
-    // Función para determinar la clase del icono de la red social
     const getSocialIconClass = (url) => {
         const urlLower = url.toLowerCase();
         if (urlLower.includes('github.com')) {
@@ -35,7 +34,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         } else if (urlLower.includes('linkedin.com')) {
             return 'fab fa-linkedin';
         } else if (urlLower.includes('twitter.com') || urlLower.includes('x.com')) {
-            return 'fab fa-x';
+            return 'fab fa-twitter';
         } else if (urlLower.includes('instagram.com')) {
             return 'fab fa-instagram';
         } else if (urlLower.includes('facebook.com')) {
@@ -59,6 +58,62 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     };
 
+    const showProjectModal = (project, authorName) => {
+        const imageUrl = project.archivos && project.archivos.length > 0 ? project.archivos[0].url : 'https://placehold.co/600x400/000000/white?text=No+Image';
+
+        const modalHtml = `
+            <div class="modal-overlay">
+                <div class="modal-content">
+                    <button class="modal-close-btn">&times;</button>
+                    <img src="${imageUrl}" alt="${project.titulo}" class="modal-image">
+                    <div class="modal-details">
+                        <h2>${project.titulo}</h2>
+                        <p><strong>Autor:</strong> ${authorName}</p>
+                        <p><strong>Descripción:</strong> ${project.descripcion || 'No disponible'}</p>
+                        <p><strong>Fecha de inicio:</strong> ${project.fecha_inicio || 'No disponible'}</p>
+                        <p><strong>Fecha de finalización:</strong> ${project.fecha_finalizacion || 'No disponible'}</p>
+                        <p><strong>Para quién se hizo:</strong> ${project.para_quien_se_hizo || 'No disponible'}</p>
+                        ${project.enlaces_referencia ? `
+                        <p><strong>Enlace de referencia:</strong>
+                            <a href="${project.enlaces_referencia}" target="_blank" class="referencia">${project.enlaces_referencia}</a>
+                        </p>` : ''}
+                    </div>
+                </div>
+            </div>
+        `;
+
+        const modalContainer = document.createElement('div');
+        modalContainer.innerHTML = modalHtml;
+        document.body.appendChild(modalContainer);
+
+        const modalOverlay = modalContainer.querySelector('.modal-overlay');
+        const modalContent = modalContainer.querySelector('.modal-content');
+        const modalCloseBtn = modalContainer.querySelector('.modal-close-btn');
+
+        // Agregar las clases para la transición de aparición
+        setTimeout(() => {
+            modalOverlay.classList.add('active');
+            modalContent.classList.add('active');
+        }, 10);
+
+        const closeModal = () => {
+            modalOverlay.classList.remove('active');
+            modalContent.classList.remove('active');
+            // Eliminar el modal del DOM después de la transición
+            setTimeout(() => {
+                modalContainer.remove();
+            }, 300); // El tiempo debe coincidir con la transición en CSS
+        };
+
+        modalCloseBtn.addEventListener('click', closeModal);
+        modalOverlay.addEventListener('click', (e) => {
+            if (e.target === modalOverlay) {
+                closeModal();
+            }
+        });
+    };
+
+
     const urlParams = new URLSearchParams(window.location.search);
     const usernameFromUrl = urlParams.get('username');
     
@@ -80,7 +135,6 @@ document.addEventListener('DOMContentLoaded', async () => {
                 showMessage('Usuario no encontrado o error en la carga.', 'error');
                 return;
             }
-            // Tomar el primer resultado para evitar el error de múltiples filas
             userData = fetchedUserData[0]; 
 
         } else {
@@ -126,7 +180,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         if (profileSocials) {
             if (perfilData?.red_social || perfilData?.telefono || perfilData?.direccion) {
-                // Se utiliza la nueva función para obtener el icono
                 const socialIconClass = perfilData.red_social ? getSocialIconClass(perfilData.red_social) : 'fas fa-link';
                 profileSocials.innerHTML = `
                     ${perfilData.red_social ? `<p><a href="${perfilData.red_social}" target="_blank"><i class="${socialIconClass} red-social-icon"></i></a></p>` : ''}
@@ -138,12 +191,16 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
         }
         
-        // CORRECCIÓN: Se añade id_proyectos a la consulta de proyectos
         const { data: projectsData, error: projectsError } = await supabase
             .from('proyectos')
             .select(`
                 id_proyectos,
                 titulo,
+                descripcion,
+                fecha_inicio,
+                fecha_finalizacion,
+                para_quien_se_hizo,
+                enlaces_referencia,
                 privacidad,
                 archivos(url)
             `)
@@ -155,7 +212,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             showMessage('Error al cargar los proyectos de este usuario.', 'error');
             return;
         }
-
+        
         const renderProjects = (projects) => {
             if (!projectsGrid) return;
             projectsGrid.innerHTML = '';
@@ -177,6 +234,15 @@ document.addEventListener('DOMContentLoaded', async () => {
                     </div>
                 `;
                 projectsGrid.appendChild(projectCard);
+
+                // Agregar el evento de clic a cada tarjeta de proyecto
+                projectCard.addEventListener('click', (e) => {
+                    // Prevenir la apertura del modal si se hace clic en el botón de edición
+                    if (e.target.closest('.edit-project-btn')) {
+                        return;
+                    }
+                    showProjectModal(project, userData?.nombre || 'Desconocido');
+                });
             });
         };
         renderProjects(projectsData);
