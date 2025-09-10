@@ -49,86 +49,92 @@ document.addEventListener('DOMContentLoaded', () => {
         projectsGrid.innerHTML = '<p>Buscando proyectos...</p>';
 
         try {
-            let combinedResults = [];
-            const processedProjectIds = new Set();
-            const userNamesMap = new Map();
+            const allProjects = new Map();
 
-            //Búsqueda de proyectos por título
-            const { data: projectsByTitle, error: projectsError } = await supabase
+            // Buscar proyectos por título (solo proyectos públicos)
+            const { data: projectsByTitle, error: projectsTitleError } = await supabase
                 .from('proyectos')
                 .select(`
-                    id_proyectos:id,
+                    id_proyectos,
                     titulo,
-                    privacidad,
                     id_usuario:id,
                     archivos(url)
                 `)
                 .eq('privacidad', false)
                 .ilike('titulo', `%${query}%`);
             
-            if (projectsError) throw projectsError;
+            if (projectsTitleError) throw projectsTitleError;
             
-            // Recolectar IDs de usuario de los proyectos encontrados
-            const userIds = projectsByTitle.map(p => p.id_usuario);
-            const uniqueUserIds = [...new Set(userIds)];
-            
-            // Obtener nombres de usuario de los proyectos encontrados
-            const { data: usersData, error: usersError } = await supabase
-                .from('usuarios')
-                .select('id, nom_usuario')
-                .in('id', uniqueUserIds);
-
-            if (usersError) throw usersError;
-            usersData.forEach(user => userNamesMap.set(user.id, user.nom_usuario));
-
-            // Agregar proyectos encontrados por título a la lista de resultados
             projectsByTitle.forEach(project => {
-                if (!processedProjectIds.has(project.id_proyectos)) {
-                    combinedResults.push({
-                        titulo: project.titulo,
-                        authorName: userNamesMap.get(project.id_usuario),
-                        imageUrl: project.archivos.length > 0 ? project.archivos[0].url : 'https://placehold.co/600x400/000000/white?text=No+Image'
-                    });
-                    processedProjectIds.add(project.id_proyectos);
-                }
+                allProjects.set(project.id_proyectos, {
+                    id: project.id_proyectos,
+                    titulo: project.titulo,
+                    id_usuario: project.id_usuario,
+                    imageUrl: project.archivos[0]?.url || 'https://placehold.co/600x400/000000/white?text=No+Image'
+                });
             });
 
-            //Búsqueda de usuarios por nombre
+            // Buscar usuarios por nombre de usuario
             const { data: usersFound, error: userSearchError } = await supabase
                 .from('usuarios')
                 .select('id, nom_usuario')
                 .ilike('nom_usuario', `%${query}%`);
             
             if (userSearchError) throw userSearchError;
+            
+            const userIdsFound = usersFound.map(user => user.id);
+            const userNamesMap = new Map(usersFound.map(user => [user.id, user.nom_usuario]));
 
-            // Para cada usuario encontrado, buscar sus proyectos públicos
-            for (const user of usersFound) {
-                const { data: userProjects, error: projectsByAuthorError } = await supabase
+            // Buscar proyectos públicos de los usuarios encontrados
+            if (userIdsFound.length > 0) {
+                const { data: projectsByAuthor, error: projectsAuthorError } = await supabase
                     .from('proyectos')
                     .select(`
-                        id_proyectos:id,
+                        id_proyectos,
                         titulo,
-                        privacidad,
+                        id_usuario:id,
                         archivos(url)
                     `)
                     .eq('privacidad', false)
-                    .eq('id', user.id);
-                
-                if (projectsByAuthorError) throw projectsByAuthorError;
-                
-                userProjects.forEach(project => {
-                    if (!processedProjectIds.has(project.id_proyectos)) {
-                        combinedResults.push({
+                    .in('id', userIdsFound);
+
+                if (projectsAuthorError) throw projectsAuthorError;
+
+                projectsByAuthor.forEach(project => {
+                    if (!allProjects.has(project.id_proyectos)) {
+                        allProjects.set(project.id_proyectos, {
+                            id: project.id_proyectos,
                             titulo: project.titulo,
-                            authorName: user.nom_usuario,
-                            imageUrl: project.archivos.length > 0 ? project.archivos[0].url : 'https://placehold.co/600x400/000000/white?text=No+Image'
+                            id_usuario: project.id_usuario,
+                            imageUrl: project.archivos[0]?.url || 'https://placehold.co/600x400/000000/white?text=No+Image'
                         });
-                        processedProjectIds.add(project.id_proyectos);
                     }
                 });
             }
 
-            renderProjects(combinedResults);
+            // Obtener una lista única de todos los IDs de usuario de los proyectos encontrados
+            const allUserIds = new Set(Array.from(allProjects.values()).map(p => p.id_usuario));
+            const uniqueAllUserIds = Array.from(allUserIds);
+
+            // Obtener los nombres de usuario para todos los IDs
+            const { data: allUsersData, error: allUsersError } = await supabase
+                .from('usuarios')
+                .select('id, nom_usuario')
+                .in('id', uniqueAllUserIds);
+            
+            if (allUsersError) throw allUsersError;
+
+            // Crear un mapa completo de IDs de usuario a nombres de usuario
+            const finalUserNamesMap = new Map(allUsersData.map(user => [user.id, user.nom_usuario]));
+
+            // Mapear los proyectos combinados para obtener los nombres de autor correctos
+            const finalProjects = Array.from(allProjects.values()).map(project => ({
+                titulo: project.titulo,
+                authorName: finalUserNamesMap.get(project.id_usuario) || 'Desconocido',
+                imageUrl: project.imageUrl
+            }));
+            
+            renderProjects(finalProjects);
 
         } catch (error) {
             console.error('Error al realizar la búsqueda:', error);
@@ -157,5 +163,4 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
-
 });
