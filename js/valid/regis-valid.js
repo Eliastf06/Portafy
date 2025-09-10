@@ -1,9 +1,9 @@
 // js/valid/regis-valid.js
 
-// Caracteres prohibidos. ¡Los caracteres especiales se han escapado correctamente!
+// Caracteres prohibidos.
 const PROHIBITED_CHARS_USERNAME = /['":;,<>/\(\)@\{\}\[\]`´¬\|°\\?¿¡=!+\*~^#\$%&¨]/;
 const PROHIBITED_CHARS_EMAIL = /['":;,<>/\(\)\{\}\[\]`´¬\|°\\?¿¡=!+\*~^#\$%&¨]/;
-const PROHIBITED_CHARS_PASSWORD = /['":;,<>/\(\)@\{\}\[\]`´¬\|°\\?¿¡=!*~^%¨]/;
+const PROHIBITED_CHARS_PASSWORD = /[´¨]/; // Se han eliminado los símbolos permitidos de aquí
 
 // Validar nombre de usuario (username)
 function validateUsername(username) {
@@ -18,7 +18,6 @@ function validateUsername(username) {
 
 // Validar nombre completo (full name)
 function validateFullName(name) {
-    // La expresión regular ahora maneja la validación de espacios
     if (!/^[a-zA-Z]+(?:[ ][a-zA-Z]+)*$/.test(name)) {
         return 'El nombre completo solo puede contener letras y un solo espacio entre palabras. No puede tener espacios al inicio o al final.';
     }
@@ -27,7 +26,6 @@ function validateFullName(name) {
 
 // Validar email
 function validateEmail(email) {
-    // La expresión regular es más robusta y maneja múltiples condiciones
     const emailRegex = /^[^\s@]+(?:[^\s@\d]+)@[^\s@]+\.[^\s@]+$/;
     if (PROHIBITED_CHARS_EMAIL.test(email)) {
         return 'El email contiene caracteres no permitidos.';
@@ -46,6 +44,13 @@ function validatePassword(password) {
     if (password.includes(' ')) {
         return 'La contraseña no puede contener espacios.';
     }
+    // Expresión regular para validar la combinación de caracteres y longitud
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+-=\[\]\{\};:'"|<,>.?/]).{12,16}$/;
+
+    if (!passwordRegex.test(password)) {
+        return 'La contraseña debe tener entre 12 y 16 caracteres, e incluir al menos una mayúscula, una minúscula, un número y un símbolo.';
+    }
+
     if (PROHIBITED_CHARS_PASSWORD.test(password)) {
         return 'La contraseña contiene caracteres no permitidos.';
     }
