@@ -1249,3 +1249,15 @@ body.dark-mode .project-card .project-author {
 }
 
 
+.password-group {
+            position: relative;
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 15px;
+            top: 70%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #888;
+        }
