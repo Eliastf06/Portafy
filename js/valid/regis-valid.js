@@ -18,32 +18,25 @@ function validateUsername(username) {
 
 // Validar nombre completo (full name)
 function validateFullName(name) {
-    if (name.trim() !== name) {
-        return 'El nombre completo no puede tener espacios al inicio o al final.';
-    }
-    if (name.includes('  ')) {
-        return 'El nombre completo no puede tener más de un espacio entre palabras.';
-    }
-    if (!/^[a-zA-Z\s]+$/.test(name)) {
-        return 'El nombre completo solo puede contener letras y espacios.';
+    // La expresión regular ahora maneja la validación de espacios
+    if (!/^[a-zA-Z]+(?:[ ][a-zA-Z]+)*$/.test(name)) {
+        return 'El nombre completo solo puede contener letras y un solo espacio entre palabras. No puede tener espacios al inicio o al final.';
     }
     return null;
 }
 
 // Validar email
 function validateEmail(email) {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    // La expresión regular es más robusta y maneja múltiples condiciones
+    const emailRegex = /^[^\s@]+(?:[^\s@\d]+)@[^\s@]+\.[^\s@]+$/;
+    if (PROHIBITED_CHARS_EMAIL.test(email)) {
+        return 'El email contiene caracteres no permitidos.';
+    }
     if (!emailRegex.test(email)) {
         return 'Por favor, ingresa un email válido.';
     }
     if ((email.match(/@/g) || []).length > 1) {
         return 'El email no puede tener más de un "@".';
-    }
-    if (/^\d+$/.test(email.split('@')[0])) {
-        return 'La parte del email antes del "@" no puede ser solo números.';
-    }
-    if (PROHIBITED_CHARS_EMAIL.test(email)) {
-        return 'El email contiene caracteres no permitidos.';
     }
     return null;
 }
@@ -61,21 +54,23 @@ function validatePassword(password) {
 
 // Función principal de validación
 export function validateRegistration(username, fullName, email, password, confirmPassword) {
-    const usernameError = validateUsername(username);
-    if (usernameError) return usernameError;
+    const validations = [
+        () => validateUsername(username),
+        () => validateFullName(fullName),
+        () => validateEmail(email),
+        () => validatePassword(password),
+    ];
 
-    const fullNameError = validateFullName(fullName);
-    if (fullNameError) return fullNameError;
-
-    const emailError = validateEmail(email);
-    if (emailError) return emailError;
+    for (const validator of validations) {
+        const error = validator();
+        if (error) {
+            return error;
+        }
+    }
 
     if (password !== confirmPassword) {
         return 'Las contraseñas no coinciden.';
     }
-
-    const passwordError = validatePassword(password);
-    if (passwordError) return passwordError;
 
     return null;
 }
