@@ -898,3 +898,14 @@ body.dark-mode .project-card .project-author {
     color: #a19700;
     transition-duration: 0.3s;
 }
+
+.editar{
+    font-size: 19px;
+    font-weight:200;
+    color: var(--accent-color);
+    transition-duration: 0.3s;
+}
+.editar:hover{
+    color: #a19700;
+    transition-duration: 0.3s;
+}

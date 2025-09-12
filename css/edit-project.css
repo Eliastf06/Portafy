@@ -1,19 +1,36 @@
-/* add-product.css */
-
-/* Variables de Colores */
 :root {
-    --white: #fff;
-    --dark-grey: #333;
-    --medium-grey: #555;
-    --light-border: #ddd;
-    --shadow-light: rgba(0, 0, 0, 0.1);
-    --light-background-alt: #fdfdfd;
-    --light-grey-text: #777;
-    --dashed-border: #ccc;
+    /* Colores para el Modo Claro (Tema de Neón de Día Mejorado) */
+    --clr-light-bg-primary: #ffffff; /* Fondo blanco para un lienzo limpio */
+    --clr-light-bg-secondary: #f0f0f0; /* Gris muy claro para elementos secundarios */
+    --clr-light-accent: #ffeb3b; /* Amarillo neón brillante */
+    --clr-light-text-dark: #333333; /* Texto oscuro para máxima legibilidad */
+    --clr-light-text-light: #727272; /* Texto gris para contraste sutil */
+    --clr-light-shadow-primary: rgba(0, 0, 0, 0.1);
+    --clr-light-shadow-secondary: rgba(0, 0, 0, 0.05);
 
-    --primary-blue: #ffeb3b;
-    --success-green: #ffeb3b;
-    --success-dark-green: #cfc033;
+    /* Colores para el Modo Oscuro (Tema de Neón de Noche) */
+    --clr-dark-bg-primary: #0a0a1a;
+    --clr-dark-bg-secondary: #1a1a2e;
+    --clr-dark-accent: #fff01e;
+    --clr-dark-text-dark: #e0e0e0;
+    --clr-dark-text-light: #70708f;
+    --clr-dark-shadow-primary: rgba(255, 240, 30, 0.25);
+    --clr-dark-shadow-secondary: rgba(255, 240, 30, 0.1);
+    
+    /* Variables de Color por defecto (Modo Claro) */
+    --bg-primary: var(--clr-light-bg-primary);
+    --bg-secondary: var(--clr-light-bg-secondary);
+    --accent-color: var(--clr-light-accent);
+    --text-color-dark: var(--clr-light-text-dark);
+    --text-color-light: var(--clr-light-text-light);
+    --shadow-primary: var(--clr-light-shadow-primary);
+    --shadow-secondary: var(--clr-light-shadow-secondary);
+    
+    /* Variables adicionales para el efecto de neón */
+    --neon-yellow: #fff01e;
+    --neon-blue: #00e0ff;
+    --glow-effect: 0 0 5px var(--neon-yellow), 0 0 10px var(--neon-yellow), 0 0 20px var(--neon-yellow);
+    --glow-effect-secondary: 0 0 5px var(--neon-blue), 0 0 10px var(--neon-blue), 0 0 20px var(--neon-blue);
 
     /* Mensajes */
     --message-success-bg: #d4edda;
@@ -25,19 +42,45 @@
     --message-info-bg: #e0e0e0; /* Para "cargando" */
     --message-info-text: #333;
     --message-info-border: #ccc;
+
+    /* Transiciones */
+    --transition-speed: 0.3s ease-in-out;
+}
+
+/* Modo Oscuro (se activa con la clase .dark-mode en el body) */
+body.dark-mode {
+    --bg-primary: var(--clr-dark-bg-primary);
+    --bg-secondary: var(--clr-dark-bg-secondary);
+    --accent-color: var(--clr-dark-accent);
+    --text-color-dark: var(--clr-dark-text-dark);
+    --text-color-light: var(--clr-dark-text-light);
+    --shadow-primary: var(--clr-dark-shadow-primary);
+    --shadow-secondary: var(--clr-dark-shadow-secondary);
+    
+    /* Mensajes en Modo Oscuro */
+    --message-success-bg: #1f3d24;
+    --message-success-text: #c3e6cb;
+    --message-success-border: #21592c;
+    --message-error-bg: #4a2121;
+    --message-error-text: #f5c6cb;
+    --message-error-border: #5a2e2e;
+    --message-info-bg: #2d2d2d;
+    --message-info-text: #e0e0e0;
+    --message-info-border: #444;
 }
 
 body {
     font-family: Arial, sans-serif;
-    background-image: url('../multimedia/fondo-portafy.jpg'); /* Adjusted path based on typical CSS structure */
-    background-size: cover; /* Cover the entire viewport */
-    background-repeat: no-repeat; /* Do not repeat the image */
-    background-attachment: fixed; /* Keep background fixed when scrolling */
+    background-image: url('../multimedia/fondo-portafy.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
     margin: 0;
+    transition: background-color var(--transition-speed);
 }
 
 body::before {
@@ -47,9 +90,11 @@ body::before {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(255, 255, 255, 0.7); /* Fondo blanco semitransparente para el difuminado */
-    backdrop-filter: blur(5px); /* Ajusta el valor para más o menos desenfoque */
-    z-index: -1; /* Asegura que esté detrás del contenido */
+    background-color: var(--bg-primary);
+    opacity: 0.7;
+    backdrop-filter: blur(5px);
+    z-index: -1;
+    transition: background-color var(--transition-speed);
 }
 
 .add-proyect-main-content {
@@ -62,19 +107,21 @@ body::before {
 }
 
 .add-proyect-card {
-    background-color: var(--white); /* Usando variable */
+    background-color: var(--bg-primary);
     padding: 30px;
     border-radius: 10px;
-    box-shadow: 0 4px 15px var(--shadow-light); /* Usando variable */
+    box-shadow: 0 4px 15px var(--shadow-primary);
     width: 100%;
     max-width: 600px;
     text-align: center;
+    transition: background-color var(--transition-speed), box-shadow var(--transition-speed);
 }
 
 .add-proyect-card h2 {
-    color: var(--dark-grey); /* Usando variable */
+    color: var(--text-color-dark);
     margin-bottom: 25px;
     font-size: 2rem;
+    transition: color var(--transition-speed);
 }
 
 .proyect-upload-message {
@@ -83,24 +130,25 @@ body::before {
     border-radius: 8px;
     font-weight: bold;
     font-size: 0.95rem;
+    transition: background-color var(--transition-speed), color var(--transition-speed), border-color var(--transition-speed);
 }
 
 .proyect-upload-message.success {
-    background-color: var(--message-success-bg); /* Usando variable */
-    color: var(--message-success-text); /* Usando variable */
-    border: 1px solid var(--message-success-border); /* Usando variable */
+    background-color: var(--message-success-bg);
+    color: var(--message-success-text);
+    border: 1px solid var(--message-success-border);
 }
 
 .proyect-upload-message.error {
-    background-color: var(--message-error-bg); /* Usando variable */
-    color: var(--message-error-text); /* Usando variable */
-    border: 1px solid var(--message-error-border); /* Usando variable */
+    background-color: var(--message-error-bg);
+    color: var(--message-error-text);
+    border: 1px solid var(--message-error-border);
 }
 
-.proyect-upload-message.black { /* Para mensajes de "cargando" */
-    background-color: var(--message-info-bg); /* Usando variable */
-    color: var(--message-info-text); /* Usando variable */
-    border: 1px solid var(--message-info-border); /* Usando variable */
+.proyect-upload-message.black {
+    background-color: var(--message-info-bg);
+    color: var(--message-info-text);
+    border: 1px solid var(--message-info-border);
 }
 
 
@@ -112,15 +160,17 @@ body::before {
 .form-group label {
     display: block;
     margin-bottom: 8px;
-    color: var(--medium-grey); /* Usando variable */
+    color: var(--text-color-light);
     font-weight: bold;
     display: flex;
     align-items: center;
+    transition: color var(--transition-speed);
 }
 
 .form-group label i {
     margin-right: 8px;
-    color: var(--primary-blue); /* Usando variable */
+    color: var(--accent-color);
+    transition: color var(--transition-speed);
 }
 
 .form-group input[type="text"],
@@ -128,10 +178,13 @@ body::before {
 .form-group textarea {
     width: calc(100% - 24px);
     padding: 12px;
-    border: 1px solid var(--light-border); /* Usando variable */
+    border: 1px solid var(--text-color-light);
+    background-color: var(--bg-secondary);
+    color: var(--text-color-dark);
     border-radius: 5px;
     box-sizing: border-box;
     font-size: 1rem;
+    transition: background-color var(--transition-speed), color var(--transition-speed), border-color var(--transition-speed);
 }
 
 .form-group textarea {
@@ -139,20 +192,22 @@ body::before {
 }
 
 .file-upload-group {
-    border: 1px dashed var(--dashed-border); /* Usando variable */
+    border: 1px dashed var(--text-color-light);
     padding: 15px;
     border-radius: 8px;
-    background-color: var(--light-background-alt); /* Usando variable */
+    background-color: var(--bg-secondary);
+    transition: background-color var(--transition-speed), border-color var(--transition-speed);
 }
 
 .file-upload-label {
     cursor: pointer;
-    color: var(--primary-blue); /* Usando variable */
+    color: var(--accent-color);
     font-weight: bold;
     display: flex;
     align-items: center;
     justify-content: center;
     margin-bottom: 10px;
+    transition: color var(--transition-speed);
 }
 
 .file-upload-label i {
@@ -168,7 +223,8 @@ body::before {
     display: block;
     margin-top: 10px;
     font-size: 0.9rem;
-    color: var(--light-grey-text); /* Usando variable */
+    color: var(--text-color-light);
+    transition: color var(--transition-speed);
 }
 
 #image-preview {
@@ -176,12 +232,13 @@ body::before {
     height: auto;
     margin-top: 15px;
     border-radius: 5px;
-    box-shadow: 0 2px 8px var(--shadow-light); /* Usando variable */
+    box-shadow: 0 2px 8px var(--shadow-primary);
+    transition: box-shadow var(--transition-speed);
 }
 
 .btn-submit {
-    background-color: var(--success-green); /* Usando variable */
-    color: var(--white); /* Usando variable */
+    background-color: var(--accent-color);
+    color: var(--bg-primary);
     padding: 15px 25px;
     border: none;
     border-radius: 5px;
@@ -189,11 +246,11 @@ body::before {
     font-size: 1.1rem;
     width: 100%;
     margin-top: 20px;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .btn-submit:hover {
-    background-color: var(--success-dark-green); /* Usando variable */
+    filter: brightness(0.9);
 }
 
 .btn-submit i {
@@ -203,14 +260,14 @@ body::before {
 .btn-back-to-home {
     display: inline-block;
     margin-top: 25px;
-    color: var(--primary-blue); /* Usando variable */
+    color: var(--accent-color);
     text-decoration: none;
     font-weight: bold;
     transition: color 0.3s ease;
 }
 
 .btn-back-to-home:hover {
-    color: var(--primary-blue); /* Usando variable */
+    color: var(--accent-color);
     text-decoration: underline;
 }
 

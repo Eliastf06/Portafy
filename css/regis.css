@@ -58,6 +58,7 @@ body {
     align-items: center;
     min-height: 100vh;
     margin: 0;
+    transition: background-color var(--transition-speed);
 }
 
 body::before {
@@ -67,23 +68,27 @@ body::before {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(255, 255, 255, 0.7);
+    background-color: var(--bg-primary);
+    opacity: 0.7;
     backdrop-filter: blur(5px);
     z-index: -1;
+    transition: background-color var(--transition-speed);
 }
 
 .register-container {
-    background-color: #fff;
+    background-color: var(--bg-primary);
     padding: 30px;
     border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 10px var(--shadow-primary);
     width: 350px;
     text-align: center;
+    transition: background-color var(--transition-speed), box-shadow var(--transition-speed);
 }
 
 .register-container h2 {
     margin-bottom: 25px;
-    color: #333;
+    color: var(--text-color-dark);
+    transition: color var(--transition-speed);
 }
 
 .input-group {
@@ -94,8 +99,9 @@ body::before {
 .input-group label {
     display: block;
     margin-bottom: 5px;
-    color: #555;
+    color: var(--text-color-light);
     font-weight: bold;
+    transition: color var(--transition-speed);
 }
 
 .input-group input[type="text"],
@@ -103,14 +109,17 @@ body::before {
 .input-group input[type="password"] {
     width: calc(100% - 20px);
     padding: 10px;
-    border: 1px solid #ddd;
+    border: 1px solid var(--text-color-light);
+    background-color: var(--bg-secondary);
+    color: var(--text-color-dark);
     border-radius: 4px;
     font-size: 16px;
+    transition: background-color var(--transition-speed), color var(--transition-speed), border-color var(--transition-speed);
 }
 
 button[type="submit"] {
-    background-color: #ffeb3b;
-    color: white;
+    background-color: var(--accent-color);
+    color: var(--bg-primary);
     padding: 12px 20px;
     border: none;
     border-radius: 4px;
@@ -118,11 +127,12 @@ button[type="submit"] {
     font-size: 16px;
     width: 100%;
     margin-top: 10px;
-    transition: background-color 0.3s ease;
+    transition: background-color var(--transition-speed), color var(--transition-speed), box-shadow var(--transition-speed);
+    box-shadow: 0 0 0 3px var(--shadow-primary);
 }
 
 button[type="submit"]:hover {
-    background-color: #cfc033;
+    filter: brightness(0.9);
 }
 
 .links {
@@ -131,15 +141,15 @@ button[type="submit"]:hover {
 }
 
 .links a {
-    color: #ae9d00;
+    color: var(--accent-color);
     text-decoration: none;
     margin: 0 8px;
+    transition: color var(--transition-speed);
 }
 
 .links a:hover {
     text-decoration: underline;
 }
-
 
 .form-group {
     margin-bottom: 15px;
@@ -154,6 +164,7 @@ button[type="submit"]:hover {
     font-size: 0.9em;
     text-transform: uppercase;
     letter-spacing: 0.5px;
+    transition: color var(--transition-speed);
 }
 
 .form-group input[type="text"],
@@ -188,19 +199,4 @@ button[type="submit"]:hover {
 .form-group select:focus {
     outline: none;
     box-shadow: 0 0 0 3px var(--accent-color);
-
-}
-
-
-.password-group {
-    position: relative;
-}
-
-.toggle-password {
-    position: absolute;
-    right: 15px;
-    top: 70%;
-    transform: translateY(-50%);
-    cursor: pointer;
-    color: #888;
 }
