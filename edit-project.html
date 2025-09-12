@@ -11,33 +11,29 @@
 </head>
 
 <body>
-    <main role="main">
-        <div class="add-proyect-card" role="region" aria-labelledby="edit-project-title">
-            <h2 id="edit-project-title">Editar Proyecto</h2>
+        <div class="add-proyect-card">
+            <h2>Editar Proyecto</h2>
             <form id="editProjectForm">
                 <p id="proyect-edit-message" class="message"></p>
                 <input type="hidden" id="edit-project-id" name="id_proyecto">
                 <div class="form-group">
-                    <label for="edit-project-title"><i class="fas fa-box" aria-hidden="true"></i>Título</label>
-                    <input type="text" id="edit-project-title" name="titulo" required aria-label="Título del proyecto">
+                    <label for="edit-project-title"><i class="fas fa-box"></i>Título</label>
+                    <input type="text" id="edit-project-title" name="titulo" required>
                 </div>
                 <div class="form-group">
-                    <label for="edit-project-description"><i class="fas fa-align-left"
-                            aria-hidden="true"></i>Descripción</label>
-                    <textarea id="edit-project-description" name="descripcion" rows="4" required
-                        aria-label="Descripción del proyecto"></textarea>
+                    <label for="edit-project-description"><i class="fas fa-align-left"></i>Descripción</label>
+                    <textarea id="edit-project-description" name="descripcion" rows="4" required></textarea>
                 </div>
                 <div class="form-group file-upload-group">
-                    <label for="proyect-image" class="file-upload-label"><i class="fas fa-cloud-upload-alt"
-                            aria-hidden="true"></i> Imagen del Proyecto (PNG, JPG)</label>
-                    <input type="file" id="proyect-image" accept="image/*" aria-label="Subir imagen del proyecto">
+                    <label for="proyect-image" class="file-upload-label"><i class="fas fa-cloud-upload-alt"></i>
+                        Imagen del Proyecto (PNG, JPG)</label>
+                    <input type="file" id="proyect-image" accept="image/*">
                     <span id="file-name-display" class="file-status">Ningún archivo seleccionado</span>
-                    <img id="image-preview" src="#" alt="Previsualización de la imagen del proyecto"
-                        style="display: none;">
+                    <img id="image-preview" src="#" alt="Previsualización de la imagen" style="display: none;">
                 </div>
                 <div class="form-group">
                     <label for="proyect-category">Categoria del proyecto</label>
-                    <select id="proyect-category" required aria-label="Categoría del proyecto">
+                    <select id="proyect-category" required>
                         <option value="" disabled selected>Selecciona tu tipo de proyecto</option>
                         <option value="Animación 2D o 3D">Animación 2D o 3D</option>
                         <option value="Arte Visual">Arte Visual</option>
@@ -61,41 +57,34 @@
                 </div>
                 <div class="form-group">
                     <label for="edit-project-start-date">Fecha de inicio</label>
-                    <input type="date" id="edit-project-start-date" name="fecha_inicio"
-                        aria-label="Fecha de inicio del proyecto">
+                    <input type="date" id="edit-project-start-date" name="fecha_inicio">
                 </div>
                 <div class="form-group">
                     <label for="edit-project-end-date">Fecha de finalización</label>
-                    <input type="date" id="edit-project-end-date" name="fecha_finalizacion"
-                        aria-label="Fecha de finalización del proyecto">
+                    <input type="date" id="edit-project-end-date" name="fecha_finalizacion">
                 </div>
                 <div class="form-group">
                     <label for="edit-project-client">Para quién se realizó</label>
-                    <input type="text" id="edit-project-client" name="para_quien_se_hizo" placeholder="Tal Empresa"
-                        aria-label="Cliente del proyecto">
+                    <input type="text" id="edit-project-client" name="para_quien_se_hizo">
                 </div>
                 <div class="form-group">
                     <label for="edit-project-links">Enlaces de referencia</label>
-                    <input type="text" id="edit-project-links" name="enlaces_referencia" placeholder="URL, URL, ..."
-                        aria-label="Enlaces de referencia del proyecto">
+                    <input type="text" id="edit-project-links" name="enlaces_referencia" placeholder="URL, URL, ...">
                 </div>
                 <div class="form-group">
                     <label for="edit-project-privacy">Privacidad</label>
-                    <select id="edit-project-privacy" name="privacidad" aria-label="Privacidad del proyecto">
+                    <select id="edit-project-privacy" name="privacidad">
                         <option value="false">Público</option>
                         <option value="true">Privado</option>
                     </select>
                 </div>
-                <button type="submit" class="btn-submit" aria-label="Guardar cambios del proyecto"><i
-                        class="fas fa-save" aria-hidden="true"></i>Guardar Cambios</button>
+                <button type="submit" class="btn-submit"><i class="fas fa-save"></i>Guardar Cambios</button>
             </form>
-            <button id="delete-project-btn" class="btn-delete" aria-label="Eliminar proyecto"><i
-                    class="fas fa-trash" aria-hidden="true"></i>Eliminar Proyecto</button>
-            <a href="profile.html" class="btn-back-to-home" aria-label="Volver a la página de perfil"><i
-                    class="fas fa-arrow-left" aria-hidden="true"></i> Volver al Perfil</a>
+            <button id="delete-project-btn" class="btn-delete"><i class="fas fa-trash"></i>Eliminar Proyecto</button>
+            <a href="profile.html" class="btn-back-to-home"><i class="fas fa-arrow-left"></i> Volver al Perfil</a>
         </div>
-    </main>
-    <script type="module" src="js/edit-project.js"></script>
+        <script type="module" src="js/edit-project.js"></script>
+        <script src="js/modales.js"></script>
 </body>
 
 </html>
