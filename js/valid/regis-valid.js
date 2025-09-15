@@ -30,9 +30,6 @@ function validateEmail(email) {
     if (PROHIBITED_CHARS_EMAIL.test(email)) {
         return 'El email contiene caracteres no permitidos.';
     }
-    if (!emailRegex.test(email)) {
-        return 'Por favor, ingresa un email válido.';
-    }
     if ((email.match(/@/g) || []).length > 1) {
         return 'El email no puede tener más de un "@".';
     }
@@ -78,4 +75,5 @@ export function validateRegistration(username, fullName, email, password, confir
     }
 
     return null;
+
 }
