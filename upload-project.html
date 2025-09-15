@@ -11,26 +11,25 @@
 </head>
 
 <body>
-    </header>
+    <header></header>
 
     <main class="add-proyect-main-content">
-        <div class="add-proyect-card">
-            <h2>Subir Nuevo Proyecto</h2>
-            <p id="proyect-upload-message" class="proyect-upload-message" style="display: none;"></p>
+        <div class="add-proyect-card" role="region" aria-labelledby="upload-title">
+            <h2 id="upload-title">Subir Nuevo Proyecto</h2>
+            <p id="proyect-upload-message" class="proyect-upload-message" style="display: none;" role="alert" aria-live="polite"></p>
             <form id="add-proyect-form">
                 <div class="form-group">
-                    <label for="proyect-name"><i class="fas fa-box"></i>Título del Proyecto</label>
-                    <input type="text" id="proyect-name" placeholder="Ej: Desarrollo de pagina" required>
+                    <label for="proyect-name"><i class="fas fa-box" aria-hidden="true"></i>Título del Proyecto</label>
+                    <input type="text" id="proyect-name" placeholder="Ej: Desarrollo de pagina" required aria-label="Título del proyecto">
                 </div>
                 <div class="form-group">
-                    <label for="proyect-description"><i class="fas fa-align-left"></i>Descripción</label>
+                    <label for="proyect-description"><i class="fas fa-align-left" aria-hidden="true"></i>Descripción</label>
                     <textarea id="proyect-description" rows="5" required
-                        placeholder="Ingresa la descripción detallada del proyecto."></textarea>
+                        placeholder="Ingresa una descripción de tu proyecto" aria-label="Descripción del proyecto"></textarea>
                 </div>
-                
                 <div class="form-group">
-                    <label for="proyect-category"><i class="fas fa-tags"></i> Categoría del Proyecto</label>
-                    <select id="proyect-category" name="proyect-category" required>
+                    <label for="proyect-category">Categoría del proyecto</label>
+                    <select id="proyect-category" required aria-label="Selecciona la categoría de tu proyecto">
                         <option value="" disabled selected>Selecciona tu tipo de proyecto</option>
                         <option value="Animación 2D o 3D">Animación 2D o 3D</option>
                         <option value="Arte Visual">Arte Visual</option>
@@ -53,21 +52,20 @@
                         </select>
                 </div>
                 <div class="form-group file-upload-group">
-                    <label for="proyect-image" class="file-upload-label"><i class="fas fa-cloud-upload-alt"></i>
+                    <label for="proyect-image" class="file-upload-label"><i class="fas fa-cloud-upload-alt" aria-hidden="true"></i>
                         Imagen del Proyecto (PNG, JPG)</label>
-                    <input type="file" id="proyect-image" accept="image/*" required>
+                    <input type="file" id="proyect-image" accept="image/*" required aria-label="Subir imagen del proyecto">
                     <span id="file-name-display" class="file-status">Ningún archivo seleccionado</span>
                     <img id="image-preview" src="#" alt="Previsualización de la imagen" style="display: none;">
                 </div>
-                <button type="submit" class="btn-submit"><i class="fas fa-upload"></i> Subir Proyecto</button>
+                <button type="submit" class="btn-submit" aria-label="Subir proyecto"><i class="fas fa-upload" aria-hidden="true"></i> Subir Proyecto</button>
             </form>
-            <a href="index.html" class="btn-back-to-home"><i class="fas fa-arrow-left"></i> Volver a la Pagina Principal</a>
+            <a href="index.html" class="btn-back-to-home" aria-label="Volver a la página principal"><i class="fas fa-arrow-left" aria-hidden="true"></i> Volver a la Pagina Principal</a>
         </div>
     </main>
 
     <script type="module" src="js/upload-project.js"></script>
-    <script src="js/modales.js"></script>
-
+    <script src="js/theme.js"></script>
 </body>
 
 </html>

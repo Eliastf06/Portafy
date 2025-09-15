@@ -890,6 +890,7 @@ body.dark-mode .project-card .project-author {
 }
 
 .referencia{
+    font-weight:500;
     color: var(--accent-color);
     transition-duration: 0.3s;
 }
@@ -908,4 +909,9 @@ body.dark-mode .project-card .project-author {
 .editar:hover{
     color: #a19700;
     transition-duration: 0.3s;
+}
+
+.menu-close-btn{
+    border: none;
+    background: none;
 }

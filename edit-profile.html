@@ -12,86 +12,94 @@
 </head>
 
 <body>
+    <main role="main">
+        <div class="editar-profile" id="edit-profile" role="dialog" aria-modal="true"
+            aria-labelledby="edit-profile-title">
+            <span class="modal-close" id="edit-profile-close-btn" role="button" tabindex="0"
+                aria-label="Cerrar ventana de edición de perfil">&times;</span>
+            <h2 id="edit-profile-title">Editar Perfil</h2>
+            <form id="editProfileForm">
+                <div class="form-group">
+                    <label for="foto-perfil-input">Foto de Perfil</label>
+                    <img id="foto-perfil-preview" src="#" alt="Vista previa de foto de perfil"
+                        style="display: none; max-width: 150px; border-radius: 50%; margin-top: 10px;">
+                    <input type="file" id="foto-perfil-input" name="profilePhoto"
+                        aria-describedby="profile-message">
+                </div>
 
-    <div class="editar-profile" id="edit-profile">
-        <h2>Editar Perfil</h2>
-        <form id="editProfileForm">
-            <div class="form-group">
-                <label for="foto-perfil-input">Foto de Perfil</label>
-                <img id="foto-perfil-preview" src="#" alt="Vista previa de foto de perfil"
-                    style="display: none; max-width: 150px; border-radius: 50%; margin-top: 10px;">
-                <input type="file" id="foto-perfil-input" name="profilePhoto">
-            </div>
+                <p id="profile-message" class="profile-message" style="display: none;"></p>
+                <div class="form-group">
+                    <label for="nombre-user">Nombre de Usuario</label>
+                    <input type="text" id="nombre-user" name="nombre">
+                </div>
+                <div class="form-group">
+                    <label for="nombre-perfil">Nombre Completo</label>
+                    <input type="text" id="nombre-perfil" name="nombre">
+                </div>
+                <div class="form-group">
+                    <label for="biografia-perfil">Biografía</label>
+                    <textarea id="biografia-perfil" name="biografia" placeholder="Información de vida"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="red-social-perfil">Red Social</label>
+                    <input type="text" id="red-social-perfil" name="red_social" placeholder="Ej: Github.com">
+                </div>
+                <div class="form-group">
+                    <label for="telefono-perfil">Teléfono</label>
+                    <input type="text" id="telefono-perfil" name="telefono" placeholder="11 7897 6585">
+                </div>
+                <div class="form-group">
+                    <label for="direccion-perfil">Dirección</label>
+                    <input type="text" id="direccion-perfil" name="direccion" placeholder="Av. Siempre Viva">
+                </div>
+                <div class="form-group">
+                    <label for="experiencia-perfil">Experiencia</label>
+                    <textarea id="experiencia-perfil" name="experiencia"
+                        placeholder="puesto en empresa"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="user-type">Tipo de usuario</label>
+                    <select id="user-type" required aria-label="Selecciona tu tipo de usuario">
+                        <option value="" disabled selected>Selecciona tu tipo de usuario</option>
+                        <option value="Animador/a 2D o 3D">Animador/a 2D o 3D</option>
+                        <option value="Artista Visual">Artista Visual</option>
+                        <option value="Base de Datos">Base de Datos</option>
+                        <option value="Camarógrafo / Videógrafo">Camarógrafo / Videógrafo</option>
+                        <option value="Desarrollador Web">Desarrollador Web</option>
+                        <option value="Diseñador/a de Interiores">Diseñador/a de Interiores</option>
+                        <option value="Diseñador/a de Juegos">Diseñador/a de Juegos</option>
+                        <option value="Diseñador/a de Moda">Diseñador/a de Moda</option>
+                        <option value="Diseñador/a de Packaging">Diseñador/a de Packaging</option>
+                        <option value="Diseñador Gráfico">Diseñador Gráfico</option>
+                        <option value="Diseñador UI/UX">Diseñador UI/UX</option>
+                        <option value="Diseñador Web">Diseñador Web</option>
+                        <option value="Director/a de Arte">Director/a de Arte</option>
+                        <option value="Editor/a de Video">Editor/a de Video</option>
+                        <option value="Fotógrafo/a">Fotógrafo/a</option>
+                        <option value="Ilustrador/a">Ilustrador/a</option>
+                        <option value="Modelador/a 3D">Modelador/a 3D</option>
+                        <option value="Otro">Otro</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="privacidad-perfil">Privacidad</label>
+                    <select id="privacidad-perfil" name="privacidad"
+                        aria-label="Seleccionar privacidad del perfil">
+                        <option value="false">Público</option>
+                        <option value="true">Privado</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn-primary" aria-label="Guardar cambios del perfil">Guardar
+                    Cambios</button>
+            </form>
+            <a href="profile.html" class="btn-back-to-home" aria-label="Volver a la página de perfil"><i
+                    class="fas fa-arrow-left" aria-hidden="true"></i> Volver al Perfil</a>
+        </div>
+    </main>
 
-            <p id="profile-message" class="profile-message" style="display: none;"></p>
-            <div class="form-group">
-                <label for="nombre-user">Nombre de Usuario</label>
-                <input type="text" id="nombre-user" name="nombre">
-            </div>
-            <div class="form-group">
-                <label for="nombre-perfil">Nombre Completo</label>
-                <input type="text" id="nombre-perfil" name="nombre">
-            </div>
-            <div class="form-group">
-                <label for="biografia-perfil">Biografía</label>
-                <textarea id="biografia-perfil" name="biografia" placeholder="Información de vida"></textarea>
-            </div>
-            <div class="form-group">
-                <label for="red-social-perfil">Red Social</label>
-                <input type="text" id="red-social-perfil" name="red_social" placeholder="Ej: Github.com">
-            </div>
-            <div class="form-group">
-                <label for="telefono-perfil">Teléfono</label>
-                <input type="text" id="telefono-perfil" name="telefono" placeholder="11 7897 6585">
-            </div>
-            <div class="form-group">
-                <label for="direccion-perfil">Dirección</label>
-                <input type="text" id="direccion-perfil" name="direccion" placeholder="Av. Siempre Viva">
-            </div>
-            <div class="form-group">
-                <label for="experiencia-perfil">Experiencia</label>
-                <textarea id="experiencia-perfil" name="experiencia" placeholder="puesto en empresa"></textarea>
-            </div>
-            <div class="form-group">
-                <label for="user-type">Tipo de usuario</label>
-                <select id="user-type" required>
-                    <option value="" disabled selected>Selecciona tu tipo de usuario</option>
-                    <option value="Animador/a 2D o 3D">Animador/a 2D o 3D</option>
-                    <option value="Artista Visual">Artista Visual</option>
-                    <option value="Base de Datos">Base de Datos</option>
-                    <option value="Camarógrafo / Videógrafo">Camarógrafo / Videógrafo</option>
-                    <option value="Desarrollador Web">Desarrollador Web</option>
-                    <option value="Diseñador/a de Interiores">Diseñador/a de Interiores</option>
-                    <option value="Diseñador/a de Juegos">Diseñador/a de Juegos</option>
-                    <option value="Diseñador/a de Moda">Diseñador/a de Moda</option>
-                    <option value="Diseñador/a de Packaging">Diseñador/a de Packaging</option>
-                    <option value="Diseñador Gráfico">Diseñador Gráfico</option>
-                    <option value="Diseñador UI/UX">Diseñador UI/UX</option>
-                    <option value="Diseñador Web">Diseñador Web</option>
-                    <option value="Director/a de Arte">Director/a de Arte</option>
-                    <option value="Editor/a de Video">Editor/a de Video</option>
-                    <option value="Fotógrafo/a">Fotógrafo/a</option>
-                    <option value="Ilustrador/a">Ilustrador/a</option>
-                    <option value="Modelador/a 3D">Modelador/a 3D</option>
-                    <option value="Otro">Otro</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="privacidad-perfil">Privacidad</label>
-                <select id="privacidad-perfil" name="privacidad">
-                    <option value="false">Público</option>
-                    <option value="true">Privado</option>
-                </select>
-            </div>
-            <button type="submit" class="btn-primary">Guardar Cambios</button>
-        </form>
-        <a href="profile.html" class="btn-back-to-home"><i class="fas fa-arrow-left"></i> Volver al Perfil</a>
-    </div>
-
-    <script type="module" src="js/edit-profile.js"></script>
-    <script src="js/modales.js"></script>
+    <script type="module" src="js/acount/edit-profile.js"></script>
+    <script src="js/theme.js"></script>
 
 </body>
-
 
 </html>

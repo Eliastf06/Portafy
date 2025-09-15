@@ -1,10 +1,15 @@
 :root {
     /* Colores para el Modo Claro (Tema de Neón de Día Mejorado) */
-    --clr-light-bg-primary: #ffffff; /* Fondo blanco para un lienzo limpio */
-    --clr-light-bg-secondary: #f0f0f0; /* Gris muy claro para elementos secundarios */
-    --clr-light-accent: #ffeb3b; /* Amarillo neón brillante */
-    --clr-light-text-dark: #333333; /* Texto oscuro para máxima legibilidad */
-    --clr-light-text-light: #727272; /* Texto gris para contraste sutil */
+    --clr-light-bg-primary: #ffffff;
+    /* Fondo blanco para un lienzo limpio */
+    --clr-light-bg-secondary: #f0f0f0;
+    /* Gris muy claro para elementos secundarios */
+    --clr-light-accent: #ffeb3b;
+    /* Amarillo neón brillante */
+    --clr-light-text-dark: #333333;
+    /* Texto oscuro para máxima legibilidad */
+    --clr-light-text-light: #727272;
+    /* Texto gris para contraste sutil */
     --clr-light-shadow-primary: rgba(0, 0, 0, 0.1);
     --clr-light-shadow-secondary: rgba(0, 0, 0, 0.05);
 
@@ -25,7 +30,7 @@
     --text-color-light: var(--clr-light-text-light);
     --shadow-primary: var(--clr-light-shadow-primary);
     --shadow-secondary: var(--clr-light-shadow-secondary);
-    
+
     /* Variables adicionales para el efecto de neón */
     --neon-yellow: #fff01e;
     --neon-blue: #00e0ff;
@@ -199,4 +204,17 @@ button[type="submit"]:hover {
 .form-group select:focus {
     outline: none;
     box-shadow: 0 0 0 3px var(--accent-color);
+}
+
+.password-group {
+    position: relative;
+}
+
+.toggle-password {
+    position: absolute;
+    right: 15px;
+    top: 70%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #888;
 }

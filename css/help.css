@@ -83,26 +83,6 @@ ul {
 
 
 
-.btn-primary {
-    background-color: var(--accent-color);
-    color: var(--text-color-dark);
-    padding: 12px 20px;
-    border: none;
-    border-radius: 8px;
-    font-size: 1.1em;
-    cursor: pointer;
-    width: 100%;
-    transition: background-color var(--transition-speed), color var(--transition-speed);
-    font-weight: bold;
-}
-
-.btn-primary:hover {
-    background-color: var(--text-color-light); /* Un tono más suave al pasar el ratón */
-}
-
-.btn-primary {
-    color: var(--clr-light-bg-primary); /* Blanco para que resalte en el botón amarillo */
-}
 
 /* Para los iconos de Font Awesome */
 .fas, .far, .fab {
@@ -163,44 +143,7 @@ body.dark-mode .theme-toggle .light-mode-icon { display: none; }
 body.dark-mode .theme-toggle .dark-mode-icon { display: inline-block; }
 
 
-.search-bar {
-    position: relative;
-    flex-grow: 1; 
-    max-width: 400px;
-}
 
-.search-input {
-    width: 100%;
-    padding: 8px 15px 8px 40px; /* Espacio para el icono de búsqueda */
-    border: none;
-    border-radius: 20px;
-    background-color: var(--bg-primary);
-    color: var(--text-color-dark);
-    font-size: 1em;
-    transition: background-color var(--transition-speed), color var(--transition-speed), box-shadow 0.2s ease;
-}
-
-.search-input::placeholder {
-    color: var(--text-color-light);
-}
-
-.search-input:focus {
-    outline: none;
-    box-shadow: 0 0 0 2px var(--accent-color);
-}
-
-.search-icon {
-    position: absolute;
-    left: 15px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: var(--text-color-light);
-    transition: color var(--transition-speed);
-}
-
-.search-icon {
-    color: var(--clr-light-text-dark);
-}
 
 
 .main-nav ul {
@@ -247,148 +190,6 @@ body.dark-mode .main-nav .nav-icon i {
     display: none;
 }
 
-
-.section-title {
-    text-align: center;
-    font-size: 2.2em;
-    margin-bottom: 10px;
-    color: var(--accent-color);
-    font-weight: bold;
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-    transition: color var(--transition-speed);
-}
-
-body.dark-mode .section-title {
-    color: var(--neon-yellow);
-    text-shadow: var(--glow-effect);
-}
-
-.section-subtitle {
-    text-align: center;
-    font-size: 1.1em;
-    color: var(--text-color-light);
-    margin-bottom: 40px;
-    transition: color var(--transition-speed);
-}
-
-
-.projects-grid, .user-projects-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 40px;
-    padding-bottom: 50px;
-}
-
-
-@media (min-width: 768px) {
-    .projects-grid, .user-projects-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-@media (min-width: 1024px) {
-    .projects-grid, .user-projects-grid {
-        grid-template-columns: repeat(3, 1fr);
-    }
-}
-
-.project-card-link {
-    display: flex;
-    flex-direction: column;
-    text-decoration: none;
-    color: inherit;
-}
-
-.project-card {
-    background-color: var(--bg-secondary);
-    border-radius: 15px;
-    overflow: hidden;
-    box-shadow: 0 4px 10px var(--shadow-secondary);
-    transition: transform 0.2s ease, box-shadow 0.2s ease, background-color var(--transition-speed);
-    display: flex;
-    flex-direction: column;
-    cursor: pointer;
-    height: 100%; /* Asegura que la tarjeta ocupe todo el espacio de su celda en la cuadrícula */
-}
-
-body.dark-mode .project-card {
-    border: 1px solid var(--clr-dark-text-light);
-    box-shadow: 0 0 5px var(--clr-dark-text-light), 0 0 10px var(--clr-dark-shadow-secondary);
-}
-
-.project-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 6px 15px var(--shadow-primary);
-}
-
-body.dark-mode .project-card:hover {
-    border-color: var(--accent-color);
-    box-shadow: var(--glow-effect);
-}
-
-.project-preview {
-    background-color: var(--text-color-light); /* Color de fondo temporal para la previsualización */
-    height: 200px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: var(--text-color-dark);
-    font-weight: bold;
-    font-size: 1.2em;
-    transition: background-color var(--transition-speed), color var(--transition-speed);
-}
-
-body.dark-mode .project-preview {
-    background-color: var(--clr-dark-text-light);
-    color: var(--clr-dark-bg-primary);
-}
-
-
-.user-info {
-    padding: 15px;
-    text-align: center;
-}
-
-.user-name {
-    font-size: 1.5em;
-    color: var(--text-color-dark);
-    margin-bottom: 5px;
-    transition: color var(--transition-speed);
-}
-
-.user-occupation {
-    font-size: 0.9em;
-    color: var(--text-color-light);
-    transition: color var(--transition-speed);
-}
-
-
-
-body.dark-mode .filter-btn {
-    box-shadow: var(--glow-effect-secondary);
-    color: var(--neon-blue);
-    background-color: var(--clr-dark-bg-secondary);
-    border: 1px solid var(--neon-blue);
-}
-
-.filter-btn:hover {
-    background-color: var(--text-color-light);
-}
-
-body.dark-mode .filter-btn:hover {
-    background-color: var(--accent-color);
-    color: var(--clr-dark-bg-primary);
-    box-shadow: var(--glow-effect);
-    border-color: var(--accent-color);
-}
-
-.filter-btn {
-    color: var(--clr-light-bg-primary);
-}
-
-.filter-btn i {
-    margin-right: 8px;
-}
 
 .menu-overlay {
     position: fixed;
@@ -560,58 +361,6 @@ body.dark-mode .text-center a i {
 }
 
 
-.project-card {
-    background-color: var(--bg-secondary);
-    border-radius: 15px;
-    overflow: hidden;
-    box-shadow: 0 4px 10px var(--shadow-secondary);
-    transition: transform 0.2s ease, box-shadow 0.2s ease, background-color var(--transition-speed);
-    cursor: pointer;
-}
-
-body.dark-mode .project-card {
-    border: 1px solid var(--clr-dark-text-light);
-    box-shadow: 0 0 5px var(--clr-dark-text-light), 0 0 10px var(--clr-dark-shadow-secondary);
-}
-
-.project-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 6px 15px var(--shadow-primary);
-}
-
-body.dark-mode .project-card:hover {
-    border-color: var(--accent-color);
-    box-shadow: var(--glow-effect);
-}
-
-.project-image-placeholder {
-    width: 100%;
-    height: 200px;
-    background-color: var(--text-color-light);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
-    transition: background-color var(--transition-speed);
-}
-.project-image-placeholder img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover; 
-}
-body.dark-mode .project-image-placeholder {
-    background-color: var(--clr-dark-text-light);
-}
-
-.project-name {
-    padding: 15px;
-    font-size: 1.2em;
-    color: var(--text-color-dark);
-    text-align: center;
-    transition: color var(--transition-speed);
-}
-
-
 /* Estilos para el Footer */
 .main-footer {
     background-color: var(--bg-secondary);
@@ -704,7 +453,7 @@ body.dark-mode .social-icons a:hover {
     color: var(--text-color-light);
 }
 
-/* Responsive Design para ambas páginas */
+/* Responsive Design */
 @media (min-width: 769px) {
     .search-bar {
         max-width: 600px;
@@ -861,26 +610,314 @@ body.dark-mode .social-icons a:hover {
     }
 }
 
-.project-card .project-author {
-    padding: 10px;
-    font-size: 1.1em; 
-    font-weight: bold;
-    text-align: center;
-    color: var(--text-color-dark);
-    transition: color var(--transition-speed);
-}
-
-body.dark-mode .project-card .project-author {
-    color: var(--text-color-light);
-}
-
-.project-card:hover .project-author {
-    color: var(--accent-color);
-}
-
-
-
 .menu-close-btn{
     border: none;
     background: none;
+}
+
+
+/* Estilos para la página de Ayuda */
+.help-main-content {
+    background-color: var(--clr-light-bg-primary);
+    color: var(--clr-light-text-dark);
+    padding: 20px;
+    border-radius: 10px;
+    max-width: 900px;
+    margin: 20px auto;
+    box-shadow: 0 4px 15px var(--clr-light-shadow-primary);
+    transition: background-color var(--transition-speed), color var(--transition-speed);
+}
+
+body.dark-mode .help-main-content {
+    background-color: var(--clr-dark-bg-primary);
+    color: var(--clr-dark-text-dark);
+    box-shadow: 0 4px 15px var(--clr-dark-shadow-primary);
+}
+
+.help-main-content h2 {
+    text-align: center;
+    color: var(--clr-light-accent);
+    margin-bottom: 20px;
+}
+
+body.dark-mode .help-main-content h2 {
+    color: var(--clr-dark-accent);
+}
+
+/* Sección de FAQ */
+.faq-section {
+    margin-bottom: 40px;
+}
+
+.search-bar-container {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.search-input {
+    width: 100%;
+    padding: 10px 40px 10px 15px;
+    border: 1px solid var(--clr-light-bg-secondary);
+    border-radius: 25px;
+    background-color: var(--clr-light-bg-secondary);
+    color: var(--clr-light-text-dark);
+    transition: background-color var(--transition-speed), border-color var(--transition-speed);
+}
+
+body.dark-mode .search-input {
+    background-color: var(--clr-dark-bg-secondary);
+    color: var(--clr-dark-text-dark);
+    border-color: var(--clr-dark-bg-secondary);
+}
+
+.search-icon {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--clr-light-text-light);
+    transition: color var(--transition-speed);
+}
+
+body.dark-mode .search-icon {
+    color: var(--clr-dark-text-light);
+}
+
+.faq-categories {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.category-filter {
+    padding: 8px 15px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 0.9em;
+    background-color: var(--clr-light-bg-secondary);
+    color: var(--clr-light-text-dark);
+    border: 1px solid var(--clr-light-bg-secondary);
+    transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+}
+
+body.dark-mode .category-filter {
+    background-color: var(--clr-dark-bg-secondary);
+    color: var(--clr-dark-text-dark);
+    border-color: var(--clr-dark-bg-secondary);
+}
+
+.category-filter.active {
+    background-color: var(--clr-light-accent);
+    color: var(--clr-light-text-dark);
+    border-color: var(--clr-light-accent);
+    font-weight: bold;
+}
+
+body.dark-mode .category-filter.active {
+    background-color: var(--clr-dark-accent);
+    color: var(--clr-dark-bg-primary);
+    border-color: var(--clr-dark-accent);
+}
+
+.faq-item {
+    background-color: var(--clr-light-bg-secondary);
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 10px;
+    transition: background-color var(--transition-speed), box-shadow 0.3s;
+}
+
+body.dark-mode .faq-item {
+    background-color: var(--clr-dark-bg-secondary);
+}
+
+.faq-item:hover {
+    box-shadow: 0 2px 10px var(--clr-light-shadow-primary);
+}
+
+body.dark-mode .faq-item:hover {
+    box-shadow: 0 2px 10px var(--clr-dark-shadow-primary);
+}
+
+.faq-question {
+    cursor: pointer;
+    font-weight: bold;
+    color: var(--clr-light-accent);
+    transition: color var(--transition-speed);
+}
+
+body.dark-mode .faq-question {
+    color: var(--clr-dark-accent);
+}
+
+.faq-answer {
+    padding-top: 10px;
+    line-height: 1.6;
+}
+
+details[open] .faq-question {
+    margin-bottom: 10px;
+}
+
+/* Sección de Formulario de Contacto */
+.contact-form-section {
+    margin-bottom: 40px;
+}
+
+.contact-description {
+    text-align: center;
+    margin-bottom: 20px;
+    color: var(--clr-light-text-light);
+    transition: color var(--transition-speed);
+}
+
+body.dark-mode .contact-description {
+    color: var(--clr-dark-text-light);
+}
+
+.contact-form .form-group {
+    margin-bottom: 15px;
+}
+
+.contact-form label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: var(--clr-light-text-dark);
+    transition: color var(--transition-speed);
+}
+
+body.dark-mode .contact-form label {
+    color: var(--clr-dark-text-dark);
+}
+
+.contact-form input,
+.contact-form textarea,
+.contact-form select {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid var(--clr-light-bg-secondary);
+    background-color: var(--clr-light-bg-secondary);
+    color: var(--clr-light-text-dark);
+    transition: background-color var(--transition-speed), border-color var(--transition-speed), color var(--transition-speed);
+}
+
+body.dark-mode .contact-form input,
+body.dark-mode .contact-form textarea,
+body.dark-mode .contact-form select {
+    background-color: var(--clr-dark-bg-secondary);
+    color: var(--clr-dark-text-dark);
+    border-color: var(--clr-dark-bg-secondary);
+}
+
+.btn-submit {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    background-color: var(--clr-light-accent);
+    color: var(--clr-light-text-dark);
+    border: none;
+    border-radius: 5px;
+    font-size: 1em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+body.dark-mode .btn-submit {
+    background-color: var(--clr-dark-accent);
+}
+
+.btn-submit:hover {
+    background-color: #e0d72f;
+}
+
+body.dark-mode .btn-submit:hover {
+    background-color: #e0e61d;
+}
+
+.message {
+    margin-top: 15px;
+    text-align: center;
+    font-weight: bold;
+}
+
+/* Sección de Guías y Tutoriales */
+.guides-section {
+    text-align: center;
+}
+
+.guides-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.guide-card {
+    background-color: var(--clr-light-bg-secondary);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px var(--clr-light-shadow-primary);
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background-color var(--transition-speed);
+}
+
+body.dark-mode .guide-card {
+    background-color: var(--clr-dark-bg-secondary);
+    box-shadow: 0 2px 10px var(--clr-dark-shadow-primary);
+}
+
+.guide-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 15px var(--clr-light-shadow-primary);
+}
+
+body.dark-mode .guide-card:hover {
+    box-shadow: 0 4px 15px var(--clr-dark-shadow-primary);
+}
+
+.guide-card h3 {
+    color: var(--clr-light-accent);
+    margin-bottom: 10px;
+    transition: color var(--transition-speed);
+}
+
+body.dark-mode .guide-card h3 {
+    color: var(--clr-dark-accent);
+}
+
+.btn-guide {
+    display: inline-block;
+    margin-top: 15px;
+    padding: 8px 15px;
+    background-color: var(--clr-light-accent);
+    color: var(--clr-light-text-dark);
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: background-color 0.3s;
+}
+
+body.dark-mode .btn-guide {
+    background-color: var(--clr-dark-accent);
+    color: var(--clr-dark-bg-primary);
+}
+
+.btn-guide:hover {
+    background-color: #e0d72f;
+}
+
+body.dark-mode .btn-guide:hover {
+    background-color: #e0e61d;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .faq-categories {
+        justify-content: flex-start;
+        flex-wrap: wrap;
+    }
 }
