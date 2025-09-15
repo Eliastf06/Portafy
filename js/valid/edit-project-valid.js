@@ -11,7 +11,7 @@ const validateTitle = (title) => {
 
 // Validar la descripción
 const validateDescription = (description) => {
-    const regex = /^[a-zA-Z0-9=,.´-:°"]+(?:[ ][a-zA-Z0-9=,.´-:°"]+)*$/;
+    const regex = /^[a-zA-Z0-9=,.:°"]+(?:[ ][a-zA-Z0-9=,.:°"]+)*$/;
     if (description.length === 0) {
         return "La descripción no puede estar vacía.";
     }
@@ -127,4 +127,5 @@ export const validateEditProjectForm = (formData) => {
     };
 
 };
+
 
