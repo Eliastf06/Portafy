@@ -191,7 +191,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
         }
         
-        const { data: projectsData, error: projectsError } = await supabase
+        let query = supabase
             .from('proyectos')
             .select(`
                 id_proyectos,
@@ -204,8 +204,13 @@ document.addEventListener('DOMContentLoaded', async () => {
                 privacidad,
                 archivos(url)
             `)
-            .eq('id', userIdToLoad)
-            .eq('privacidad', false);
+            .eq('id', userIdToLoad);
+
+        if (!isOwnProfile) {
+            query = query.eq('privacidad', false);
+        }
+
+        const { data: projectsData, error: projectsError } = await query;
 
         if (projectsError) {
             console.error('Error al cargar los proyectos:', projectsError);
@@ -217,7 +222,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (!projectsGrid) return;
             projectsGrid.innerHTML = '';
             if (projects.length === 0) {
-                projectsGrid.innerHTML = '<p class="text-center">Este usuario aún no tiene proyectos públicos.</p>';
+                projectsGrid.innerHTML = `<p class="text-center">Este usuario aún no tiene proyectos ${isOwnProfile ? 'públicos o privados' : 'públicos'}.</p>`;
                 return;
             }
             projects.forEach(project => {
@@ -229,7 +234,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                         <img src="${imageUrl}" alt="${project.titulo}">
                     </div>
                     <div class="project-content">
-                        <h3 class="project-title">${project.titulo}</h3>
+                        <h3 class="project-title">${project.titulo} ${isOwnProfile && project.privacidad ? '<i class="fas fa-lock" title="Proyecto privado"></i>' : ''}</h3>
                         ${isOwnProfile ? `<div class="project-actions"><a href="edit-project.html?id=${project.id_proyectos}" class="edit-project-btn"><i class="fas fa-edit"></i></a></div>` : ''}
                     </div>
                 `;
