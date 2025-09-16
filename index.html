@@ -53,6 +53,12 @@
         <section class="projects-section" aria-labelledby="section-title-1">
             <h1 class="section-title" id="section-title-1">DESCUBRIR USUARIOS</h1>
             <p class="section-subtitle">Explora y descubre trabajos de otros usuarios</p>
+            <div class="filter-container">
+                <label for="category-select" class="filter-label">Filtrar por categoría:</label>
+                <select id="category-select" class="filter-select" aria-label="Filtrar proyectos por categoría">
+                    <option value="">Todas las categorías</option>
+                </select>
+            </div>
             <div class="projects-grid" id="projects-grid" role="region"
                 aria-label="Grilla de proyectos de usuarios">
             </div>
@@ -125,5 +131,6 @@
     <script src="js/theme.js"></script>
     <script src="js/modales.js"></script>
 </body>
+
 
 </html>
