@@ -883,4 +883,52 @@ body.dark-mode .project-card .project-author {
 .menu-close-btn{
     border: none;
     background: none;
+
+}
+
+
+/* Estilos para el filtro de categoría */
+.filter-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 30px;
+    gap: 15px;
+}
+
+.filter-label {
+    font-size: 1em;
+    font-weight: bold;
+    color: var(--text-color-dark);
+    transition: color var(--transition-speed);
+}
+
+.filter-select {
+    padding: 10px 15px;
+    border-radius: 20px;
+    border: 2px solid var(--text-color-light);
+    background-color: var(--bg-primary);
+    color: var(--text-color-dark);
+    font-size: 1em;
+    cursor: pointer;
+    transition: border-color var(--transition-speed), background-color var(--transition-speed), color var(--transition-speed);
+}
+
+.filter-select:hover,
+.filter-select:focus {
+    border-color: var(--accent-color);
+    outline: none;
+    box-shadow: 0 0 0 2px var(--accent-color);
+}
+
+body.dark-mode .filter-select {
+    border-color: var(--clr-dark-text-light);
+    background-color: var(--clr-dark-bg-secondary);
+    color: var(--text-color-light);
+}
+
+body.dark-mode .filter-select:hover,
+body.dark-mode .filter-select:focus {
+    border-color: var(--accent-color);
+    box-shadow: var(--glow-effect);
 }
