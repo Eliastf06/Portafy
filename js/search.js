@@ -11,16 +11,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const searchInput = document.getElementById('barra-busqueda');
     const sideSearchInput = document.getElementById('side-search-input');
     const projectsGrid = document.getElementById('projects-grid');
+    const categorySelect = document.getElementById('category-select');
+
+    if (!projectsGrid || !categorySelect) {
+        console.error('Uno o más elementos del DOM no se encontraron.');
+        return;
+    }
 
     const renderProjects = (projects) => {
-        if (!projectsGrid) {
-            console.error('Elemento del DOM con ID "projects-grid" no encontrado.');
-            return;
-        }
-
         projectsGrid.innerHTML = '';
         if (projects.length === 0) {
-            projectsGrid.innerHTML = '<p>No se encontraron proyectos que coincidan con la búsqueda.</p>';
+            projectsGrid.innerHTML = '<p>No se encontraron proyectos que coincidan con la búsqueda o el filtro.</p>';
             return;
         }
 
@@ -43,29 +44,52 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
     
-    const performSearch = async (query) => {
-        if (!projectsGrid) return;
-        
+    const fetchAndRenderCategories = async () => {
+        try {
+            const { data, error } = await supabase
+                .from('proyectos')
+                .select('categoria')
+                .eq('privacidad', false);
+            
+            if (error) throw error;
+            
+            const uniqueCategories = [...new Set(data.map(item => item.categoria))].filter(Boolean).sort();
+            
+            uniqueCategories.forEach(category => {
+                const option = document.createElement('option');
+                option.value = category;
+                option.textContent = category;
+                categorySelect.appendChild(option);
+            });
+
+        } catch (error) {
+            console.error('Error al cargar categorías:', error);
+        }
+    };
+
+    const performSearch = async (query = '', category = '') => {
         projectsGrid.innerHTML = '<p>Buscando proyectos...</p>';
 
         try {
-            const allProjects = new Map();
-
-            // Buscar proyectos por título (solo proyectos públicos)
-            const { data: projectsByTitle, error: projectsTitleError } = await supabase
-                .from('proyectos')
+            let projectsQuery = supabase.from('proyectos')
                 .select(`
                     id_proyectos,
                     titulo,
                     id_usuario:id,
                     archivos(url)
                 `)
-                .eq('privacidad', false)
-                .ilike('titulo', `%${query}%`);
+                .eq('privacidad', false);
+
+            if (category) {
+                projectsQuery = projectsQuery.eq('categoria', category);
+            }
+
+            const { data: projectsData, error: projectsError } = await projectsQuery;
             
-            if (projectsTitleError) throw projectsTitleError;
+            if (projectsError) throw projectsError;
             
-            projectsByTitle.forEach(project => {
+            const allProjects = new Map();
+            projectsData.forEach(project => {
                 allProjects.set(project.id_proyectos, {
                     id: project.id_proyectos,
                     titulo: project.titulo,
@@ -74,49 +98,34 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
             });
 
-            // Buscar usuarios por nombre de usuario
-            const { data: usersFound, error: userSearchError } = await supabase
-                .from('usuarios')
-                .select('id, nom_usuario')
-                .ilike('nom_usuario', `%${query}%`);
-            
-            if (userSearchError) throw userSearchError;
-            
-            const userIdsFound = usersFound.map(user => user.id);
-            const userNamesMap = new Map(usersFound.map(user => [user.id, user.nom_usuario]));
+            if (query) {
+                const queryLower = query.toLowerCase();
+                const filteredProjects = new Map();
 
-            // Buscar proyectos públicos de los usuarios encontrados
-            if (userIdsFound.length > 0) {
-                const { data: projectsByAuthor, error: projectsAuthorError } = await supabase
-                    .from('proyectos')
-                    .select(`
-                        id_proyectos,
-                        titulo,
-                        id_usuario:id,
-                        archivos(url)
-                    `)
-                    .eq('privacidad', false)
-                    .in('id', userIdsFound);
+                // Filtrar por título
+                Array.from(allProjects.values()).filter(p => p.titulo.toLowerCase().includes(queryLower))
+                    .forEach(p => filteredProjects.set(p.id, p));
 
-                if (projectsAuthorError) throw projectsAuthorError;
+                // Buscar usuarios por nombre y luego filtrar los proyectos por esos usuarios
+                const { data: usersFound, error: userSearchError } = await supabase
+                    .from('usuarios')
+                    .select('id, nom_usuario')
+                    .ilike('nom_usuario', `%${query}%`);
+                
+                if (userSearchError) throw userSearchError;
 
-                projectsByAuthor.forEach(project => {
-                    if (!allProjects.has(project.id_proyectos)) {
-                        allProjects.set(project.id_proyectos, {
-                            id: project.id_proyectos,
-                            titulo: project.titulo,
-                            id_usuario: project.id_usuario,
-                            imageUrl: project.archivos[0]?.url || 'https://placehold.co/600x400/000000/white?text=No+Image'
-                        });
-                    }
-                });
+                const userIdsFound = new Set(usersFound.map(user => user.id));
+
+                Array.from(allProjects.values()).filter(p => userIdsFound.has(p.id_usuario))
+                    .forEach(p => filteredProjects.set(p.id, p));
+                
+                allProjects.clear();
+                filteredProjects.forEach((value, key) => allProjects.set(key, value));
             }
 
-            // Obtener una lista única de todos los IDs de usuario de los proyectos encontrados
             const allUserIds = new Set(Array.from(allProjects.values()).map(p => p.id_usuario));
             const uniqueAllUserIds = Array.from(allUserIds);
 
-            // Obtener los nombres de usuario para todos los IDs
             const { data: allUsersData, error: allUsersError } = await supabase
                 .from('usuarios')
                 .select('id, nom_usuario')
@@ -124,10 +133,8 @@ document.addEventListener('DOMContentLoaded', () => {
             
             if (allUsersError) throw allUsersError;
 
-            // Crear un mapa completo de IDs de usuario a nombres de usuario
             const finalUserNamesMap = new Map(allUsersData.map(user => [user.id, user.nom_usuario]));
 
-            // Mapear los proyectos combinados para obtener los nombres de autor correctos
             const finalProjects = Array.from(allProjects.values()).map(project => ({
                 titulo: project.titulo,
                 authorName: finalUserNamesMap.get(project.id_usuario) || 'Desconocido',
@@ -141,26 +148,35 @@ document.addEventListener('DOMContentLoaded', () => {
             projectsGrid.innerHTML = `<p>Ocurrió un error al buscar: ${error.message}</p>`;
         }
     };
-    
-    if (searchInput) {
-        searchInput.addEventListener('input', (e) => {
-            const query = e.target.value.trim();
-            if (query.length > 2) {
-                performSearch(query);
-            } else if (query.length === 0) {
-                window.location.reload();
+
+    let searchTimeout;
+
+    const handleSearchInput = (e) => {
+        const query = e.target.value.trim();
+        const selectedCategory = categorySelect.value;
+        clearTimeout(searchTimeout);
+        searchTimeout = setTimeout(() => {
+            if (query.length > 2 || query.length === 0) {
+                performSearch(query, selectedCategory);
             }
+        }, 500); 
+    };
+
+    if (searchInput) {
+        searchInput.addEventListener('input', handleSearchInput);
+    }
+    if (sideSearchInput) {
+        sideSearchInput.addEventListener('input', handleSearchInput);
+    }
+
+    if (categorySelect) {
+        categorySelect.addEventListener('change', () => {
+            const query = searchInput.value.trim();
+            const selectedCategory = categorySelect.value;
+            performSearch(query, selectedCategory);
         });
     }
 
-    if (sideSearchInput) {
-        sideSearchInput.addEventListener('input', (e) => {
-            const query = e.target.value.trim();
-            if (query.length > 2) {
-                performSearch(query);
-            } else if (query.length === 0) {
-                window.location.reload();
-            }
-        });
-    }
+    fetchAndRenderCategories();
+    performSearch();
 });
