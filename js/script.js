@@ -11,65 +11,71 @@ const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 document.addEventListener('DOMContentLoaded', () => {
 
     // Referencias a los elementos del DOM
-    const loginNav = document.querySelector('a[href="signin.html"]'); // Enlace de "Iniciar Sesión"
-    const uploadNav = document.querySelector('a[href="upload-project.html"]'); // Enlace de "Subir"
-    const profileSideMenu = document.querySelector('a[href="profile.html"]'); // Enlace del menú lateral "Perfil"
-    const loginSideMenu = document.querySelector('a[href="signin.html"]'); // Enlace del menú lateral "Iniciar"
-    const uploadSideMenu = document.getElementById('side-menu-upload-btn'); // Enlace del menú lateral "Subir proyecto"
+    const loginNavItem = document.getElementById('signin-nav-item'); // Nuevo ID
+    const uploadNavItem = document.getElementById('upload-nav-item'); // Nuevo ID
+    
+    // Referencias a los elementos del menú lateral por su nuevo ID
+    const profileSideMenu = document.getElementById('profile-side-menu'); 
+    const loginSideMenu = document.getElementById('login-side-menu');
+    const uploadSideMenu = document.getElementById('upload-side-menu-item');
+    const logoutBtnItem = document.getElementById('logout-btn-item');
+
     const logoutBtn = document.getElementById('logout-btn'); // Botón de "Cerrar Sesión"
     const userMenuName = document.getElementById('user-menu-name'); // Nombre del usuario en el menú lateral
+    const userProfilePhoto = document.getElementById('user-profile-photo'); // Foto de perfil del usuario
 
     async function updateUI() {
         const { data: { user } } = await supabase.auth.getUser();
 
         // Si hay un usuario logueado
         if (user) {
-            // Ocultar el botón de "Iniciar Sesión"
-            if (loginNav) loginNav.style.display = 'none';
-            if (loginSideMenu) loginSideMenu.style.display = 'none';
-
-            // Mostrar el botón de "Subir" en la barra de navegación
-            if (uploadNav) uploadNav.style.display = 'flex';
+            // Ocultar el botón de "Iniciar Sesión" y mostrar "Subir" en la navegación principal
+            if (loginNavItem) loginNavItem.style.display = 'none';
+            if (uploadNavItem) uploadNavItem.style.display = 'list-item';
 
             // Mostrar opciones en el menú lateral
-            if (profileSideMenu) profileSideMenu.parentElement.style.display = 'list-item';
-            if (uploadSideMenu) uploadSideMenu.parentElement.style.display = 'list-item';
+            if (loginSideMenu) loginSideMenu.style.display = 'none';
+            if (profileSideMenu) profileSideMenu.style.display = 'list-item';
+            if (uploadSideMenu) uploadSideMenu.style.display = 'list-item';
+            if (logoutBtnItem) logoutBtnItem.style.display = 'list-item';
             
-            // Mostrar botón de cerrar sesión
-            if (logoutBtn) logoutBtn.parentElement.style.display = 'list-item';
-            
-            // Obtener el nombre del usuario de la base de datos
+            // Obtener el nombre y la foto del usuario de la base de datos
             const { data, error } = await supabase
                 .from('usuarios')
-                .select('nombre')
+                .select(`
+                    nombre,
+                    datos_perfil ( foto_perfil )
+                `)
                 .eq('id', user.id)
                 .single();
 
             if (error) {
-                console.error('Error al obtener el nombre del usuario:', error.message);
+                console.error('Error al obtener los datos del usuario:', error.message);
                 userMenuName.textContent = 'Usuario';
+                if (userProfilePhoto) userProfilePhoto.src = 'multimedia/default-profile.png';
             } else {
                 userMenuName.textContent = data.nombre || user.email;
+                if (userProfilePhoto && data.datos_perfil && data.datos_perfil.length > 0) {
+                    userProfilePhoto.src = data.datos_perfil[0].foto_perfil;
+                } else {
+                    userProfilePhoto.src = 'multimedia/default-profile.png';
+                }
             }
 
         } else {
             // Si no hay un usuario logueado
-            // Mostrar el botón de "Iniciar Sesión"
-            if (loginNav) loginNav.style.display = 'flex';
-            if (loginSideMenu) loginSideMenu.style.display = 'flex';
-
-            // Ocultar el botón de "Subir" en la barra de navegación
-            if (uploadNav) uploadNav.style.display = 'none';
+            // Mostrar el botón de "Iniciar Sesión" y ocultar "Subir" en la navegación principal
+            if (loginNavItem) loginNavItem.style.display = 'list-item';
+            if (uploadNavItem) uploadNavItem.style.display = 'none';
 
             // Ocultar opciones del menú lateral
-            if (profileSideMenu) profileSideMenu.parentElement.style.display = 'none';
-            if (uploadSideMenu) uploadSideMenu.parentElement.style.display = 'none';
-
-            // Ocultar botón de cerrar sesión
-            if (logoutBtn) logoutBtn.parentElement.style.display = 'none';
+            if (profileSideMenu) profileSideMenu.style.display = 'none';
+            if (uploadSideMenu) uploadSideMenu.style.display = 'none';
+            if (logoutBtnItem) logoutBtnItem.style.display = 'none';
             
-            // Restaurar nombre de usuario por defecto
+            // Restaurar nombre y foto de usuario por defecto
             userMenuName.textContent = 'NOMBRE APELLIDO';
+            if (userProfilePhoto) userProfilePhoto.src = 'multimedia/default-profile.png';
         }
     }
 

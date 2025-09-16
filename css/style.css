@@ -63,6 +63,7 @@ body {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+    transition: 0.5s;
 }
 
 a {
@@ -272,123 +273,6 @@ body.dark-mode .section-title {
     transition: color var(--transition-speed);
 }
 
-
-.projects-grid, .user-projects-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 40px;
-    padding-bottom: 50px;
-}
-
-
-@media (min-width: 768px) {
-    .projects-grid, .user-projects-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-@media (min-width: 1024px) {
-    .projects-grid, .user-projects-grid {
-        grid-template-columns: repeat(3, 1fr);
-    }
-}
-
-.project-card-link {
-    display: flex;
-    flex-direction: column;
-    text-decoration: none;
-    color: inherit;
-}
-
-.project-card {
-    background-color: var(--bg-secondary);
-    border-radius: 15px;
-    overflow: hidden;
-    box-shadow: 0 4px 10px var(--shadow-secondary);
-    transition: transform 0.2s ease, box-shadow 0.2s ease, background-color var(--transition-speed);
-    display: flex;
-    flex-direction: column;
-    cursor: pointer;
-    height: 100%; /* Asegura que la tarjeta ocupe todo el espacio de su celda en la cuadrícula */
-}
-
-body.dark-mode .project-card {
-    border: 1px solid var(--clr-dark-text-light);
-    box-shadow: 0 0 5px var(--clr-dark-text-light), 0 0 10px var(--clr-dark-shadow-secondary);
-}
-
-.project-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 6px 15px var(--shadow-primary);
-}
-
-body.dark-mode .project-card:hover {
-    border-color: var(--accent-color);
-    box-shadow: var(--glow-effect);
-}
-
-.project-preview {
-    background-color: var(--text-color-light); /* Color de fondo temporal para la previsualización */
-    height: 200px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: var(--text-color-dark);
-    font-weight: bold;
-    font-size: 1.2em;
-    transition: background-color var(--transition-speed), color var(--transition-speed);
-}
-
-body.dark-mode .project-preview {
-    background-color: var(--clr-dark-text-light);
-    color: var(--clr-dark-bg-primary);
-}
-
-
-.user-info {
-    padding: 15px;
-    text-align: center;
-}
-
-.user-name {
-    font-size: 1.5em;
-    color: var(--text-color-dark);
-    margin-bottom: 5px;
-    transition: color var(--transition-speed);
-}
-
-.user-occupation {
-    font-size: 0.9em;
-    color: var(--text-color-light);
-    transition: color var(--transition-speed);
-}
-
-
-
-body.dark-mode .filter-btn {
-    box-shadow: var(--glow-effect-secondary);
-    color: var(--neon-blue);
-    background-color: var(--clr-dark-bg-secondary);
-    border: 1px solid var(--neon-blue);
-}
-
-.filter-btn:hover {
-    background-color: var(--text-color-light);
-}
-
-body.dark-mode .filter-btn:hover {
-    background-color: var(--accent-color);
-    color: var(--clr-dark-bg-primary);
-    box-shadow: var(--glow-effect);
-    border-color: var(--accent-color);
-}
-
-.filter-btn {
-    color: var(--clr-light-bg-primary);
-}
-
-.filter-btn i {
-    margin-right: 8px;
-}
 
 .menu-overlay {
     position: fixed;
@@ -836,6 +720,10 @@ body.dark-mode .social-icons a:hover {
         display: flex;
         justify-content: center;
     }
+    /* Regla para ocultar el botón de Subir en móviles, independientemente del estado de sesión */
+    #upload-nav-item {
+        display: none !important;
+    }
 }
 
 @media (max-width: 480px) {
@@ -861,30 +749,13 @@ body.dark-mode .social-icons a:hover {
     }
 }
 
-.project-card .project-author {
-    padding: 10px;
-    font-size: 1.1em; 
-    font-weight: bold;
-    text-align: center;
-    color: var(--text-color-dark);
-    transition: color var(--transition-speed);
-}
-
-body.dark-mode .project-card .project-author {
-    color: var(--text-color-light);
-}
-
-.project-card:hover .project-author {
-    color: var(--accent-color);
-}
-
 
 
 .menu-close-btn{
     border: none;
     background: none;
-
 }
+
 
 
 /* Estilos para el filtro de categoría */
@@ -931,4 +802,126 @@ body.dark-mode .filter-select:hover,
 body.dark-mode .filter-select:focus {
     border-color: var(--accent-color);
     box-shadow: var(--glow-effect);
+}
+
+
+
+.projects-grid, .user-projects-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 40px;
+    padding-bottom: 50px;
+}
+
+
+@media (min-width: 768px) {
+    .projects-grid, .user-projects-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+@media (min-width: 1024px) {
+    .projects-grid, .user-projects-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+.project-card-link {
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    color: inherit;
+}
+
+.project-card {
+    background-color: var(--bg-secondary);
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 4px 10px var(--shadow-secondary);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background-color var(--transition-speed);
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+    height: 100%; /* Asegura que la tarjeta ocupe todo el espacio de su celda en la cuadrícula */
+}
+
+body.dark-mode .project-card {
+    border: 1px solid var(--clr-dark-text-light);
+    box-shadow: 0 0 5px var(--clr-dark-text-light), 0 0 10px var(--clr-dark-shadow-secondary);
+}
+
+.project-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 15px var(--shadow-primary);
+}
+
+body.dark-mode .project-card:hover {
+    border-color: var(--accent-color);
+    box-shadow: var(--glow-effect);
+}
+
+.project-preview {
+    background-color: var(--text-color-light); /* Color de fondo temporal para la previsualización */
+    height: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--text-color-dark);
+    font-weight: bold;
+    font-size: 1.2em;
+    transition: background-color var(--transition-speed), color var(--transition-speed);
+}
+
+body.dark-mode .project-preview {
+    background-color: var(--clr-dark-text-light);
+    color: var(--clr-dark-bg-primary);
+}
+
+.project-image-placeholder {
+    width: 100%;
+    height: 250px; /* Tamaño fijo para la altura de la imagen */
+    overflow: hidden;
+}
+
+.project-image-placeholder img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Asegura que la imagen cubra el contenedor sin distorsión */
+}
+
+.project-content {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1; /* Permite que el contenido se expanda para llenar el espacio restante */
+}
+
+
+.project-title {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: var(--text-color-dark);
+    margin-bottom: 8px;
+    transition: color var(--transition-speed);
+}
+
+body.dark-mode .project-card .project-title {
+    color: var(--clr-dark-text-dark);
+}
+
+.project-card:hover .project-title {
+    color: var(--accent-color);
+}
+
+.project-author {
+    font-size: 0.9em;
+    color: var(--text-color-dark);
+    transition: color var(--transition-speed);
+}
+
+body.dark-mode .project-card .project-author {
+    color: var(--text-color-light);
+}
+
+.project-card:hover .project-author {
+    color: var(--accent-color);
 }

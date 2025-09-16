@@ -585,6 +585,10 @@ body.dark-mode .social-icons a:hover {
         display: flex;
         justify-content: center;
     }
+    /* Regla para ocultar el botón de Subir en móviles, independientemente del estado de sesión */
+    #upload-nav-item {
+        display: none !important;
+    }
 }
 
 @media (max-width: 480px) {

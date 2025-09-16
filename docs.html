@@ -26,14 +26,11 @@
             </div>
             <nav class="main-nav" role="navigation" aria-label="Menú principal">
                 <ul>
-                    <li><a href="docs.html" class="nav-icon" aria-label="Documentación"><i class="fas fa-file-alt"
-                                aria-hidden="true"></i> <span class="nav-text-desktop">DOCS</span></a></li>
-                    <li><a href="help.html" class="nav-icon" aria-label="Ayuda"><i class="far fa-lightbulb"
+                    <li id="help-nav-item"><a href="help.html" class="nav-icon" aria-label="Ayuda"><i class="far fa-lightbulb"
                                 aria-hidden="true"></i> <span class="nav-text-desktop">AYUDA</span></a></li>
-                    <li><a href="signin.html" class="nav-icon" aria-label="Iniciar sesión"><i
-                                class="fas fa-user-circle" aria-hidden="true"></i> <span
-                                class="nav-text-desktop">Iniciar</span></a></li>
-                    <li><a href="upload-project.html" class="nav-icon" aria-label="Subir proyecto"><i
+                    <li id="signin-nav-item"><a href="signin.html" class="nav-icon" aria-label="Iniciar sesión"><i class="fas fa-user-circle"
+                                aria-hidden="true"></i> <span class="nav-text-desktop">Iniciar</span></a></li>
+                    <li id="upload-nav-item"><a href="upload-project.html" class="nav-icon" aria-label="Subir proyecto"><i
                                 class="fas fa-upload" aria-hidden="true"></i> <span
                                 class="nav-text-desktop">SUBIR</span></a></li>
                     <li><a href="#" class="nav-icon menu-toggle" id="menu-toggle-btn" role="button"
@@ -82,7 +79,8 @@
                         eficiente. El principal objetivo es proveer una solución gratuita y accesible para aquellos que
                         necesitan una presencia profesional en línea para mostrar sus proyectos y trabajos a potenciales
                         empleadores o a la comunidad.</p>
-                    <p>El sistema permite a los usuarios <strong>cargar sus proyectos</strong> y <strong>compartir su perfil</strong> de
+                    <p>El sistema permite a los usuarios <strong>cargar sus proyectos</strong> y <strong>compartir su
+                            perfil</strong> de
                         forma organizada. Esto facilita que el trabajo de los usuarios sea evaluado por terceros, como
                         profesores o reclutadores, de una forma visualmente atractiva y profesional.</p>
                 </div>
@@ -102,13 +100,15 @@
                                             Token)</a></strong>.</li>
                                 <li><strong>Gestión de Proyectos:</strong> El sistema debe permitir a los usuarios
                                     <strong>subir, editar y eliminar</strong> sus proyectos, incluyendo contenido
-                                    multimedia como imágenes y videos.</li>
+                                    multimedia como imágenes y videos.
+                                </li>
                                 <li><strong>Gestión de Perfil:</strong> El usuario debe poder <strong>visualizar y
                                         editar su perfil</strong>, así como <strong>compartir</strong> su cuenta a
                                     través de un enlace público.</li>
                                 <li><strong>Importar/Exportar CV:</strong> Debe existir la funcionalidad para
                                     <strong>importar y exportar CVs en formato PDF</strong>, utilizando plantillas
-                                    predefinidas.</li>
+                                    predefinidas.
+                                </li>
                                 <li><strong>Opciones de Privacidad:</strong> El sistema debe ofrecer la posibilidad de
                                     establecer la privacidad de los proyectos, haciéndolos públicos o privados.</li>
                             </ul>
@@ -169,7 +169,8 @@
                                 de datos y la API) están separados. La comunicación entre ambos se realiza mediante una
                                 <strong><a href="https://restfulapi.net/" target="_blank">API RESTful</a></strong>,
                                 utilizando el formato de intercambio de datos <strong><a
-                                        href="https://www.json.org/json-es.html" target="_blank">JSON</a></strong>.</p>
+                                        href="https://www.json.org/json-es.html" target="_blank">JSON</a></strong>.
+                            </p>
                             <p>Esto permite que el sistema sea más escalable y modular, ya que cada componente puede ser
                                 desarrollado y actualizado de forma independiente, facilitando la colaboración y el
                                 mantenimiento.</p>
@@ -198,7 +199,9 @@
                                 <li><strong>API RESTful:</strong> Es el puente entre el frontend y el backend,
                                     gestionando las peticiones y respuestas para todas las operaciones.</li>
                                 <li><strong>Base de Datos:</strong> Se utiliza un sistema de gestión de bases de datos
-                                    relacionales, <strong><a href="https://supabase.com/docs" target="_blank">Supabase</a></strong>, para almacenar y gestionar los datos de los
+                                    relacionales, <strong><a href="https://supabase.com/docs"
+                                            target="_blank">Supabase</a></strong>, para almacenar y gestionar los datos
+                                    de los
                                     usuarios, proyectos y perfiles.</li>
                             </ul>
                         </div>
@@ -265,25 +268,23 @@
             <button class="menu-close-btn" id="menu-close-btn" aria-label="Cerrar menú lateral">&times;</button>
             <div class="menu-header" id="menu-header-id">
                 <div class="profile-photo-circle">
-                    <img src="multimedia/default-profile.png" alt="Foto de perfil por defecto" />
+                    <img id="user-profile-photo" src="multimedia/default-profile.png"
+                        alt="Foto de perfil por defecto" />
                 </div>
                 <h3 id="user-menu-name">NOMBRE APELLIDO</h3>
             </div>
             <ul class="menu-links">
-                <li><a href="index.html" aria-label="Página principal"><i class="fas fa-home"
-                            aria-hidden="true"></i> Página principal</a></li>
-                <li><a href="signin.html" aria-label="Iniciar sesión"><i class="fas fa-user"
-                            aria-hidden="true"></i> Iniciar sesión</a></li>
-                <li><a href="profile.html" aria-label="Ver perfil"><i class="fas fa-user"
-                            aria-hidden="true"></i> Perfil</a></li>
-                <li><a href="#" id="side-menu-upload-btn" aria-label="Subir proyecto"><i class="fas fa-upload"
-                            aria-hidden="true"></i> Subir proyecto</a></li>
-                <li><a href="docs.html" aria-label="Ver documentación"><i class="fas fa-file-alt"
-                            aria-hidden="true"></i>Documentación</a></li>
-                <li><a href="#" aria-label="Ayuda y soporte"><i class="fas fa-lightbulb"
-                            aria-hidden="true"></i> Soporte</a></li>
-                <li><a href="#" id="logout-btn" aria-label="Cerrar sesión"><i class="fas fa-sign-out-alt"
-                            aria-hidden="true"></i> Cerrar sesión</a></li>
+                <li><a href="index.html"><i class="fas fa-home" aria-hidden="true"></i> Página principal</a></li>
+                <li id="login-side-menu"><a href="signin.html"><i class="fas fa-user" aria-hidden="true"></i> Iniciar
+                        sesión</a></li>
+                <li id="profile-side-menu"><a href="profile.html"><i class="fas fa-user" aria-hidden="true"></i>
+                        Perfil</a></li>
+                <li id="upload-side-menu-item"><a href="upload-project.html" id="side-menu-upload-btn"><i
+                            class="fas fa-upload" aria-hidden="true"></i> Subir proyecto</a></li>
+                <li><a href="help.html"><i class="fas fa-lightbulb" aria-hidden="true"></i> Soporte</a></li>
+                <li id="logout-btn-item"><a href="#" id="logout-btn"><i class="fas fa-sign-out-alt"
+                            aria-hidden="true"></i> Cerrar sesión</a>
+                </li>
             </ul>
         </div>
     </div>
@@ -310,12 +311,11 @@
                 <div class="social-icons">
                     <a href="https://www.facebook.com/share/1FzWcFffA8/" aria-label="Síguenos en Facebook"><i
                             class="fab fa-facebook-f" aria-hidden="true"></i></a>
-                    <a href="https://x.com/eliasluck13?t=wawV_DCWv2wTW_eGKpdeyA&s=08" aria-label="Síguenos en X (Twitter)"><i
-                            class="fab fa-twitter" aria-hidden="true"></i></a>
+                    <a href="https://x.com/eliasluck13?t=wawV_DCWv2wTW_eGKpdeyA&s=08"
+                        aria-label="Síguenos en X (Twitter)"><i class="fab fa-twitter" aria-hidden="true"></i></a>
                     <a href="https://www.instagram.com/eliastf.06?igsh=cDhpbmJwd2duMGxk"
                         aria-label="Síguenos en Instagram"><i class="fab fa-instagram" aria-hidden="true"></i></a>
-                    <a
-                        href="https://www.linkedin.com/in/elias-franco-766407342?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app"
+                    <a href="https://www.linkedin.com/in/elias-franco-766407342?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app"
                         aria-label="Síguenos en LinkedIn"><i class="fab fa-linkedin-in" aria-hidden="true"></i></a>
                 </div>
             </div>
@@ -326,7 +326,7 @@
     </footer>
     <script src="js/theme.js"></script>
     <script type="module" src="js/script.js"></script>
-    <script src="js/modales.js"></script>
+    <script src="js/menu.js"></script>
     <script src="js/docs.js"></script>
 </body>
 

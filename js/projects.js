@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
             `;
             projectsGrid.appendChild(projectCard);
-            
+
             // Redirigir al perfil del usuario al hacer clic en la tarjeta
             projectCard.addEventListener('click', () => {
                 if (project.authorName) {
@@ -51,19 +51,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Función para cargar y mostrar todos los proyectos no privados
     const fetchAndRenderPublicProjects = async () => {
-        projectsGrid.innerHTML = '<p>Cargando proyectos...</p>';
         try {
-            // Se realiza la consulta sin la unión para obtener los datos de proyectos y archivos
             const { data: projectsData, error: projectsError } = await supabase
                 .from('proyectos')
                 .select(`
-                    id,
-                    titulo,
-                    privacidad,
-                    archivos(url)
-                `)
-                .eq('privacidad', false);
-            
+                    *,
+                    archivos(
+                        url
+                    )
+                `);
+
             if (projectsError) {
                 throw projectsError;
             }

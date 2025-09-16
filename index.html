@@ -30,14 +30,13 @@
             </div>
             <nav class="main-nav" role="navigation" aria-label="Menú principal">
                 <ul>
-                    <li><a href="docs.html" class="nav-icon" aria-label="Documentación"><i class="fas fa-file-alt"
+                    <li id="docs-nav-item"><a href="docs.html" class="nav-icon" aria-label="Documentación"><i class="fas fa-file-alt"
                                 aria-hidden="true"></i> <span class="nav-text-desktop">DOCS</span></a></li>
-                    <li><a href="help.html" class="nav-icon" aria-label="Ayuda"><i class="far fa-lightbulb"
+                    <li id="help-nav-item"><a href="help.html" class="nav-icon" aria-label="Ayuda"><i class="far fa-lightbulb"
                                 aria-hidden="true"></i> <span class="nav-text-desktop">AYUDA</span></a></li>
-                    <li><a href="signin.html" class="nav-icon" aria-label="Iniciar sesión"><i
-                                class="fas fa-user-circle" aria-hidden="true"></i> <span
-                                class="nav-text-desktop">Iniciar</span></a></li>
-                    <li><a href="upload-project.html" class="nav-icon" aria-label="Subir proyecto"><i
+                    <li id="signin-nav-item"><a href="signin.html" class="nav-icon" aria-label="Iniciar sesión"><i class="fas fa-user-circle"
+                                aria-hidden="true"></i> <span class="nav-text-desktop">Iniciar</span></a></li>
+                    <li id="upload-nav-item"><a href="upload-project.html" class="nav-icon" aria-label="Subir proyecto"><i
                                 class="fas fa-upload" aria-hidden="true"></i> <span
                                 class="nav-text-desktop">SUBIR</span></a></li>
                     <li><a href="#" class="nav-icon menu-toggle" id="menu-toggle-btn" role="button"
@@ -59,8 +58,7 @@
                     <option value="">Todas las categorías</option>
                 </select>
             </div>
-            <div class="projects-grid" id="projects-grid" role="region"
-                aria-label="Grilla de proyectos de usuarios">
+            <div class="projects-grid" id="projects-grid" role="region" aria-label="Grilla de proyectos de usuarios">
             </div>
         </section>
     </main>
@@ -70,7 +68,8 @@
             <button class="menu-close-btn" id="menu-close-btn" aria-label="Cerrar menú lateral">&times;</button>
             <div class="menu-header" id="menu-header-id">
                 <div class="profile-photo-circle">
-                    <img src="multimedia/default-profile.png" alt="Foto de perfil por defecto" />
+                    <img id="user-profile-photo" src="multimedia/default-profile.png"
+                        alt="Foto de perfil por defecto" />
                 </div>
                 <h3 id="user-menu-name">NOMBRE APELLIDO</h3>
             </div>
@@ -80,12 +79,17 @@
             </div>
             <ul class="menu-links">
                 <li><a href="index.html"><i class="fas fa-home" aria-hidden="true"></i> Página principal</a></li>
-                <li><a href="signin.html"><i class="fas fa-user" aria-hidden="true"></i> Iniciar sesión</a></li>
-                <li><a href="profile.html"><i class="fas fa-user" aria-hidden="true"></i> Perfil</a></li>
-                <li><a href="#" id="side-menu-upload-btn"><i class="fas fa-upload" aria-hidden="true"></i> Subir proyecto</a></li>
+                <li id="login-side-menu"><a href="signin.html"><i class="fas fa-user" aria-hidden="true"></i> Iniciar
+                        sesión</a></li>
+                <li id="profile-side-menu"><a href="profile.html"><i class="fas fa-user" aria-hidden="true"></i>
+                        Perfil</a></li>
+                <li id="upload-side-menu-item"><a href="upload-project.html" id="side-menu-upload-btn"><i
+                            class="fas fa-upload" aria-hidden="true"></i> Subir proyecto</a></li>
                 <li><a href="docs.html"><i class="fas fa-file-alt" aria-hidden="true"></i>Documentación</a></li>
                 <li><a href="help.html"><i class="fas fa-lightbulb" aria-hidden="true"></i> Soporte</a></li>
-                <li><a href="#" id="logout-btn"><i class="fas fa-sign-out-alt" aria-hidden="true"></i> Cerrar sesión</a></li>
+                <li id="logout-btn-item"><a href="#" id="logout-btn"><i class="fas fa-sign-out-alt"
+                            aria-hidden="true"></i> Cerrar sesión</a>
+                </li>
             </ul>
         </div>
     </div>
@@ -111,12 +115,11 @@
                 <div class="social-icons">
                     <a href="https://www.facebook.com/share/1FzWcFffA8/" aria-label="Síguenos en Facebook"><i
                             class="fab fa-facebook-f" aria-hidden="true"></i></a>
-                    <a href="https://x.com/eliasluck13?t=wawV_DCWv2wTW_eGKpdeyA&s=08" aria-label="Síguenos en X (Twitter)"><i
-                            class="fab fa-twitter" aria-hidden="true"></i></a>
+                    <a href="https://x.com/eliasluck13?t=wawV_DCWv2wTW_eGKpdeyA&s=08"
+                        aria-label="Síguenos en X (Twitter)"><i class="fab fa-twitter" aria-hidden="true"></i></a>
                     <a href="https://www.instagram.com/eliastf.06?igsh=cDhpbmJwd2duMGxk"
                         aria-label="Síguenos en Instagram"><i class="fab fa-instagram" aria-hidden="true"></i></a>
-                    <a
-                        href="https://www.linkedin.com/in/elias-franco-766407342?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app"
+                    <a href="https://www.linkedin.com/in/elias-franco-766407342?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app"
                         aria-label="Síguenos en LinkedIn"><i class="fab fa-linkedin-in" aria-hidden="true"></i></a>
                 </div>
             </div>
@@ -129,8 +132,7 @@
     <script type="module" src="js/search.js"></script>
     <script type="module" src="js/script.js"></script>
     <script src="js/theme.js"></script>
-    <script src="js/modales.js"></script>
+    <script src="js/menu.js"></script>
 </body>
-
 
 </html>

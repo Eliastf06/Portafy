@@ -25,12 +25,11 @@
             </div>
             <nav class="main-nav" role="navigation" aria-label="Menú principal">
                 <ul>
-                    <li><a href="docs.html" class="nav-icon" aria-label="Documentación"><i class="fas fa-file-alt"
+                    <li id="docs-nav-item"><a href="docs.html" class="nav-icon" aria-label="Documentación"><i class="fas fa-file-alt"
                                 aria-hidden="true"></i> <span class="nav-text-desktop">DOCS</span></a></li>
-                    <li><a href="signin.html" class="nav-icon" aria-label="Iniciar sesión"><i
-                                class="fas fa-user-circle" aria-hidden="true"></i> <span
-                                class="nav-text-desktop">Iniciar</span></a></li>
-                    <li><a href="upload-project.html" class="nav-icon" aria-label="Subir proyecto"><i
+                    <li id="signin-nav-item"><a href="signin.html" class="nav-icon" aria-label="Iniciar sesión"><i class="fas fa-user-circle"
+                                aria-hidden="true"></i> <span class="nav-text-desktop">Iniciar</span></a></li>
+                    <li id="upload-nav-item"><a href="upload-project.html" class="nav-icon" aria-label="Subir proyecto"><i
                                 class="fas fa-upload" aria-hidden="true"></i> <span
                                 class="nav-text-desktop">SUBIR</span></a></li>
                     <li><a href="#" class="nav-icon menu-toggle" id="menu-toggle-btn" role="button"
@@ -43,139 +42,154 @@
     </header>
 
 
+    <main class="help-main-content">
+        <section class="faq-section">
+            <h2>Preguntas Frecuentes</h2>
+            <div class="search-bar-container">
+                <input type="text" id="faq-search" class="search-input" placeholder="Buscar preguntas...">
+                <i class="fas fa-search search-icon"></i>
+            </div>
+            <div class="faq-categories">
+                <span class="category-filter active" data-category="all">Todas</span>
+                <span class="category-filter" data-category="primeros-pasos">Primeros Pasos</span>
+                <span class="category-filter" data-category="gestion-portafolio">Gestión del Portafolio</span>
+                <span class="category-filter" data-category="funcionalidad">Funcionalidad</span>
+                <span class="category-filter" data-category="solucion-problemas">Solución de Problemas</span>
+                <span class="category-filter" data-category="general">General</span>
+            </div>
+            <div class="faq-container">
+                <div class="faq-item" data-category="primeros-pasos">
+                    <details>
+                        <summary class="faq-question">¿Cómo creo una cuenta?</summary>
+                        <p class="faq-answer">Para crear una cuenta, haz clic en el botón "Registrarse" en la esquina
+                            superior derecha y completa el formulario. Recibirás un correo electrónico de confirmación
+                            para activar tu cuenta.</p>
+                    </details>
+                </div>
+                <div class="faq-item" data-category="primeros-pasos">
+                    <details>
+                        <summary class="faq-question">¿Cómo inicio sesión?</summary>
+                        <p class="faq-answer">Si ya tienes una cuenta, haz clic en "Iniciar Sesión" e introduce tu
+                            correo y contraseña.</p>
+                    </details>
+                </div>
+                <div class="faq-item" data-category="gestion-portafolio">
+                    <details>
+                        <summary class="faq-question">¿Cómo subo un nuevo proyecto?</summary>
+                        <p class="faq-answer">En cualquier pagina (una vez que ya estes logeado), encontrarás un botón
+                            para "Subir Proyecto" tanto en la barra de navegación como en el menu lateral. Llena los
+                            campos requeridos y carga tus imágenes para mostrar tu trabajo.</p>
+                    </details>
+                </div>
+                <div class="faq-item" data-category="gestion-portafolio">
+                    <details>
+                        <summary class="faq-question">¿Puedo editar o eliminar mis proyectos?</summary>
+                        <p class="faq-answer">Sí, desde tu perfil, haz clic en el proyecto que deseas editar o eliminar.
+                            Se abrirá una página donde podrás realizar los cambios.</p>
+                    </details>
+                </div>
+                <div class="faq-item" data-category="funcionalidad">
+                    <details>
+                        <summary class="faq-question">¿Cómo comparto mi portafolio?</summary>
+                        <p class="faq-answer">Cada perfil tiene una URL única que puedes copiar y compartir en tus redes
+                            sociales, currículum o con clientes potenciales.</p>
+                    </details>
+                </div>
+                <div class="faq-item" data-category="solucion-problemas">
+                    <details>
+                        <summary class="faq-question">Mi proyecto no se carga correctamente, ¿qué debo hacer?</summary>
+                        <p class="faq-answer">Verifica tu conexión a internet y asegúrate de que las imágenes no superen
+                            el tamaño máximo permitido. Si el problema persiste, contacta con nuestro soporte técnico.
+                        </p>
+                    </details>
+                </div>
+                <div class="faq-item" data-category="general">
+                    <details>
+                        <summary class="faq-question">¿Es Portafy de uso gratuito?</summary>
+                        <p class="faq-answer">Sí, Portafy es completamente gratuito para que puedas crear y compartir tu
+                            portafolio sin costo alguno.</p>
+                    </details>
+                </div>
+            </div>
+        </section>
+
+        <section class="contact-form-section">
+            <h2>¿No encuentras lo que buscas? Contáctanos</h2>
+            <p class="contact-description">Envíanos un mensaje con tu consulta y te responderemos lo antes posible.</p>
+            <form id="contactForm" class="contact-form">
+                <div class="form-group">
+                    <label for="contact-name">Nombre</label>
+                    <input type="text" id="contact-name" name="nombre" required>
+                </div>
+                <div class="form-group">
+                    <label for="contact-email">Correo Electrónico</label>
+                    <input type="email" id="contact-email" name="correo" required>
+                </div>
+                <div class="form-group">
+                    <label for="contact-type">Tipo de Consulta</label>
+                    <select id="contact-type" name="tipo_consulta">
+                        <option value="tecnica">Técnica</option>
+                        <option value="sugerencia">Sugerencia</option>
+                        <option value="reporte">Reporte de Problema</option>
+                        <option value="otro">Otro</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="contact-message">Mensaje</label>
+                    <textarea id="contact-message" name="mensaje" rows="6" required></textarea>
+                </div>
+                <button type="submit" class="btn-submit">Enviar Mensaje</button>
+                <p id="form-message" class="message"></p>
+            </form>
+        </section>
+
+        <section class="guides-section">
+            <h2>Guías y Tutoriales</h2>
+            <div class="guides-grid">
+                <div class="guide-card">
+                    <h3>Guía de Inicio Rápido</h3>
+                    <p>Aprende a crear tu primer portafolio en 5 minutos.</p>
+                    <a href="#" class="btn-guide">Leer más</a>
+                </div>
+                <div class="guide-card">
+                    <h3>Optimización de Imágenes</h3>
+                    <p>Consejos para optimizar tus imágenes sin perder calidad.</p>
+                    <a href="#" class="btn-guide">Leer más</a>
+                </div>
+                <div class="guide-card">
+                    <h3>Video-Tutoriales</h3>
+                    <p>Colección de videos que te guiarán paso a paso.</p>
+                    <a href="#" class="btn-guide">Ver Videos</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
     <div class="menu-overlay" id="side-menu-overlay" role="dialog" aria-modal="true" aria-labelledby="menu-header-id">
         <div class="side-menu">
             <button class="menu-close-btn" id="menu-close-btn" aria-label="Cerrar menú lateral">&times;</button>
             <div class="menu-header" id="menu-header-id">
                 <div class="profile-photo-circle">
-                    <img src="multimedia/default-profile.png" alt="Foto de perfil por defecto" />
+                    <img id="user-profile-photo" src="multimedia/default-profile.png"
+                        alt="Foto de perfil por defecto" />
                 </div>
                 <h3 id="user-menu-name">NOMBRE APELLIDO</h3>
             </div>
             <ul class="menu-links">
                 <li><a href="index.html"><i class="fas fa-home" aria-hidden="true"></i> Página principal</a></li>
-                <li><a href="signin.html"><i class="fas fa-user" aria-hidden="true"></i> Iniciar sesión</a></li>
-                <li><a href="profile.html"><i class="fas fa-user" aria-hidden="true"></i> Perfil</a></li>
-                <li><a href="#" id="side-menu-upload-btn"><i class="fas fa-upload" aria-hidden="true"></i> Subir proyecto</a></li>
+                <li id="login-side-menu"><a href="signin.html"><i class="fas fa-user" aria-hidden="true"></i> Iniciar
+                        sesión</a></li>
+                <li id="profile-side-menu"><a href="profile.html"><i class="fas fa-user" aria-hidden="true"></i>
+                        Perfil</a></li>
+                <li id="upload-side-menu-item"><a href="upload-project.html" id="side-menu-upload-btn"><i
+                            class="fas fa-upload" aria-hidden="true"></i> Subir proyecto</a></li>
                 <li><a href="docs.html"><i class="fas fa-file-alt" aria-hidden="true"></i>Documentación</a></li>
-                <li><a href="#" id="logout-btn"><i class="fas fa-sign-out-alt" aria-hidden="true"></i> Cerrar sesión</a></li>
+                <li id="logout-btn-item"><a href="#" id="logout-btn"><i class="fas fa-sign-out-alt"
+                            aria-hidden="true"></i> Cerrar sesión</a>
+                </li>
             </ul>
         </div>
     </div>
-
-    <main class="help-main-content">
-    <section class="faq-section">
-        <h2>Preguntas Frecuentes</h2>
-        <div class="search-bar-container">
-            <input type="text" id="faq-search" class="search-input" placeholder="Buscar preguntas...">
-            <i class="fas fa-search search-icon"></i>
-        </div>
-        <div class="faq-categories">
-            <span class="category-filter active" data-category="all">Todas</span>
-            <span class="category-filter" data-category="primeros-pasos">Primeros Pasos</span>
-            <span class="category-filter" data-category="gestion-portafolio">Gestión del Portafolio</span>
-            <span class="category-filter" data-category="funcionalidad">Funcionalidad</span>
-            <span class="category-filter" data-category="solucion-problemas">Solución de Problemas</span>
-            <span class="category-filter" data-category="general">General</span>
-        </div>
-        <div class="faq-container">
-            <div class="faq-item" data-category="primeros-pasos">
-                <details>
-                    <summary class="faq-question">¿Cómo creo una cuenta?</summary>
-                    <p class="faq-answer">Para crear una cuenta, haz clic en el botón "Registrarse" en la esquina superior derecha y completa el formulario. Recibirás un correo electrónico de confirmación para activar tu cuenta.</p>
-                </details>
-            </div>
-            <div class="faq-item" data-category="primeros-pasos">
-                <details>
-                    <summary class="faq-question">¿Cómo inicio sesión?</summary>
-                    <p class="faq-answer">Si ya tienes una cuenta, haz clic en "Iniciar Sesión" e introduce tu correo y contraseña.</p>
-                </details>
-            </div>
-            <div class="faq-item" data-category="gestion-portafolio">
-                <details>
-                    <summary class="faq-question">¿Cómo subo un nuevo proyecto?</summary>
-                    <p class="faq-answer">En cualquier pagina (una vez que ya estes logeado), encontrarás un botón para "Subir Proyecto" tanto en la barra de navegación como en el menu lateral. Llena los campos requeridos y carga tus imágenes para mostrar tu trabajo.</p>
-                </details>
-            </div>
-            <div class="faq-item" data-category="gestion-portafolio">
-                <details>
-                    <summary class="faq-question">¿Puedo editar o eliminar mis proyectos?</summary>
-                    <p class="faq-answer">Sí, desde tu perfil, haz clic en el proyecto que deseas editar o eliminar. Se abrirá una página donde podrás realizar los cambios.</p>
-                </details>
-            </div>
-            <div class="faq-item" data-category="funcionalidad">
-                <details>
-                    <summary class="faq-question">¿Cómo comparto mi portafolio?</summary>
-                    <p class="faq-answer">Cada perfil tiene una URL única que puedes copiar y compartir en tus redes sociales, currículum o con clientes potenciales.</p>
-                </details>
-            </div>
-            <div class="faq-item" data-category="solucion-problemas">
-                <details>
-                    <summary class="faq-question">Mi proyecto no se carga correctamente, ¿qué debo hacer?</summary>
-                    <p class="faq-answer">Verifica tu conexión a internet y asegúrate de que las imágenes no superen el tamaño máximo permitido. Si el problema persiste, contacta con nuestro soporte técnico.</p>
-                </details>
-            </div>
-            <div class="faq-item" data-category="general">
-                <details>
-                    <summary class="faq-question">¿Es Portafy de uso gratuito?</summary>
-                    <p class="faq-answer">Sí, Portafy es completamente gratuito para que puedas crear y compartir tu portafolio sin costo alguno.</p>
-                </details>
-            </div>
-            </div>
-    </section>
-
-    <section class="contact-form-section">
-        <h2>¿No encuentras lo que buscas? Contáctanos</h2>
-        <p class="contact-description">Envíanos un mensaje con tu consulta y te responderemos lo antes posible.</p>
-        <form id="contactForm" class="contact-form">
-            <div class="form-group">
-                <label for="contact-name">Nombre</label>
-                <input type="text" id="contact-name" name="nombre" required>
-            </div>
-            <div class="form-group">
-                <label for="contact-email">Correo Electrónico</label>
-                <input type="email" id="contact-email" name="correo" required>
-            </div>
-            <div class="form-group">
-                <label for="contact-type">Tipo de Consulta</label>
-                <select id="contact-type" name="tipo_consulta">
-                    <option value="tecnica">Técnica</option>
-                    <option value="sugerencia">Sugerencia</option>
-                    <option value="reporte">Reporte de Problema</option>
-                    <option value="otro">Otro</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="contact-message">Mensaje</label>
-                <textarea id="contact-message" name="mensaje" rows="6" required></textarea>
-            </div>
-            <button type="submit" class="btn-submit">Enviar Mensaje</button>
-            <p id="form-message" class="message"></p>
-        </form>
-    </section>
-
-    <section class="guides-section">
-        <h2>Guías y Tutoriales</h2>
-        <div class="guides-grid">
-            <div class="guide-card">
-                <h3>Guía de Inicio Rápido</h3>
-                <p>Aprende a crear tu primer portafolio en 5 minutos.</p>
-                <a href="#" class="btn-guide">Leer más</a>
-            </div>
-            <div class="guide-card">
-                <h3>Optimización de Imágenes</h3>
-                <p>Consejos para optimizar tus imágenes sin perder calidad.</p>
-                <a href="#" class="btn-guide">Leer más</a>
-            </div>
-            <div class="guide-card">
-                <h3>Video-Tutoriales</h3>
-                <p>Colección de videos que te guiarán paso a paso.</p>
-                <a href="#" class="btn-guide">Ver Videos</a>
-            </div>
-        </div>
-    </section>
-</main>
-<script type="module" src="js/help.js"></script>
 
     <footer class="main-footer" role="contentinfo">
         <div class="container footer-content">
@@ -198,12 +212,11 @@
                 <div class="social-icons">
                     <a href="https://www.facebook.com/share/1FzWcFffA8/" aria-label="Síguenos en Facebook"><i
                             class="fab fa-facebook-f" aria-hidden="true"></i></a>
-                    <a href="https://x.com/eliasluck13?t=wawV_DCWv2wTW_eGKpdeyA&s=08" aria-label="Síguenos en X (Twitter)"><i
-                            class="fab fa-twitter" aria-hidden="true"></i></a>
+                    <a href="https://x.com/eliasluck13?t=wawV_DCWv2wTW_eGKpdeyA&s=08"
+                        aria-label="Síguenos en X (Twitter)"><i class="fab fa-twitter" aria-hidden="true"></i></a>
                     <a href="https://www.instagram.com/eliastf.06?igsh=cDhpbmJwd2duMGxk"
                         aria-label="Síguenos en Instagram"><i class="fab fa-instagram" aria-hidden="true"></i></a>
-                    <a
-                        href="https://www.linkedin.com/in/elias-franco-766407342?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app"
+                    <a href="https://www.linkedin.com/in/elias-franco-766407342?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app"
                         aria-label="Síguenos en LinkedIn"><i class="fab fa-linkedin-in" aria-hidden="true"></i></a>
                 </div>
             </div>
@@ -212,10 +225,13 @@
             <p>&copy; 2025 Portafy. Todos los derechos reservados.</p>
         </div>
     </footer>
+
+
+    <script type="module" src="js/help.js"></script>
     <script src="js/theme.js"></script>
     <script src="js/help.js"></script>
     <script type="module" src="js/script.js"></script>
-    <script src="js/modales.js"></script>
+    <script src="js/menu.js"></script>
 </body>
 
 </html>

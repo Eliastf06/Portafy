@@ -75,5 +75,4 @@ export function validateRegistration(username, fullName, email, password, confir
     }
 
     return null;
-
 }

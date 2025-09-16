@@ -569,6 +569,8 @@ body.dark-mode .social-icons a:hover {
     color: var(--text-color-light);
 }
 
+
+
 /* Responsive Design para ambas páginas */
 @media (min-width: 769px) {
     .profile-header {
@@ -696,6 +698,15 @@ body.dark-mode .social-icons a:hover {
         display: flex;
         justify-content: center;
     }
+
+    .social-icons {
+        display: flex;
+        justify-content: center;
+    }
+    /* Regla para ocultar el botón de Subir en móviles, independientemente del estado de sesión */
+    #upload-nav-item {
+        display: none !important;
+    }
 }
 
 @media (max-width: 480px) {
@@ -730,6 +741,10 @@ body.dark-mode .social-icons a:hover {
     .footer-links ul {
         flex-direction: column;
         gap: 5px;
+    }
+
+    #upload-nav-item {
+        display: none !important;
     }
 }
 
