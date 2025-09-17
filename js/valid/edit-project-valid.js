@@ -2,7 +2,7 @@
 
 // Validar el título
 const validateTitle = (title) => {
-    const regex = /^[a-zA-Z0-9]+(?:[ ][a-zA-Z0-9]+)*$/;
+    const regex = /^[a-zA-Z0-9\s=,.-áéíóúÁÉÍÓÚ():°"]+(?:[ ][a-zA-Z0-9\s=,.-áéíóúÁÉÍÓÚ():°"]+)*$/;
     if (!regex.test(title)) {
         return "El título solo puede contener letras y números, sin espacios al inicio o final, y con un solo espacio entre palabras.";
     }
@@ -11,7 +11,7 @@ const validateTitle = (title) => {
 
 // Validar la descripción
 const validateDescription = (description) => {
-    const regex = /^[a-zA-Z0-9=,.:°"]+(?:[ ][a-zA-Z0-9=,.:°"]+)*$/;
+    const regex = /^[a-zA-Z0-9\s=,.-áéíóúÁÉÍÓÚ():°"]+(?:[ ][a-zA-Z0-9\s=,.-áéíóúÁÉÍÓÚ():°"]+)*$/;
     if (description.length === 0) {
         return "La descripción no puede estar vacía.";
     }

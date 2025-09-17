@@ -2,8 +2,7 @@
 
 // Validar título del proyecto
 function validateProjectTitle(title) {
-    // La expresión regular ahora maneja los espacios
-    const regex = /^[a-zA-Z0-9]+(?:[ ][a-zA-Z0-9]+)*$/;
+    const regex = /^[a-zA-Z0-9\s=,.-áéíóúÁÉÍÓÚ():°"]+(?:[ ][a-zA-Z0-9\s=,.-áéíóúÁÉÍÓÚ():°"]+)*$/;
     if (!regex.test(title)) {
         return 'El título solo puede contener letras y números, sin espacios al inicio o final, y con un solo espacio entre palabras.';
     }
@@ -12,8 +11,7 @@ function validateProjectTitle(title) {
 
 // Validar descripción del proyecto
 function validateProjectDescription(description) {
-    // La expresión regular ahora maneja los espacios
-    const regex = /^[a-zA-Z0-9\s=,.:°]+(?:[ ][a-zA-Z0-9\s=,.:°]+)*$/;
+    const regex = /^[a-zA-Z0-9\s=,.-áéíóúÁÉÍÓÚ():°"]+(?:[ ][a-zA-Z0-9\s=,.-áéíóúÁÉÍÓÚ():°"]+)*$/;
     if (!regex.test(description)) {
         return 'La descripción no puede tener espacios al inicio o al final, ni más de un espacio entre palabras, y solo puede contener letras, números, y los símbolos =, . : °.';
     }

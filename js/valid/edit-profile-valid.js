@@ -34,7 +34,7 @@ function validateTextWithSymbols(text, fieldName) {
     if (text.includes('  ')) {
         return `La ${fieldName} no puede tener más de un espacio entre palabras.`;
     }
-    const allowedChars = /^[a-zA-Z0-9\s",.:°]+$/;
+    const allowedChars = /^[a-zA-Z0-9\s=,.-áéíóúÁÉÍÓÚ():°"]+$/;
     if (!allowedChars.test(text)) {
         return `La ${fieldName} contiene caracteres no permitidos.`;
     }
