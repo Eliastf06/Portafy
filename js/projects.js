@@ -7,48 +7,72 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
 
 const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-// La principal función de carga
 const fetchAndRenderPublicProjects = async () => {
+    // Añadimos la clase de carga al inicio del script
+    document.body.classList.add('is-loading');
+
     const projectsGrid = document.getElementById('projects-grid');
     
-    // Función para renderizar los proyectos en la página
-    const renderProjects = (projects) => {
-        projectsGrid.innerHTML = ''; 
-        if (projects.length === 0) {
-            projectsGrid.innerHTML = '<p>No hay proyectos públicos para mostrar.</p>';
-            return;
-        }
-
-        const fragment = document.createDocumentFragment();
-        projects.forEach(project => {
+    const createProjectCard = (project) => {
+        return new Promise((resolve) => {
             const projectCard = document.createElement('div');
             projectCard.className = 'project-card';
             
-            const imageUrl = project.archivos.length > 0 ? project.archivos[0].url : 'https://placehold.co/600x400/000000/white?text=No+Image';
+            const imageUrl = project.archivos.length > 0 ? project.archivos[0].url : 'https://placehold.co/600x400/0a0a1a/white?text=No+Image';
             
-            projectCard.innerHTML = `
-                <div class="project-image-placeholder">
-                    <img src="${imageUrl}" alt="${project.titulo}">
-                </div>
-                <div class="project-content">
-                    <h3 class="project-title">${project.titulo}</h3>
-                    <div class="project-author">
-                        <span class="author-name">
-                            ${project.authorName || 'Autor desconocido'}
-                        </span>
+            const imgElement = new Image();
+            imgElement.src = imageUrl;
+            imgElement.alt = project.titulo;
+
+            imgElement.onload = () => {
+                projectCard.innerHTML = `
+                    <div class="project-image-placeholder">
+                        <img src="${imageUrl}" alt="${project.titulo}">
                     </div>
-                </div>
-            `;
-            fragment.appendChild(projectCard);
+                    <div class="project-content">
+                        <h3 class="project-title">${project.titulo}</h3>
+                        <div class="project-author">
+                            <span class="author-name">
+                                ${project.authorName || 'Autor desconocido'}
+                            </span>
+                        </div>
+                    </div>
+                `;
+                
+                projectCard.addEventListener('click', () => {
+                    if (project.authorName) {
+                        window.location.href = `profile.html?username=${project.authorName}`;
+                    }
+                });
+                
+                resolve(projectCard);
+            };
 
-            projectCard.addEventListener('click', () => {
-                if (project.authorName) {
-                    window.location.href = `profile.html?username=${project.authorName}`;
-                }
-            });
+            imgElement.onerror = () => {
+                console.error(`Error al cargar la imagen: ${imageUrl}`);
+                projectCard.innerHTML = `
+                    <div class="project-image-placeholder">
+                        <img src="https://placehold.co/600x400/0a0a1a/white?text=No+Image" alt="Imagen no disponible">
+                    </div>
+                    <div class="project-content">
+                        <h3 class="project-title">${project.titulo}</h3>
+                        <div class="project-author">
+                            <span class="author-name">
+                                ${project.authorName || 'Autor desconocido'}
+                            </span>
+                        </div>
+                    </div>
+                `;
+
+                projectCard.addEventListener('click', () => {
+                    if (project.authorName) {
+                        window.location.href = `profile.html?username=${project.authorName}`;
+                    }
+                });
+                
+                resolve(projectCard);
+            };
         });
-
-        projectsGrid.appendChild(fragment);
     };
 
     try {
@@ -89,26 +113,18 @@ const fetchAndRenderPublicProjects = async () => {
         
         const publicProjects = finalProjects.filter(project => !project.privacidad);
 
-        // Renderiza las tarjetas sin esperar a que las imágenes carguen.
-        // Esto permite que el CSS aplique las dimensiones correctas de inmediato.
-        renderProjects(publicProjects);
+        const cardPromises = publicProjects.map(createProjectCard);
+        const resolvedCards = await Promise.all(cardPromises);
+        
+        projectsGrid.innerHTML = '';
+        const fragment = document.createDocumentFragment();
+        resolvedCards.forEach(card => fragment.appendChild(card));
+        projectsGrid.appendChild(fragment);
 
-        // Pre-carga las imágenes en segundo plano. Esto no bloquea el renderizado.
-        const imagePromises = publicProjects.map(project => {
-            return new Promise((resolve) => {
-                const img = new Image();
-                img.src = project.archivos.length > 0 ? project.archivos[0].url : 'https://placehold.co/600x400/000000/white?text=No+Image';
-                img.onload = () => resolve();
-                img.onerror = () => resolve(); 
-            });
-        });
-
-        // Espera a que todas las imágenes se precarguen.
-        await Promise.all(imagePromises);
-
-        // Quita la clase de carga solo después de que el DOM esté renderizado y las imágenes precargadas.
-        document.body.classList.remove('is-loading');
-
+        setTimeout(() => {
+            document.body.classList.remove('is-loading');
+        }, 500); 
+        
     } catch (error) {
         console.error('Error al cargar los proyectos:', error);
         projectsGrid.innerHTML = `<p>Ocurrió un error al cargar los proyectos: ${error.message}</p>`;
@@ -116,5 +132,4 @@ const fetchAndRenderPublicProjects = async () => {
     }
 };
 
-// Modificamos el evento DOMContentLoaded para ejecutar la carga
 document.addEventListener('DOMContentLoaded', fetchAndRenderPublicProjects);
