@@ -1012,3 +1012,11 @@ body:not(.is-loading) .loading-overlay {
 body:not(.is-loading) .main-content {
     opacity: 1;
 }
+
+.main-content {
+    transition: opacity var(--fade-in-speed); /* Transición de opacidad para el contenido */
+}
+
+body:not(.is-loading) .main-content {
+    opacity: 1;
+}
