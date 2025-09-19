@@ -29,12 +29,29 @@ document.addEventListener('DOMContentLoaded', () => {
             const projectCard = document.createElement('div');
             projectCard.className = 'project-card';
             projectCard.innerHTML = `
-                <img src="${project.imageUrl || 'https://placehold.co/600x400/000000/white?text=No+Image'}" alt="Imagen del proyecto">
+                    <div class="project-image-placeholder">
+                        <img src="${project.imageUrl || 'https://placehold.co/600x400/000000/white?text=No+Image'}" alt="Imagen del proyecto">
+                    </div>
+                    <div class="project-content">
+                        <h3 class="project-title">${project.titulo}</h3>
+                        <div class="project-author">
+                            <span class="author-name">
+                                ${project.authorName || 'Autor desconocido'}
+                            </span>
+                        </div>
+                    </div>
+            `;
+
+            /* codigo original de busqueda
+
+            <img src="${project.imageUrl || 'https://placehold.co/600x400/000000/white?text=No+Image'}" alt="Imagen del proyecto">
                 <div class="project-info">
                     <h4>${project.titulo}</h4>
                     <p class="project-author">Por: ${project.authorName}</p>
                 </div>
-            `;
+            
+            */
+            
             projectCard.addEventListener('click', () => {
                 if (project.authorName) {
                     window.location.href = `profile.html?username=${project.authorName}`;
@@ -179,4 +196,5 @@ document.addEventListener('DOMContentLoaded', () => {
 
     fetchAndRenderCategories();
     performSearch();
+
 });
