@@ -2,20 +2,28 @@
 
 // Validar el título
 const validateTitle = (title) => {
+    const trimmedTitle = title.trim().replace(/\s+/g, ' '); // Elimina espacios extra
     const regex = /^[a-zA-Z0-9\s=,.-áéíóúÁÉÍÓÚ():°"]+(?:[ ][a-zA-Z0-9\s=,.-áéíóúÁÉÍÓÚ():°"]+)*$/;
-    if (!regex.test(title)) {
-        return "El título solo puede contener letras y números, sin espacios al inicio o final, y con un solo espacio entre palabras.";
+
+    if (trimmedTitle.length === 0) {
+        return "El título no puede estar vacío.";
+    }
+
+    if (!regex.test(trimmedTitle)) {
+        return "El título solo puede contener letras, números y algunos símbolos, sin espacios al inicio o final, y con un solo espacio entre palabras.";
     }
     return null;
 };
 
 // Validar la descripción
 const validateDescription = (description) => {
+    const trimmedDescription = description.trim().replace(/\s+/g, ' '); // Elimina espacios extra
     const regex = /^[a-zA-Z0-9\s=,.-áéíóúÁÉÍÓÚ():°"]+(?:[ ][a-zA-Z0-9\s=,.-áéíóúÁÉÍÓÚ():°"]+)*$/;
-    if (description.length === 0) {
+
+    if (trimmedDescription.length === 0) {
         return "La descripción no puede estar vacía.";
     }
-    if (!regex.test(description)) {
+    if (!regex.test(trimmedDescription)) {
         return "La descripción solo puede contener letras, números y los símbolos =, . : °. No debe tener espacios al principio o final, ni más de un espacio entre palabras.";
     }
     return null;
@@ -35,6 +43,7 @@ const validateImage = (imageFile) => {
 
 // Validar fechas
 const validateDate = (date, minDate, today, fieldName) => {
+    // Si la fecha está vacía, no hay error de validación
     if (!date) {
         return null;
     }
@@ -49,8 +58,11 @@ const validateDate = (date, minDate, today, fieldName) => {
 
 // Validar el nombre del cliente
 const validateClient = (client) => {
-    const trimmedClient = client.trim();
-    if (client && !/^[a-zA-Z]+(?:[ ][a-zA-Z]+)*$/.test(trimmedClient)) {
+    if (!client) {
+        return null;
+    }
+    const trimmedClient = client.trim().replace(/\s+/g, ' '); // Elimina espacios extra
+    if (!/^[a-zA-Z]+(?:[ ][a-zA-Z]+)*$/.test(trimmedClient)) {
         return "Este campo solo puede contener letras, sin espacios al inicio o final, y con un solo espacio entre palabras.";
     }
     return null;
@@ -61,32 +73,18 @@ const validateLinks = (links) => {
     if (!links) {
         return null;
     }
-    // Dividir los enlaces sin hacer trim inicialmente
-    const linksArray = links.split(',').filter(link => link);
-    const urlRegex = /^(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/[a-zA-Z0-9]+\.[^\s]{2,}|[a-zA-Z0-9]+\.[^\s]{2,})$/i;
-    const dangerousDomains = ['malware.com', 'phishing.net', 'virus.org'];
-
+    const linksArray = links.split(',').map(link => link.trim()).filter(link => link); // Limpiar y filtrar
+    const urlRegex = /^(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/[a-zA-Z0-9-.]+\.[^\s]{2,}|www\.[a-zA-Z0-9-.]+\.[^\s]{2,})$/;
+    
     for (const link of linksArray) {
-        // La validación ahora asegura que no haya ningún espacio en el enlace
-        if (/\s/.test(link)) {
-            return "Los enlaces no deben contener ningún tipo de espacio.";
-        }
-        const trimmedLink = link.trim();
-        if (!urlRegex.test(trimmedLink)) {
-            return "URL inválida. Asegúrate de usar un formato de URL correcto.";
-        }
-        if (dangerousDomains.some(domain => trimmedLink.includes(domain))) {
-            return "URL detectada como peligrosa o no segura.";
+        if (!urlRegex.test(link)) {
+            return `El enlace "${link}" no es una URL válida.`;
         }
     }
     return null;
 };
 
-/**
- * Valida un formulario de edición de proyecto.
- * @param {object} formData - Los datos del formulario a validar.
- * @returns {object} Un objeto con la propiedad `isValid` (booleano) y `errors` (objeto con mensajes de error).
- */
+// Función principal de validación para el formulario de edición
 export const validateEditProjectForm = (formData) => {
     const { title, description, imageFile, startDate, endDate, client, links } = formData;
     const errors = {};
@@ -103,7 +101,8 @@ export const validateEditProjectForm = (formData) => {
         { field: 'client', validator: () => validateClient(client) },
         { field: 'links', validator: () => validateLinks(links) },
     ];
-
+    
+    // Validar que la fecha final no sea anterior a la inicial, solo si ambas están presentes.
     if (startDate && endDate) {
         const startOnlyDate = new Date(startDate);
         startOnlyDate.setHours(0, 0, 0, 0);
@@ -121,8 +120,5 @@ export const validateEditProjectForm = (formData) => {
         }
     }
     
-    return {
-        isValid: Object.keys(errors).length === 0,
-        errors
-    };
+    return Object.keys(errors).length > 0 ? errors : null;
 };

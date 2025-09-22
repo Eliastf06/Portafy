@@ -23,73 +23,131 @@ document.addEventListener('DOMContentLoaded', () => {
     const confirmPasswordInput = document.getElementById('confirm-password');
     const registerTypeInput = document.getElementById('register-type');
 
-    function showMessage(message, type = 'success') {
-        appMessageElement.textContent = message;
-        appMessageElement.style.color = type === 'success' ? 'green' : 'red';
-        appMessageElement.style.display = 'block';
-        setTimeout(() => {
-            appMessageElement.style.display = 'none';
-        }, 5000);
+    // Función para mostrar mensajes de estado con Toastify
+    const showToast = (message, isError = false) => {
+
+        let background = '';
+        if (isError === false) {
+            background = 'linear-gradient(to right, #ffee00d8, #3e3a00d8)'; // Degradado para éxito
+        } else {
+            background = 'linear-gradient(to right, #e61d16d8, #5d0300d8)'; // Degradado para error
+        }
+
+        Toastify({
+            text: message,
+            duration: 4000,
+            close: true,
+            gravity: "top",
+            position: "right",
+            backgroundColor: background,
+        }).showToast();
+    };
+
+    // Función para verificar si el usuario o el email ya existen
+    async function checkUserExists(username, email) {
+        // Verificar si el username ya existe en la tabla 'usuarios'
+        const { data: userExists, error: userError } = await supabase
+            .from('usuarios')
+            .select('nom_usuario')
+            .eq('nom_usuario', username)
+            .maybeSingle();
+
+        if (userExists) {
+            return 'El nombre de usuario ya está en uso. Por favor, elige otro.';
+        }
+
+        if (userError && userError.code !== 'PGRST116') { // Ignorar el error de "no rows found"
+            throw userError;
+        }
+
+        // Verificar si el email ya existe en la tabla de usuarios
+        const { data: emailExists, error: emailError } = await supabase
+            .from('usuarios')
+            .select('email')
+            .eq('email', email)
+            .maybeSingle();
+
+        if (emailExists) {
+            return 'El email ya está en uso. Por favor, utiliza otro.';
+        }
+
+        if (emailError && emailError.code !== 'PGRST116') {
+            throw emailError;
+        }
+
+        return null;
     }
 
+    // Manejar el envío del formulario de registro
     registerForm.addEventListener('submit', async (e) => {
         e.preventDefault();
 
-        // Elimina el .trim() de la validación inicial
-        const username = usernameInput.value;
-        const registerName = registerNameInput.value;
+        const username = usernameInput.value.trim();
+        const fullName = registerNameInput.value.trim();
         const email = emailInput.value.trim();
-        const password = passwordInput.value.trim();
-        const confirmPassword = confirmPasswordInput.value.trim();
-        const userType = registerTypeInput.value.trim();
+        const password = passwordInput.value;
+        const confirmPassword = confirmPasswordInput.value;
+        const userType = registerTypeInput.value;
 
-        // VALIDACIÓN DE CAMPOS con la nueva función
-        const validationError = validateRegistration(username, registerName, email, password, confirmPassword);
+        // Validar los campos del formulario
+        const validationError = validateRegistration(username, fullName, email, password, confirmPassword);
         if (validationError) {
-            showMessage(validationError, 'error');
-            return;
-        }
-        
-        // Si no hay un tipo de usuario seleccionado
-        if (!userType) {
-            showMessage('Por favor, selecciona tu tipo de proyecto.', 'error');
+            showToast(validationError, true);
             return;
         }
 
-        showMessage('Registrando usuario...', 'black');
+        if (password !== confirmPassword) {
+            showToast('Las contraseñas no coinciden.', true);
+            return;
+        }
+
+        // Verificar si el usuario o el email ya existen en la base de datos
+        const dbCheckError = await checkUserExists(username, email);
+        if (dbCheckError) {
+            showToast(dbCheckError, true);
+            return;
+        }
 
         try {
-            // Registrar el usuario y pasar todos los datos adicionales
+            // Deshabilitar el botón de registro para evitar envíos dobles
+            const registerBtn = registerForm.querySelector('button[type="submit"]');
+            registerBtn.disabled = true;
+            registerBtn.textContent = 'Registrando...';
+
+            // Intentar registrar el usuario en Supabase Auth
             const { data, error: authError } = await supabase.auth.signUp({
                 email: email,
                 password: password,
                 options: {
                     data: {
                         nom_usuario: username,
-                        nombre: registerName,
-                        tipo_usuario: userType,
-                        is_admin: false,
+                        nombre: fullName,
+                        tipo_usuario: userType
                     }
                 }
             });
 
             if (authError) {
-                console.error('Error al registrar en Supabase Auth:', authError);
-                showMessage(`Error al registrar: ${authError.message}`, 'error');
+                showToast(`Error al registrar: ${authError.message}`, true);
+                registerBtn.disabled = false;
+                registerBtn.textContent = 'Registrarse';
                 return;
             }
 
             // Si el registro de Auth fue exitoso:
-            showMessage(`¡Registro exitoso! Por favor, revisa tu email (${email}) para confirmar tu cuenta.`, 'success');
+            showToast(`¡Registro exitoso! Por favor, revisa tu email (${email}) para confirmar tu cuenta.`, false);
             console.log('Usuario registrado y perfil enviado:', data.user);
             registerForm.reset();
+            setTimeout(() => {
+                showToast('Redirigiendo...', false);
+            }, 3000);
             setTimeout(() => {
                 window.location.href = 'signin.html';
             }, 7000);
             
         } catch (err) {
             console.error('Ocurrió un error inesperado al registrar:', err);
-            showMessage('Ocurrió un error inesperado durante el registro.', 'error');
+            showToast('Ocurrió un error inesperado durante el registro.', true);
         }
     });
 

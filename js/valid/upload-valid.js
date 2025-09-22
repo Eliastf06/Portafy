@@ -2,17 +2,29 @@
 
 // Validar título del proyecto
 function validateProjectTitle(title) {
+    const trimmedTitle = title.trim().replace(/\s+/g, ' '); // Elimina espacios extra
     const regex = /^[a-zA-Z0-9\s=,.-áéíóúÁÉÍÓÚ():°"]+(?:[ ][a-zA-Z0-9\s=,.-áéíóúÁÉÍÓÚ():°"]+)*$/;
-    if (!regex.test(title)) {
-        return 'El título solo puede contener letras y números, sin espacios al inicio o final, y con un solo espacio entre palabras.';
+    
+    if (trimmedTitle.length === 0) {
+        return 'El título no puede estar vacío.';
+    }
+    
+    if (!regex.test(trimmedTitle)) {
+        return 'El título solo puede contener letras, números y algunos símbolos, sin espacios al inicio o final, y con un solo espacio entre palabras.';
     }
     return null;
 }
 
 // Validar descripción del proyecto
 function validateProjectDescription(description) {
+    const trimmedDescription = description.trim().replace(/\s+/g, ' '); // Elimina espacios extra
     const regex = /^[a-zA-Z0-9\s=,.-áéíóúÁÉÍÓÚ():°"]+(?:[ ][a-zA-Z0-9\s=,.-áéíóúÁÉÍÓÚ():°"]+)*$/;
-    if (!regex.test(description)) {
+    
+    if (trimmedDescription.length === 0) {
+        return 'La descripción no puede estar vacía.';
+    }
+    
+    if (!regex.test(trimmedDescription)) {
         return 'La descripción no puede tener espacios al inicio o al final, ni más de un espacio entre palabras, y solo puede contener letras, números, y los símbolos =, . : °.';
     }
     return null;

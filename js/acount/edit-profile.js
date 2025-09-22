@@ -11,7 +11,6 @@ const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 document.addEventListener('DOMContentLoaded', async () => {
     const editProfileForm = document.getElementById('editProfileForm');
-    const profileMessage = document.getElementById('profile-message');
     const fotoPerfilPreview = document.getElementById('foto-perfil-preview');
 
     const fotoPerfilInput = document.getElementById('foto-perfil-input');
@@ -24,23 +23,64 @@ document.addEventListener('DOMContentLoaded', async () => {
     const experienciaInput = document.getElementById('experiencia-perfil');
     const userTypeInput = document.getElementById('user-type');
     const privacidadPerfilInput = document.getElementById('privacidad-perfil');
+    
+    // Función para mostrar mensajes de toast
+    const showToast = (message, type = 'success') => {
 
-    const showMessage = (message, type = 'success') => {
-        if (profileMessage) {
-            profileMessage.textContent = message;
-            profileMessage.className = `profile-message ${type}`;
-            profileMessage.style.display = 'block';
-            setTimeout(() => {
-                profileMessage.style.display = 'none';
-            }, 5000);
+        let background = '';
+        if (type === 'success') {
+            background = 'linear-gradient(to right, #ffee00d8, #3e3a00d8)'; // Degradado para éxito
+        } else {
+            background = 'linear-gradient(to right, #e61d16d8, #5d0300d8)'; // Degradado para error
         }
+
+        Toastify({
+            text: message,
+            duration: 4000,
+            close: true,
+            gravity: "top",
+            position: "right",
+            backgroundColor: background,
+            stopOnFocus: true, // Prevents dismissing of toast on hover
+        }).showToast();
     };
+    
+    // Función para verificar si un nombre de usuario ya existe (excluyendo al usuario actual)
+    async function checkUsernameExists(username, currentUserId) {
+        const { data, error } = await supabase
+            .from('usuarios')
+            .select('nom_usuario')
+            .eq('nom_usuario', username)
+            .neq('id', currentUserId) // Excluir el usuario actual
+            .maybeSingle();
+
+        if (error && error.code !== 'PGRST116') { // Ignorar el error de "no rows found"
+            throw error;
+        }
+
+        return data ? true : false;
+    }
+    
+    // Función para verificar si un email ya existe (excluyendo al usuario actual)
+    async function checkEmailExists(email, currentUserId) {
+        const { data, error } = await supabase.from('usuarios')
+            .select('email')
+            .eq('email', email)
+            .neq('id', currentUserId)
+            .maybeSingle();
+
+        if (error && error.code !== 'PGRST116') {
+            throw error;
+        }
+        
+        return data ? true : false;
+    }
 
     const loadProfileData = async () => {
         try {
             const { data: { user } } = await supabase.auth.getUser();
             if (!user) {
-                showMessage('Debes iniciar sesión para editar tu perfil.', 'error');
+                showToast('Debes iniciar sesión para editar tu perfil.', 'error');
                 window.location.href = 'signin.html';
                 return;
             }
@@ -48,7 +88,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             // Cargar datos de la tabla 'usuarios'
             const { data: userData, error: userError } = await supabase
                 .from('usuarios')
-                .select('nombre, nom_usuario, tipo_usuario')
+                .select('nombre, nom_usuario, tipo_usuario, email')
                 .eq('id', user.id)
                 .maybeSingle();
 
@@ -85,7 +125,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
         } catch (error) {
             console.error('Error al cargar datos del perfil:', error);
-            showMessage('Ocurrió un error al cargar tu perfil.', 'error');
+            showToast('Ocurrió un error al cargar tu perfil.', 'error');
         }
     };
 
@@ -119,18 +159,48 @@ document.addEventListener('DOMContentLoaded', async () => {
             // VALIDACIÓN DE CAMPOS con la nueva función
             const validationError = validateProfile(username, fullName, biography, socialUrl, phone, address, experience, fotoPerfilFile);
             if (validationError) {
-                showMessage(validationError, 'error');
+                showToast(validationError, 'error');
                 return;
             }
 
-            showMessage('Guardando cambios...', 'black');
+            showToast('Guardando cambios...', 'black');
             
             try {
                 const { data: { user } } = await supabase.auth.getUser();
                 if (!user) {
-                    showMessage('Error: No estás autenticado.', 'error');
+                    showToast('Error: No estás autenticado.', 'error');
                     return;
                 }
+                
+                // --- Validaciones de unicidad de username y email ---
+                // Obtener el email actual del usuario para la validación
+                const { data: userData, error: userError } = await supabase
+                    .from('usuarios')
+                    .select('email')
+                    .eq('id', user.id)
+                    .maybeSingle();
+
+                if (userError) throw userError;
+                
+                const email = userData?.email;
+
+                // Verificar si el username ya existe para otro usuario
+                const usernameExists = await checkUsernameExists(username, user.id);
+                if (usernameExists) {
+                    showToast('El nombre de usuario ya está en uso por otro usuario.', 'error');
+                    return;
+                }
+                
+                // Verificar si el email ya existe para otro usuario (si se permitiera editar el email en el formulario)
+                // Nota: El formulario actual no permite editar el email, pero se incluye la lógica por si se añade en el futuro.
+                if (email) {
+                    const emailExists = await checkEmailExists(email, user.id);
+                    if (emailExists) {
+                         showToast('El correo electrónico ya está en uso por otro usuario.', 'error');
+                         return;
+                    }
+                }
+                // --- Fin de validaciones de unicidad ---
 
                 let fotoPerfilUrl = null;
 
@@ -205,11 +275,16 @@ document.addEventListener('DOMContentLoaded', async () => {
                     throw userUpdateError;
                 }
 
-                showMessage('Perfil actualizado exitosamente.', 'success');
+                showToast('Perfil actualizado exitosamente.', 'success');
+                // Redirigir a la página anterior después de 3 segundos
+                setTimeout(() => {
+                    showToast('Redirigiendo...', 'info');
+                    window.history.back();
+                }, 3000);
 
             } catch (error) {
                 console.error('Error al actualizar el perfil:', error);
-                showMessage('Ocurrió un error al guardar los cambios. Inténtalo de nuevo.', 'error');
+                showToast('Ocurrió un error al guardar los cambios. Inténtalo de nuevo.', 'error');
             }
         });
     }
