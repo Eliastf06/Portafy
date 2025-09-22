@@ -699,11 +699,7 @@ body.dark-mode .social-icons a:hover {
         justify-content: center;
     }
 
-    .social-icons {
-        display: flex;
-        justify-content: center;
-    }
-    
+
     #upload-nav-item {
         display: none !important;
     }
@@ -932,5 +928,50 @@ body.dark-mode .project-card .project-author {
 .menu-close-btn{
     border: none;
     background: none;
+}
 
+/* Estilos para el botón de editar perfil */
+.profile-header {
+    position: relative; /* Contenedor para posicionar el botón */
+}
+
+#edit-profile-btn {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 18px;
+    background-color: transparent;
+    border: none;
+    color: var(--accent-color);
+    transition: color 0.3s;
+    text-decoration: none;
+}
+
+#edit-profile-btn:hover {
+    color: #a19700;
+}
+
+/* Posicionamiento en escritorio */
+@media (min-width: 769px) {
+    #edit-profile-btn {
+        position: absolute;
+        top: 0;
+        right: 0;
+        margin-top: -20px; /* Ajuste para subir el botón */
+        margin-right: 0;
+    }
+}
+
+/* Posicionamiento en móvil */
+@media (max-width: 768px) {
+    .profile-info {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    #edit-profile-btn {
+        order: 4; /* Lo coloca después de la biografía (order: 3) */
+        margin-top: 20px;
+    }
 }
