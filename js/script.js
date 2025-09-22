@@ -1,6 +1,8 @@
 // js/script.js
 
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
+import { fetchAndRenderProjects } from './projects.js';
+import { fetchAndRenderUsers } from './acount/users.js';
 
 // Asegúrate de usar las credenciales correctas de tu proyecto principal
 const SUPABASE_URL = 'https://fikdyystxmsmwioyyegt.supabase.co';
@@ -23,9 +25,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const logoutBtn = document.getElementById('logout-btn'); // Botón de "Cerrar Sesión"
     const userMenuName = document.getElementById('user-menu-name'); // Nombre del usuario en el menú lateral
     const userProfilePhoto = document.getElementById('user-profile-photo'); // Foto de perfil del usuario
+    
+    // Nuevo filtro de administrador
+    const adminFilterContainer = document.getElementById('admin-filter-container');
+    const adminFilterSelect = document.getElementById('admin-filter-select');
+    const categorySelectContainer = document.querySelector('.filter-container');
+
 
     async function updateUI() {
         const { data: { user } } = await supabase.auth.getUser();
+        let is_admin = false;
 
         // Si hay un usuario logueado
         if (user) {
@@ -39,11 +48,12 @@ document.addEventListener('DOMContentLoaded', () => {
             if (uploadSideMenu) uploadSideMenu.style.display = 'list-item';
             if (logoutBtnItem) logoutBtnItem.style.display = 'list-item';
             
-            // Obtener el nombre y la foto del usuario de la base de datos
+            // Obtener el nombre, la foto y el rol de usuario de la base de datos
             const { data, error } = await supabase
                 .from('usuarios')
                 .select(`
                     nombre,
+                    is_admin,
                     datos_perfil ( foto_perfil )
                 `)
                 .eq('id', user.id)
@@ -55,13 +65,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (userProfilePhoto) userProfilePhoto.src = 'multimedia/default-profile.png';
             } else {
                 userMenuName.textContent = data.nombre || user.email;
+                is_admin = data.is_admin;
                 if (userProfilePhoto && data.datos_perfil && data.datos_perfil.length > 0) {
                     userProfilePhoto.src = data.datos_perfil[0].foto_perfil;
                 } else {
                     userProfilePhoto.src = 'multimedia/default-profile.png';
                 }
             }
-
         } else {
             // Si no hay un usuario logueado
             // Mostrar el botón de "Iniciar Sesión" y ocultar "Subir" en la navegación principal
@@ -77,6 +87,42 @@ document.addEventListener('DOMContentLoaded', () => {
             userMenuName.textContent = 'NOMBRE APELLIDO';
             if (userProfilePhoto) userProfilePhoto.src = 'multimedia/default-profile.png';
         }
+
+        // Mostrar u ocultar el filtro de administrador
+        if (adminFilterContainer) {
+            adminFilterContainer.style.display = is_admin ? 'flex' : 'none';
+        }
+        
+        // Cargar el contenido inicial (proyectos o usuarios)
+        if (adminFilterSelect) {
+            const filterType = adminFilterSelect.value;
+            if (filterType === 'users') {
+                await fetchAndRenderUsers();
+                if (categorySelectContainer) categorySelectContainer.style.display = 'none';
+            } else {
+                await fetchAndRenderProjects(is_admin);
+                if (categorySelectContainer) categorySelectContainer.style.display = 'flex';
+            }
+        } else {
+            await fetchAndRenderProjects(is_admin);
+        }
+    }
+    
+    if (adminFilterSelect) {
+        adminFilterSelect.addEventListener('change', async () => {
+            const { data: { user } } = await supabase.auth.getUser();
+            const { data: userData, error: userError } = user ? await supabase.from('usuarios').select('is_admin').eq('id', user.id).single() : { data: null, error: null };
+            const is_admin = userData?.is_admin || false;
+            
+            const selectedValue = adminFilterSelect.value;
+            if (selectedValue === 'users') {
+                await fetchAndRenderUsers();
+                if (categorySelectContainer) categorySelectContainer.style.display = 'none';
+            } else {
+                await fetchAndRenderProjects(is_admin);
+                if (categorySelectContainer) categorySelectContainer.style.display = 'flex';
+            }
+        });
     }
 
     // Manejar el cierre de sesión

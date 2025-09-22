@@ -769,6 +769,7 @@ body.dark-mode .social-icons a:hover {
     align-items: center;
     margin-bottom: 30px;
     gap: 15px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background-color var(--transition-speed);
 }
 
 .filter-label {
@@ -794,18 +795,21 @@ body.dark-mode .social-icons a:hover {
     border-color: var(--accent-color);
     outline: none;
     box-shadow: 0 0 0 2px var(--accent-color);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background-color var(--transition-speed);
 }
 
 body.dark-mode .filter-select {
     border-color: var(--clr-dark-text-light);
     background-color: var(--clr-dark-bg-secondary);
     color: var(--text-color-light);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background-color var(--transition-speed);
 }
 
 body.dark-mode .filter-select:hover,
 body.dark-mode .filter-select:focus {
     border-color: var(--accent-color);
     box-shadow: var(--glow-effect);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background-color var(--transition-speed);
 }
 
 
@@ -1019,4 +1023,130 @@ body:not(.is-loading) .main-content {
 
 body:not(.is-loading) .main-content {
     opacity: 1;
+}
+
+
+
+/* Estilos para el filtro de usuarios/proyectos (solo visible para administradores) */
+.admin-filter-container {
+    display: none; /* Oculto por defecto */
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 30px;
+    gap: 15px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background-color var(--transition-speed);
+}
+
+.admin-filter-select {
+    padding: 10px 15px;
+    border-radius: 20px;
+    border: 2px solid var(--text-color-light);
+    background-color: var(--bg-primary);
+    color: var(--text-color-dark);
+    font-size: 1em;
+    cursor: pointer;
+    transition: border-color var(--transition-speed), background-color var(--transition-speed), color var(--transition-speed);
+}
+
+.admin-filter-select:hover,
+.admin-filter-select:focus {
+    border-color: var(--accent-color);
+    outline: none;
+    box-shadow: 0 0 0 2px var(--accent-color);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background-color var(--transition-speed);
+}
+
+body.dark-mode .admin-filter-select {
+    border-color: var(--clr-dark-text-light);
+    background-color: var(--clr-dark-bg-secondary);
+    color: var(--text-color-light);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background-color var(--transition-speed);
+}
+
+body.dark-mode .admin-filter-select:hover,
+body.dark-mode .admin-filter-select:focus {
+    border-color: var(--accent-color);
+    box-shadow: var(--glow-effect);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background-color var(--transition-speed);
+}
+
+/* Estilos para las tarjetas de usuario */
+.user-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    background-color: var(--bg-secondary);
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 4px 10px var(--shadow-secondary);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background-color var(--transition-speed);
+    padding: 20px;
+    height: 100%;
+    cursor: pointer;
+}
+
+body.dark-mode .user-card {
+    border: 1px solid var(--clr-dark-text-light);
+    box-shadow: 0 0 5px var(--clr-dark-text-light), 0 0 10px var(--clr-dark-shadow-secondary);
+}
+
+.user-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 15px var(--shadow-primary);
+}
+
+body.dark-mode .user-card:hover {
+    border-color: var(--accent-color);
+    box-shadow: var(--glow-effect);
+}
+
+.user-profile-photo {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 15px;
+    border: 4px solid var(--accent-color);
+    transition: border-color var(--transition-speed);
+}
+
+body.dark-mode .user-profile-photo {
+    border-color: var(--neon-yellow);
+    box-shadow: var(--glow-effect);
+}
+
+.user-name {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: var(--text-color-dark);
+    margin-bottom: 5px;
+    transition: color var(--transition-speed);
+}
+
+body.dark-mode .user-name {
+    color: var(--clr-dark-text-dark);
+}
+
+.user-username {
+    font-size: 1.1em;
+    color: var(--text-color-light);
+    margin-bottom: 10px;
+    transition: color var(--transition-speed);
+}
+
+.user-type {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 0.9em;
+    font-weight: bold;
+    color: var(--bg-primary);
+    background-color: var(--text-color-dark);
+    transition: background-color var(--transition-speed), color var(--transition-speed);
+}
+
+body.dark-mode .user-type {
+    background-color: var(--accent-color);
+    color: var(--clr-dark-bg-primary);
 }

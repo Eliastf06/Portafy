@@ -7,18 +7,25 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
 
 const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-const fetchAndRenderPublicProjects = async () => {
-    // Añadimos la clase de carga al inicio del script
-    document.body.classList.add('is-loading');
+const contentGrid = document.getElementById('content-grid');
+const sectionTitle = document.getElementById('section-title-1');
+const sectionSubtitle = document.querySelector('.section-subtitle');
 
-    const projectsGrid = document.getElementById('projects-grid');
-    
+export const renderProjects = (projects) => {
+    contentGrid.innerHTML = '';
+    if (projects.length === 0) {
+        contentGrid.innerHTML = '<p style="text-align: center;">No se encontraron proyectos que coincidan con la búsqueda o el filtro.</p>';
+        return;
+    }
     const createProjectCard = (project) => {
         return new Promise((resolve) => {
             const projectCard = document.createElement('div');
             projectCard.className = 'project-card';
             
-            const imageUrl = project.archivos.length > 0 ? project.archivos[0].url : 'https://placehold.co/600x400/0a0a1a/white?text=No+Image';
+            // Verifica si project.archivos existe antes de acceder a .length
+            const imageUrl = (project.archivos && project.archivos.length > 0) 
+                ? project.archivos[0].url 
+                : 'https://placehold.co/600x400/0a0a1a/white?text=No+Image';
             
             const imgElement = new Image();
             imgElement.src = imageUrl;
@@ -74,24 +81,42 @@ const fetchAndRenderPublicProjects = async () => {
             };
         });
     };
+    
+    const cardPromises = projects.map(createProjectCard);
+    const fragment = document.createDocumentFragment();
+
+    Promise.all(cardPromises).then(resolvedCards => {
+        resolvedCards.forEach(card => fragment.appendChild(card));
+        contentGrid.appendChild(fragment);
+    });
+};
+
+export const fetchAndRenderProjects = async (is_admin = false) => {
+    document.body.classList.add('is-loading');
+    sectionTitle.textContent = 'DESCUBRIR PROYECTOS';
+    sectionSubtitle.textContent = 'Explora y descubre trabajos de la comunidad';
+    
+    contentGrid.innerHTML = '<p style="text-align: center;">Buscando proyectos...</p>';
 
     try {
-        const { data: projectsData, error: projectsError } = await supabase
+        let projectsQuery = supabase
             .from('proyectos')
             .select(`
                 *,
-                archivos(
-                    url
-                )
+                archivos(url)
             `);
-
-        if (projectsError) {
-            throw projectsError;
+        
+        if (!is_admin) {
+            projectsQuery = projectsQuery.eq('privacidad', false);
         }
+
+        const { data: projectsData, error: projectsError } = await projectsQuery;
+
+        if (projectsError) throw projectsError;
 
         const userIds = projectsData.map(p => p.id);
         const uniqueUserIds = [...new Set(userIds)];
-
+        
         const { data: usersData, error: usersError } = await supabase
             .from('usuarios')
             .select(`
@@ -100,9 +125,7 @@ const fetchAndRenderPublicProjects = async () => {
             `)
             .in('id', uniqueUserIds);
         
-        if (usersError) {
-            throw usersError;
-        }
+        if (usersError) throw usersError;
 
         const usersMap = new Map(usersData.map(user => [user.id, user.nom_usuario]));
         
@@ -111,15 +134,7 @@ const fetchAndRenderPublicProjects = async () => {
             authorName: usersMap.get(project.id)
         }));
         
-        const publicProjects = finalProjects.filter(project => !project.privacidad);
-
-        const cardPromises = publicProjects.map(createProjectCard);
-        const resolvedCards = await Promise.all(cardPromises);
-        
-        projectsGrid.innerHTML = '';
-        const fragment = document.createDocumentFragment();
-        resolvedCards.forEach(card => fragment.appendChild(card));
-        projectsGrid.appendChild(fragment);
+        renderProjects(finalProjects);
 
         setTimeout(() => {
             document.body.classList.remove('is-loading');
@@ -127,9 +142,7 @@ const fetchAndRenderPublicProjects = async () => {
         
     } catch (error) {
         console.error('Error al cargar los proyectos:', error);
-        projectsGrid.innerHTML = `<p>Ocurrió un error al cargar los proyectos: ${error.message}</p>`;
+        contentGrid.innerHTML = `<p style="text-align: center;">Ocurrió un error al cargar los proyectos: ${error.message}</p>`;
         document.body.classList.remove('is-loading');
     }
 };
-
-document.addEventListener('DOMContentLoaded', fetchAndRenderPublicProjects);

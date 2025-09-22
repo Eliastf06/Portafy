@@ -56,15 +56,22 @@
 
     <main class="main-content container" role="main">
         <section class="projects-section" aria-labelledby="section-title-1">
-            <h1 class="section-title" id="section-title-1">DESCUBRIR USUARIOS</h1>
-            <p class="section-subtitle">Explora y descubre trabajos de otros usuarios</p>
+            <h1 class="section-title" id="section-title-1">DESCUBRIR</h1>
+            <p class="section-subtitle">Explora y descubre trabajos de la comunidad</p>
+            <div class="admin-filter-container" id="admin-filter-container">
+                <label for="admin-filter-select" class="filter-label">Ver:</label>
+                <select id="admin-filter-select" class="admin-filter-select" aria-label="Filtrar por proyectos o usuarios">
+                    <option value="projects">Proyectos</option>
+                    <option value="users">Usuarios</option>
+                </select>
+            </div>
             <div class="filter-container">
                 <label for="category-select" class="filter-label">Filtrar por categoría:</label>
                 <select id="category-select" class="filter-select" aria-label="Filtrar proyectos por categoría">
                     <option value="">Todas las categorías</option>
                 </select>
             </div>
-            <div class="projects-grid" id="projects-grid" role="region" aria-label="Grilla de proyectos de usuarios">
+            <div class="projects-grid" id="content-grid" role="region" aria-label="Grilla de contenido">
             </div>
         </section>
     </main>
@@ -136,6 +143,7 @@
     </footer>
     <script type="module" src="js/projects.js"></script>
     <script type="module" src="js/search.js"></script>
+    <script type="module" src="js/acount/users.js"></script>
     <script type="module" src="js/script.js"></script>
     <script src="js/theme.js"></script>
     <script src="js/menu.js"></script>
