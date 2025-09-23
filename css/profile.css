@@ -9,6 +9,7 @@
     --clr-light-text-light: #727272; /* Texto gris para contraste sutil */
     --clr-light-shadow-primary: rgba(0, 0, 0, 0.1);
     --clr-light-shadow-secondary: rgba(0, 0, 0, 0.05);
+    --clr-light-text-edit: #000000;
 
     /* Colores para el Modo Oscuro (Tema de Neón de Noche) */
     --clr-dark-bg-primary: #0a0a1a;
@@ -27,6 +28,7 @@
     --text-color-light: var(--clr-light-text-light);
     --shadow-primary: var(--clr-light-shadow-primary);
     --shadow-secondary: var(--clr-light-shadow-secondary);
+    --claro-dark-edit: var(--clr-light-text-edit);
     
     /* Variables adicionales para el efecto de neón */
     --neon-yellow: #fff01e;
@@ -47,6 +49,7 @@ body.dark-mode {
     --text-color-light: var(--clr-dark-text-light);
     --shadow-primary: var(--clr-dark-shadow-primary);
     --shadow-secondary: var(--clr-dark-shadow-secondary);
+    --claro-dark-edit: var(--clr-dark-accent);
 }
 
 /* Estilos Globales */
@@ -974,4 +977,10 @@ body.dark-mode .project-card .project-author {
         order: 4; /* Lo coloca después de la biografía (order: 3) */
         margin-top: 20px;
     }
+}
+
+
+#edit-profile-btn{
+    font-weight: 600;
+    color: var(--claro-dark-edit);
 }
