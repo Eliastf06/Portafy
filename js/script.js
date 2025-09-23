@@ -4,7 +4,6 @@ import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js
 import { fetchAndRenderProjects } from './projects.js';
 import { fetchAndRenderUsers } from './acount/users.js';
 
-// Asegúrate de usar las credenciales correctas de tu proyecto principal
 const SUPABASE_URL = 'https://fikdyystxmsmwioyyegt.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZpa2R5eXN0eG1zbXdpb3l5ZWd0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTY3NjgxODksImV4cCI6MjA3MjM0NDE4OX0.QAfKSJfUbwT5NhGRiNHoA83JzW7BXT9u15d5oaeAlro';
 
@@ -13,8 +12,8 @@ const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 document.addEventListener('DOMContentLoaded', () => {
 
     // Referencias a los elementos del DOM
-    const loginNavItem = document.getElementById('signin-nav-item'); // Nuevo ID
-    const uploadNavItem = document.getElementById('upload-nav-item'); // Nuevo ID
+    const loginNavItem = document.getElementById('signin-nav-item');
+    const uploadNavItem = document.getElementById('upload-nav-item');
     
     // Referencias a los elementos del menú lateral por su nuevo ID
     const profileSideMenu = document.getElementById('profile-side-menu'); 
@@ -22,15 +21,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const uploadSideMenu = document.getElementById('upload-side-menu-item');
     const logoutBtnItem = document.getElementById('logout-btn-item');
 
-    const logoutBtn = document.getElementById('logout-btn'); // Botón de "Cerrar Sesión"
-    const userMenuName = document.getElementById('user-menu-name'); // Nombre del usuario en el menú lateral
-    const userProfilePhoto = document.getElementById('user-profile-photo'); // Foto de perfil del usuario
+    const logoutBtn = document.getElementById('logout-btn');
+    const userMenuName = document.getElementById('user-menu-name');
+    const userProfilePhoto = document.getElementById('user-profile-photo');
     
     // Nuevo filtro de administrador
     const adminFilterContainer = document.getElementById('admin-filter-container');
     const adminFilterSelect = document.getElementById('admin-filter-select');
     const categorySelectContainer = document.querySelector('.filter-container');
-
 
     async function updateUI() {
         const { data: { user } } = await supabase.auth.getUser();
@@ -73,8 +71,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
         } else {
-            // Si no hay un usuario logueado
-            // Mostrar el botón de "Iniciar Sesión" y ocultar "Subir" en la navegación principal
+            // Si no hay un usuario logueado, mostrar el botón de "Iniciar Sesión" y ocultar "Subir" en la navegación principal
             if (loginNavItem) loginNavItem.style.display = 'list-item';
             if (uploadNavItem) uploadNavItem.style.display = 'none';
 
@@ -93,18 +90,20 @@ document.addEventListener('DOMContentLoaded', () => {
             adminFilterContainer.style.display = is_admin ? 'flex' : 'none';
         }
         
-        // Cargar el contenido inicial (proyectos o usuarios)
-        if (adminFilterSelect) {
-            const filterType = adminFilterSelect.value;
-            if (filterType === 'users') {
-                await fetchAndRenderUsers();
-                if (categorySelectContainer) categorySelectContainer.style.display = 'none';
+        // Cargar el contenido inicial (proyectos o usuarios) solo si no estamos en la página de inicio
+        if (document.location.pathname.includes('index.html') || document.location.pathname === '/') {
+            if (adminFilterSelect) {
+                const filterType = adminFilterSelect.value;
+                if (filterType === 'users') {
+                    await fetchAndRenderUsers();
+                    if (categorySelectContainer) categorySelectContainer.style.display = 'none';
+                } else {
+                    await fetchAndRenderProjects(is_admin);
+                    if (categorySelectContainer) categorySelectContainer.style.display = 'flex';
+                }
             } else {
                 await fetchAndRenderProjects(is_admin);
-                if (categorySelectContainer) categorySelectContainer.style.display = 'flex';
             }
-        } else {
-            await fetchAndRenderProjects(is_admin);
         }
     }
     

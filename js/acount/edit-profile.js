@@ -24,6 +24,16 @@ document.addEventListener('DOMContentLoaded', async () => {
     const userTypeInput = document.getElementById('user-type');
     const privacidadPerfilInput = document.getElementById('privacidad-perfil');
     
+    // Nuevos elementos para la funcionalidad de administrador
+    const adminFields = document.getElementById('admin-fields');
+    const adminStatusSelector = document.getElementById('admin-status-selector');
+    const adminPasswordInput = document.getElementById('admin-password');
+    const ADMIN_PASSWORD = '123456789aA!';
+
+    // URL params para obtener el ID del usuario a editar
+    const urlParams = new URLSearchParams(window.location.search);
+    const userIdToEdit = urlParams.get('user_id');
+
     // Función para mostrar mensajes de toast
     const showToast = (message, type = 'success') => {
 
@@ -85,11 +95,26 @@ document.addEventListener('DOMContentLoaded', async () => {
                 return;
             }
 
+            // Obtener el rol del usuario logueado
+            const { data: loggedInUserData, error: loggedInUserError } = await supabase
+                .from('usuarios')
+                .select('is_admin')
+                .eq('id', user.id)
+                .maybeSingle();
+            
+            const isAdmin = loggedInUserData?.is_admin || false;
+            
+            // Determinar qué ID de usuario cargar
+            let idToLoad = user.id;
+            if (userIdToEdit && isAdmin) {
+                idToLoad = userIdToEdit;
+            }
+
             // Cargar datos de la tabla 'usuarios'
             const { data: userData, error: userError } = await supabase
                 .from('usuarios')
-                .select('nombre, nom_usuario, tipo_usuario, email')
-                .eq('id', user.id)
+                .select('nombre, nom_usuario, tipo_usuario, email, is_admin')
+                .eq('id', idToLoad)
                 .maybeSingle();
 
             if (userError) throw userError;
@@ -98,7 +123,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             const { data: perfilData, error: perfilError } = await supabase
                 .from('datos_perfil')
                 .select('*')
-                .eq('id', user.id)
+                .eq('id', idToLoad)
                 .maybeSingle();
 
             if (perfilError && perfilError.code !== 'PGRST116') throw perfilError;
@@ -108,6 +133,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 if (nombrePerfilInput) nombrePerfilInput.value = userData.nombre || '';
                 if (nombreUserInput) nombreUserInput.value = userData.nom_usuario || '';
                 if (userTypeInput) userTypeInput.value = userData.tipo_usuario || '';
+                if (adminStatusSelector) adminStatusSelector.value = userData.is_admin ? 'true' : 'false';
             }
             if (perfilData) {
                 if (biografiaPerfilInput) biografiaPerfilInput.value = perfilData.biografia || '';
@@ -123,6 +149,14 @@ document.addEventListener('DOMContentLoaded', async () => {
                     fotoPerfilPreview.style.display = 'block';
                 }
             }
+            
+            // Mostrar los campos de administrador solo si el usuario logueado es admin
+            if (isAdmin && userIdToEdit) {
+                if (adminFields) adminFields.style.display = 'block';
+            } else {
+                if (adminFields) adminFields.style.display = 'none';
+            }
+
         } catch (error) {
             console.error('Error al cargar datos del perfil:', error);
             showToast('Ocurrió un error al cargar tu perfil.', 'error');
@@ -147,6 +181,15 @@ document.addEventListener('DOMContentLoaded', async () => {
         editProfileForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             
+            const { data: { user: loggedInUser } } = await supabase.auth.getUser();
+            const { data: loggedInUserData } = await supabase.from('usuarios').select('is_admin').eq('id', loggedInUser.id).maybeSingle();
+            const isAdmin = loggedInUserData?.is_admin || false;
+            
+            let idToUpdate = loggedInUser.id;
+            if (userIdToEdit && isAdmin) {
+                idToUpdate = userIdToEdit;
+            }
+
             const username = nombreUserInput.value;
             const fullName = nombrePerfilInput.value;
             const biography = biografiaPerfilInput.value;
@@ -163,11 +206,18 @@ document.addEventListener('DOMContentLoaded', async () => {
                 return;
             }
 
+            // Validar la contraseña de admin si se intenta cambiar el rol
+            if (isAdmin && userIdToEdit && adminStatusSelector.value !== (adminStatusSelector.dataset.initialValue || 'false')) {
+                if (adminPasswordInput.value !== ADMIN_PASSWORD) {
+                    showToast('Contraseña de administrador incorrecta.', 'error');
+                    return;
+                }
+            }
+            
             showToast('Guardando cambios...', 'black');
             
             try {
-                const { data: { user } } = await supabase.auth.getUser();
-                if (!user) {
+                if (!loggedInUser) {
                     showToast('Error: No estás autenticado.', 'error');
                     return;
                 }
@@ -177,7 +227,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 const { data: userData, error: userError } = await supabase
                     .from('usuarios')
                     .select('email')
-                    .eq('id', user.id)
+                    .eq('id', idToUpdate)
                     .maybeSingle();
 
                 if (userError) throw userError;
@@ -185,7 +235,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 const email = userData?.email;
 
                 // Verificar si el username ya existe para otro usuario
-                const usernameExists = await checkUsernameExists(username, user.id);
+                const usernameExists = await checkUsernameExists(username, idToUpdate);
                 if (usernameExists) {
                     showToast('El nombre de usuario ya está en uso por otro usuario.', 'error');
                     return;
@@ -194,7 +244,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 // Verificar si el email ya existe para otro usuario (si se permitiera editar el email en el formulario)
                 // Nota: El formulario actual no permite editar el email, pero se incluye la lógica por si se añade en el futuro.
                 if (email) {
-                    const emailExists = await checkEmailExists(email, user.id);
+                    const emailExists = await checkEmailExists(email, idToUpdate);
                     if (emailExists) {
                          showToast('El correo electrónico ya está en uso por otro usuario.', 'error');
                          return;
@@ -206,7 +256,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
                 if (fotoPerfilFile) {
                     const fileExtension = fotoPerfilFile.name.split('.').pop();
-                    const filePath = `${user.id}.${fileExtension}`;
+                    const filePath = `${idToUpdate}.${fileExtension}`;
                     
                     const { error: uploadError } = await supabase.storage
                         .from('perfiles')
@@ -240,7 +290,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 const { data: existingProfile, error: selectError } = await supabase
                     .from('datos_perfil')
                     .select('id')
-                    .eq('id', user.id);
+                    .eq('id', idToUpdate);
 
                 if (selectError) throw selectError;
 
@@ -249,27 +299,32 @@ document.addEventListener('DOMContentLoaded', async () => {
                     const { error: updateError } = await supabase
                         .from('datos_perfil')
                         .update(perfilDataToSave)
-                        .eq('id', user.id);
+                        .eq('id', idToUpdate);
                     if (updateError) throw updateError;
                 } else {
                     // Si no existe, insertamos una nueva fila
                     const { error: insertError } = await supabase
                         .from('datos_perfil')
-                        .insert([{ ...perfilDataToSave, id: user.id }]);
+                        .insert([{ ...perfilDataToSave, id: idToUpdate }]);
                     if (insertError) throw insertError;
                 }
 
-                // Actualizar el nombre y tipo de usuario en la tabla de usuarios
+                // Actualizar los datos de la tabla de usuarios
                 const userUpdateData = {
                     nombre: nombrePerfilInput ? nombrePerfilInput.value.trim() : null,
                     nom_usuario: nombreUserInput ? nombreUserInput.value.trim() : null, 
                     tipo_usuario: userTypeInput ? userTypeInput.value.trim() : null
                 };
 
+                // Si es un admin y se está editando a otro usuario, se permite cambiar el rol
+                if (isAdmin && userIdToEdit) {
+                    userUpdateData.is_admin = adminStatusSelector.value === 'true';
+                }
+
                 const { error: userUpdateError } = await supabase
                     .from('usuarios')
                     .update(userUpdateData)
-                    .eq('id', user.id);
+                    .eq('id', idToUpdate);
                 
                 if (userUpdateError) {
                     throw userUpdateError;

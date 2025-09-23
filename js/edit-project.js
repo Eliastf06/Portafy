@@ -14,18 +14,16 @@ document.addEventListener('DOMContentLoaded', async () => {
     const proyectImageInput = document.getElementById('proyect-image');
     const imagePreview = document.getElementById('image-preview');
     const fileNameDisplay = document.getElementById('file-name-display');
+    const pageTitle = document.getElementById('page-title');
 
-    // Obtener el ID del proyecto de la URL
     const urlParams = new URLSearchParams(window.location.search);
     const projectId = urlParams.get('id');
 
-    // Si no hay ID, redirigir al perfil
     if (!projectId) {
         window.location.href = 'profile.html';
         return;
     }
 
-    // Redirigir si el usuario no está autenticado
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) {
         window.location.href = 'signin.html';
@@ -33,17 +31,19 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     let currentImagePath = null;
+    let is_admin = false;
 
-    // Función para mostrar mensajes de estado con Toastify
+    const { data: userData, error: userError } = await supabase
+        .from('usuarios')
+        .select('is_admin')
+        .eq('id', user.id)
+        .single();
+    if (!userError && userData?.is_admin) {
+        is_admin = true;
+    }
+
     const showToast = (message, isError = false) => {
-
-        let background = '';
-        if (isError === false) {
-            background = 'linear-gradient(to right, #ffee00d8, #3e3a00d8)'; // Degradado para éxito
-        } else {
-            background = 'linear-gradient(to right, #e61d16d8, #5d0300d8)'; // Degradado para error
-        }
-
+        let background = isError ? 'linear-gradient(to right, #e61d16d8, #5d0300d8)' : 'linear-gradient(to right, #ffee00d8, #3e3a00d8)';
         Toastify({
             text: message,
             duration: 4000,
@@ -54,13 +54,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         }).showToast();
     };
 
-    // Función para mostrar errores de validación (CORREGIDA)
     const showValidationErrors = (errors) => {
         const existingErrors = document.querySelectorAll('.validation-error');
         existingErrors.forEach(el => el.remove());
 
         for (const key in errors) {
-            // Se corrige la forma de construir el ID para que coincida con el HTML
             const inputId = key === 'startDate' ? 'edit-project-start-date' :
                 key === 'endDate' ? 'edit-project-end-date' :
                     `edit-project-${key}`;
@@ -78,29 +76,41 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     };
 
-    // Cargar los datos del proyecto
     async function loadProjectData() {
         try {
-            const { data: projectData, error: projectError } = await supabase
+            // Primera consulta para obtener el proyecto
+            let query = supabase
                 .from('proyectos')
-                .select(`
-                    *,
-                    archivos(url)
-                `)
+                .select(`*, archivos(url)`)
                 .eq('id_proyectos', projectId)
-                .eq('id', user.id) // Se añade un filtro por el ID del usuario para mayor seguridad
                 .single();
 
-            if (projectError || !projectData) {
-                throw new Error('Proyecto no encontrado o no tienes permiso para verlo.');
+            if (!is_admin) {
+                query = query.eq('id', user.id);
             }
 
-            // Verificar si el usuario es el dueño del proyecto
-            if (projectData.id !== user.id) {
-                showToast('No tienes permiso para editar este proyecto.', true);
+            const { data: projectData, error: projectError } = await query;
+
+            if (projectError || !projectData) {
+                showToast('Proyecto no encontrado o no tienes permiso para editarlo.', true);
                 editProjectForm.style.display = 'none';
                 deleteProjectBtn.style.display = 'none';
                 return;
+            }
+
+            // Segunda consulta para obtener el nombre del usuario si es un admin
+            if (is_admin) {
+                const { data: projectOwner, error: ownerError } = await supabase
+                    .from('usuarios')
+                    .select('nombre')
+                    .eq('id', projectData.id)
+                    .single();
+                
+                if (!ownerError && projectOwner?.nombre) {
+                    pageTitle.textContent = `Editar Proyecto de ${projectOwner.nombre}`;
+                } else {
+                    pageTitle.textContent = 'Editar Proyecto (Admin)';
+                }
             }
 
             // Rellenar el formulario con los datos existentes
@@ -114,12 +124,10 @@ document.addEventListener('DOMContentLoaded', async () => {
             document.getElementById('edit-project-links').value = projectData.enlaces_referencia;
             document.getElementById('edit-project-privacy').value = projectData.privacidad.toString();
 
-            // Mostrar la imagen actual
             if (projectData.archivos && projectData.archivos.length > 0) {
                 const imageUrl = projectData.archivos[0].url;
                 imagePreview.src = imageUrl;
                 imagePreview.style.display = 'block';
-                // Obtener el path de la imagen para su futura eliminación si se cambia
                 const pathParts = imageUrl.split('/');
                 const fileName = pathParts.pop();
                 const folderName = pathParts.pop();
@@ -132,7 +140,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     }
 
-    // Manejar el cambio de imagen
     proyectImageInput.addEventListener('change', (event) => {
         const file = event.target.files[0];
         if (file) {
@@ -150,11 +157,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     });
 
-    // Manejar el envío del formulario de edición
     editProjectForm.addEventListener('submit', async (e) => {
         e.preventDefault();
 
-        // Limpiar errores de validación anteriores
         document.querySelectorAll('.validation-error').forEach(el => el.remove());
 
         const formData = {
@@ -179,10 +184,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
 
         try {
-            // Subir la nueva imagen si se seleccionó una
             let newImageUrl = null;
             if (formData.imageFile) {
-                // Eliminar la imagen antigua si existe
                 if (currentImagePath) {
                     await supabase.storage.from('proyectos_imagenes').remove([currentImagePath]);
                 }
@@ -192,33 +195,37 @@ document.addEventListener('DOMContentLoaded', async () => {
 
                 if (uploadError) throw uploadError;
 
-                // Obtener la URL pública de la imagen
                 const { data: urlData } = supabase.storage
                     .from('proyectos_imagenes')
                     .getPublicUrl(uploadData.path);
                 newImageUrl = urlData.publicUrl;
 
-                // Actualizar la URL de la imagen en la tabla 'archivos'
                 await supabase.from('archivos')
                     .update({ url: newImageUrl })
                     .eq('id_proyecto', projectId);
             }
 
-            // Actualizar el proyecto en la base de datos
-            const { error: updateError } = await supabase
+            const updateData = {
+                titulo: formData.title,
+                descripcion: formData.description,
+                categoria: formData.category,
+                fecha_inicio: formData.startDate || null,
+                fecha_finalizacion: formData.endDate || null,
+                para_quien_se_hizo: formData.client || null,
+                enlaces_referencia: formData.links || null,
+                privacidad: formData.privacy
+            };
+
+            let updateQuery = supabase
                 .from('proyectos')
-                .update({
-                    titulo: formData.title,
-                    descripcion: formData.description,
-                    categoria: formData.category,
-                    fecha_inicio: formData.startDate || null,
-                    fecha_finalizacion: formData.endDate || null,
-                    para_quien_se_hizo: formData.client || null,
-                    enlaces_referencia: formData.links || null,
-                    privacidad: formData.privacy
-                })
-                .eq('id_proyectos', projectId)
-                .eq('id', user.id); // Seguridad: solo el dueño puede editar
+                .update(updateData)
+                .eq('id_proyectos', projectId);
+
+            if (!is_admin) {
+                updateQuery = updateQuery.eq('id', user.id);
+            }
+
+            const { error: updateError } = await updateQuery;
 
             if (updateError) {
                 throw updateError;
@@ -236,14 +243,12 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     });
 
-    // Manejar la eliminación del proyecto
     if (deleteProjectBtn) {
         deleteProjectBtn.addEventListener('click', async () => {
             if (!confirm('¿Estás seguro de que quieres eliminar este proyecto? Esta acción no se puede deshacer.')) {
                 return;
             }
             try {
-                // Obtener las URLs de las imágenes del proyecto
                 const { data: filesData, error: filesError } = await supabase
                     .from('archivos')
                     .select('url')
@@ -251,7 +256,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
                 if (filesError) throw filesError;
 
-                // Eliminar las imágenes del storage
                 if (filesData.length > 0) {
                     const pathsToDelete = filesData.map(file => {
                         const pathParts = file.url.split('/');
@@ -262,10 +266,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     await supabase.storage.from('proyectos_imagenes').remove(pathsToDelete);
                 }
 
-                // Eliminar los registros de la tabla 'archivos'
                 await supabase.from('archivos').delete().eq('id_proyecto', projectId);
-
-                // Finalmente, eliminar el proyecto de la tabla 'proyectos'
                 await supabase.from('proyectos').delete().eq('id_proyectos', projectId);
 
                 showToast('Proyecto eliminado exitosamente!', false);

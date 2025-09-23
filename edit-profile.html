@@ -16,8 +16,6 @@
     <main role="main">
         <div class="editar-profile" id="edit-profile" role="dialog" aria-modal="true"
             aria-labelledby="edit-profile-title">
-            <span class="modal-close" id="edit-profile-close-btn" role="button" tabindex="0"
-                aria-label="Cerrar ventana de edición de perfil">&times;</span>
             <h2 id="edit-profile-title">Editar Perfil</h2>
             <form id="editProfileForm">
                 <div class="form-group">
@@ -90,6 +88,17 @@
                         <option value="true">Privado</option>
                     </select>
                 </div>
+
+                <div class="form-group" id="admin-fields" style="display: none;">
+                    <label for="admin-status-selector">Rol de Usuario</label>
+                    <select id="admin-status-selector" name="adminStatus">
+                        <option value="false">Usuario Normal</option>
+                        <option value="true">Administrador</option>
+                    </select>
+                    <label for="admin-password">Contraseña de Administrador</label>
+                    <input type="password" id="admin-password" name="adminPassword">
+                </div>
+
                 <button type="submit" class="btn-primary" aria-label="Guardar cambios del perfil">Guardar
                     Cambios</button>
             </form>

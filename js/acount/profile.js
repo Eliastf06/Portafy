@@ -120,22 +120,35 @@ document.addEventListener('DOMContentLoaded', async () => {
     let userIdToLoad;
     let usernameToLoad;
     let isOwnProfile = false;
+    let isAdmin = false;
 
     const { data: { user } } = await supabase.auth.getUser();
 
     try {
+        // Verificar si el usuario logueado es administrador
+        if (user) {
+            const { data: loggedInUser, error: loggedInUserError } = await supabase
+                .from('usuarios')
+                .select('is_admin')
+                .eq('id', user.id)
+                .single();
+            if (!loggedInUserError && loggedInUser?.is_admin) {
+                isAdmin = true;
+            }
+        }
+        
         let userData;
         if (usernameFromUrl) {
             const { data: fetchedUserData, error: userError } = await supabase
                 .from('usuarios')
-                .select('id, nombre, nom_usuario, tipo_usuario')
+                .select('id, nombre, nom_usuario, tipo_usuario, is_admin')
                 .eq('nom_usuario', usernameFromUrl);
             
             if (userError || !fetchedUserData || fetchedUserData.length === 0) {
                 showMessage('Usuario no encontrado o error en la carga.', 'error');
                 return;
             }
-            userData = fetchedUserData[0]; 
+            userData = fetchedUserData[0];
 
         } else {
             if (!user) {
@@ -146,7 +159,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             
             const { data: fetchedUserData, error: userError } = await supabase
                 .from('usuarios')
-                .select('id, nombre, nom_usuario, tipo_usuario')
+                .select('id, nombre, nom_usuario, tipo_usuario, is_admin')
                 .eq('id', user.id)
                 .maybeSingle();
 
@@ -206,7 +219,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             `)
             .eq('id', userIdToLoad);
 
-        if (!isOwnProfile) {
+        // Si no es el propio perfil Y el usuario no es administrador, filtrar por proyectos públicos
+        if (!isOwnProfile && !isAdmin) {
             query = query.eq('privacidad', false);
         }
 
@@ -222,20 +236,25 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (!projectsGrid) return;
             projectsGrid.innerHTML = '';
             if (projects.length === 0) {
-                projectsGrid.innerHTML = `<p class="text-center">Este usuario aún no tiene proyectos ${isOwnProfile ? 'públicos o privados' : 'públicos'}.</p>`;
+                const message = (isOwnProfile || isAdmin) 
+                    ? `Este usuario aún no tiene proyectos ${isOwnProfile ? 'públicos o privados' : 'visibles'}.`
+                    : 'Este usuario aún no tiene proyectos públicos.';
+                projectsGrid.innerHTML = `<p class="text-center">${message}</p>`;
                 return;
             }
             projects.forEach(project => {
                 const imageUrl = project.archivos.length > 0 ? project.archivos[0].url : 'https://placehold.co/600x400/000000/white?text=No+Image';
                 const projectCard = document.createElement('div');
                 projectCard.className = 'project-card';
+                // Añadir el botón de edición solo si es el dueño del perfil O un administrador
+                const showEditButton = isOwnProfile || isAdmin;
                 projectCard.innerHTML = `
                     <div class="project-image-placeholder">
                         <img src="${imageUrl}" alt="${project.titulo}">
                     </div>
                     <div class="project-content">
-                        <h3 class="project-title">${project.titulo} ${isOwnProfile && project.privacidad ? '<i class="fas fa-lock" title="Proyecto privado"></i>' : ''}</h3>
-                        ${isOwnProfile ? `<div class="project-actions"><a href="edit-project.html?id=${project.id_proyectos}" class="edit-project-btn"><i class="fas fa-edit"></i></a></div>` : ''}
+                        <h3 class="project-title">${project.titulo} ${showEditButton && project.privacidad ? '<i class="fas fa-lock" title="Proyecto privado"></i>' : ''}</h3>
+                        ${showEditButton ? `<div class="project-actions"><a href="edit-project.html?id=${project.id_proyectos}" class="edit-project-btn"><i class="fas fa-edit"></i></a></div>` : ''}
                     </div>
                 `;
                 projectsGrid.appendChild(projectCard);
@@ -253,11 +272,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         renderProjects(projectsData);
         
         if (editProfileBtn) {
-             if (isOwnProfile) {
+             // El botón de editar perfil ahora se muestra si es el perfil propio O si el usuario es un administrador
+             if (isOwnProfile || isAdmin) {
                 editProfileBtn.style.display = 'block';
-                editProfileBtn.addEventListener('click', () => {
-                    window.location.href = 'edit-profile.html';
-                });
+                editProfileBtn.href = `edit-profile.html?user_id=${userIdToLoad}`;
             } else {
                 editProfileBtn.style.display = 'none';
             }
