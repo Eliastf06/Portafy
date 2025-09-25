@@ -666,64 +666,31 @@ body.dark-mode .hero-text h1 {
     text-shadow: 0 0 5px var(--clr-dark-accent), 0 0 10px var(--clr-dark-accent);
 }
 
-/* Fragmento 1: Botón "¡Empieza a crear tu portafolios!" */
+
+
 
 .main-cta-button {
-    /* Asegúrate de que box-shadow esté en la transición para un efecto suave */
     transition: transform var(--transition-fast), background-color var(--transition-speed), box-shadow var(--transition-speed);
+    
 }
 
 /* Aplicar el efecto neón en Modo Oscuro */
 body.dark-mode .main-cta-button {
-    /* Se utiliza el color de acento oscuro (amarillo neón) */
-    box-shadow: 0 0 5px var(--clr-dark-accent), 0 0 15px var(--clr-dark-accent), 0 0 30px var(--clr-dark-accent);
+    box-shadow: 0 0 3px var(--clr-dark-accent), 0 0 8px var(--clr-dark-accent), 0 0 15px var(--clr-dark-accent);
 }
 
 /* Realzar ligeramente el efecto al pasar el ratón */
 body.dark-mode .main-cta-button:hover {
-    box-shadow: 0 0 8px var(--clr-dark-accent), 0 0 25px var(--clr-dark-accent), 0 0 50px var(--clr-dark-accent);
+    box-shadow: 0 0 5px var(--clr-dark-accent), 0 0 15px var(--clr-dark-accent), 0 0 30px var(--clr-dark-accent);
 }
 
 /* Fragmento 2: Íconos de las características claves */
 
 .feature-card .icon {
-    /* Asegúrate de que text-shadow esté en la transición para un efecto suave */
     transition: color var(--transition-speed), text-shadow var(--transition-speed);
 }
 
 /* Aplicar el efecto neón en Modo Oscuro */
 body.dark-mode .feature-card .icon {
-    /* Se utiliza text-shadow para el efecto de luz en los íconos */
-    text-shadow: 0 0 5px var(--clr-dark-accent), 0 0 10px var(--clr-dark-accent), 0 0 20px var(--clr-dark-accent);
-}
-
-
-
-/* Fragmento 1: Botón "¡Empieza a crear tu portafolios!" (Brillo Reducido) */
-
-/* Aplicar el efecto neón reducido en Modo Oscuro */
-body.dark-mode .main-cta-button {
-    /* Valores reducidos: Antes 30px, ahora 15px máximo en estado normal */
-    box-shadow: 0 0 3px var(--clr-dark-accent), 0 0 8px var(--clr-dark-accent), 0 0 15px var(--clr-dark-accent);
-}
-
-/* Realzar ligeramente el efecto al pasar el ratón (sigue siendo menor que antes) */
-body.dark-mode .main-cta-button:hover {
-    /* Valores reducidos: Antes 50px, ahora 30px máximo en hover */
-    box-shadow: 0 0 5px var(--clr-dark-accent), 0 0 15px var(--clr-dark-accent), 0 0 30px var(--clr-dark-accent);
-}
-
-/* Fragmento 2: Íconos de las características claves (Brillo Reducido) */
-
-/* Aplicar el efecto neón reducido en Modo Oscuro */
-body.dark-mode .feature-card .icon {
-    /* Valores reducidos: Antes 20px, ahora 12px máximo */
-    text-shadow: 0 0 3px var(--clr-dark-accent), 0 0 6px var(--clr-dark-accent), 0 0 12px var(--clr-dark-accent);
-}
-
-/* Fragmento 2: Íconos de las características claves (Brillo Mínimo) */
-
-body.dark-mode .feature-card .icon {
-    /* Brillo muy reducido, con valores de propagación (blur-radius) de 1px y 2px */
-    text-shadow: 0 0 1px var(--clr-dark-accent), 0 0 2px var(--clr-dark-accent);
+    text-shadow: 0 0 3px var(--clr-dark-accent), 0 0 5px var(--clr-dark-accent);
 }
