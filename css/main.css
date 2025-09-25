@@ -17,7 +17,7 @@
     --clr-dark-accent: #fff01e;
     --clr-dark-text-dark: #e0e0e0;
     --clr-dark-text-light: #70708f;
-    --clr-dark-shadow-primary: rgba(255, 240, 30, 0.25);
+    --clr-dark-shadow-primary: rgba(255, 240, 30, 0.489);
     --clr-dark-shadow-secondary: rgba(255, 240, 30, 0.05);
 
     /* Variables de transición */
@@ -572,4 +572,158 @@ body.dark-mode .footer-bottom p {
         display: flex;
         width: 100%;
     }
+}
+
+/* Sección Hero */
+
+.main-cta-button {
+    display: inline-block;
+    background-color: var(--clr-light-accent);
+    color: var(--clr-light-text-dark);
+    font-weight: bold;
+    padding: 15px 30px;
+    border-radius: 30px;
+    text-decoration: none;
+    font-size: 1.1em;
+    transition: transform var(--transition-fast), background-color var(--transition-speed), box-shadow var(--transition-speed);
+}
+
+.main-cta-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+body.dark-mode .main-cta-button {
+    background-color: var(--clr-dark-accent);
+    color: var(--clr-dark-bg-primary);
+    box-shadow: var(--glow-effect);
+}
+
+body.dark-mode .main-cta-button:hover {
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2), var(--glow-effect);
+}
+
+/* Sección de Características */
+
+.feature-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 30px var(--clr-light-shadow-primary);
+}
+
+body.dark-mode .feature-card {
+    background-color: var(--clr-dark-bg-secondary);
+    box-shadow: 0 5px 15px var(--clr-dark-shadow-secondary);
+}
+
+body.dark-mode .feature-card:hover {
+    box-shadow: var(--glow-effect);
+}
+
+.feature-card .icon {
+    font-size: 3em;
+    color: var(--clr-light-accent);
+    margin-bottom: 20px;
+    transition: color var(--transition-speed), text-shadow var(--transition-speed);
+}
+
+body.dark-mode .feature-card .icon {
+    color: var(--clr-dark-accent);
+    text-shadow: var(--glow-effect);
+}
+
+/* Pie de Página */
+
+.footer-links a:hover {
+    color: var(--clr-light-accent);
+}
+
+body.dark-mode .footer-links a:hover {
+    color: var(--clr-dark-accent);
+    text-shadow: 0 0 5px var(--clr-dark-accent);
+}
+
+.social-icons a:hover {
+    color: var(--clr-light-accent);
+}
+
+body.dark-mode .social-icons a:hover {
+    color: var(--clr-dark-accent);
+    text-shadow: 0 0 5px var(--clr-dark-accent);
+}
+
+/* Hero Title */
+.hero-text h1 {
+    font-size: clamp(2.5em, 8vw, 5em);
+    margin: 0;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color var(--transition-speed), text-shadow var(--transition-speed);
+}
+
+body.dark-mode .hero-text h1 {
+    text-shadow: 0 0 5px var(--clr-dark-accent), 0 0 10px var(--clr-dark-accent);
+}
+
+/* Fragmento 1: Botón "¡Empieza a crear tu portafolios!" */
+
+.main-cta-button {
+    /* Asegúrate de que box-shadow esté en la transición para un efecto suave */
+    transition: transform var(--transition-fast), background-color var(--transition-speed), box-shadow var(--transition-speed);
+}
+
+/* Aplicar el efecto neón en Modo Oscuro */
+body.dark-mode .main-cta-button {
+    /* Se utiliza el color de acento oscuro (amarillo neón) */
+    box-shadow: 0 0 5px var(--clr-dark-accent), 0 0 15px var(--clr-dark-accent), 0 0 30px var(--clr-dark-accent);
+}
+
+/* Realzar ligeramente el efecto al pasar el ratón */
+body.dark-mode .main-cta-button:hover {
+    box-shadow: 0 0 8px var(--clr-dark-accent), 0 0 25px var(--clr-dark-accent), 0 0 50px var(--clr-dark-accent);
+}
+
+/* Fragmento 2: Íconos de las características claves */
+
+.feature-card .icon {
+    /* Asegúrate de que text-shadow esté en la transición para un efecto suave */
+    transition: color var(--transition-speed), text-shadow var(--transition-speed);
+}
+
+/* Aplicar el efecto neón en Modo Oscuro */
+body.dark-mode .feature-card .icon {
+    /* Se utiliza text-shadow para el efecto de luz en los íconos */
+    text-shadow: 0 0 5px var(--clr-dark-accent), 0 0 10px var(--clr-dark-accent), 0 0 20px var(--clr-dark-accent);
+}
+
+
+
+/* Fragmento 1: Botón "¡Empieza a crear tu portafolios!" (Brillo Reducido) */
+
+/* Aplicar el efecto neón reducido en Modo Oscuro */
+body.dark-mode .main-cta-button {
+    /* Valores reducidos: Antes 30px, ahora 15px máximo en estado normal */
+    box-shadow: 0 0 3px var(--clr-dark-accent), 0 0 8px var(--clr-dark-accent), 0 0 15px var(--clr-dark-accent);
+}
+
+/* Realzar ligeramente el efecto al pasar el ratón (sigue siendo menor que antes) */
+body.dark-mode .main-cta-button:hover {
+    /* Valores reducidos: Antes 50px, ahora 30px máximo en hover */
+    box-shadow: 0 0 5px var(--clr-dark-accent), 0 0 15px var(--clr-dark-accent), 0 0 30px var(--clr-dark-accent);
+}
+
+/* Fragmento 2: Íconos de las características claves (Brillo Reducido) */
+
+/* Aplicar el efecto neón reducido en Modo Oscuro */
+body.dark-mode .feature-card .icon {
+    /* Valores reducidos: Antes 20px, ahora 12px máximo */
+    text-shadow: 0 0 3px var(--clr-dark-accent), 0 0 6px var(--clr-dark-accent), 0 0 12px var(--clr-dark-accent);
+}
+
+/* Fragmento 2: Íconos de las características claves (Brillo Mínimo) */
+
+body.dark-mode .feature-card .icon {
+    /* Brillo muy reducido, con valores de propagación (blur-radius) de 1px y 2px */
+    text-shadow: 0 0 1px var(--clr-dark-accent), 0 0 2px var(--clr-dark-accent);
 }
