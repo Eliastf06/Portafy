@@ -192,14 +192,3 @@ body.dark-mode .user-message {
 #chatbot-send:hover {
     background-color: #a19700; /* Un tono más oscuro del accent */
 }
-
-/* Responsividad para móviles */
-@media (max-width: 500px) {
-    .chatbot-window {
-        width: 100%;
-        max-width: calc(100% - 40px);
-        bottom: 80px;
-        right: 20px;
-        left: 20px;
-    }
-}
