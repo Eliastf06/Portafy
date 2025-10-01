@@ -193,6 +193,35 @@
         </div>
     </div>
 
+
+    <button id="btnVolverArriba" aria-label="Volver al inicio de la página" title="Volver Arriba">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <script type="module" src="js/scroll-to-top.js"></script>
+
+    <div class="chatbot-container" id="chatbot-container">
+        <button class="chatbot-toggle" id="chatbot-toggle" aria-label="Abrir Chatbot">
+            <i class="fas fa-comment-dots"></i>
+        </button>
+        <div class="chatbot-window" id="chatbot-window">
+            <div class="chatbot-header">
+                <h3>Asistente Portafy</h3>
+                <button class="chatbot-close" id="chatbot-close" aria-label="Cerrar Chatbot">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="chatbot-messages" id="chatbot-messages">
+                </div>
+            <div class="chatbot-input-area">
+                <input type="text" id="chatbot-input" placeholder="Escribe tu pregunta..." aria-label="Escribe tu pregunta al asistente">
+                <button id="chatbot-send" aria-label="Enviar mensaje">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
     <footer class="main-footer" role="contentinfo">
         <div class="container footer-content">
             <div class="footer-logo">
@@ -227,29 +256,6 @@
             <p>&copy; 2025 Portafy. Todos los derechos reservados.</p>
         </div>
     </footer>
-
-    <div class="chatbot-container" id="chatbot-container">
-        <button class="chatbot-toggle" id="chatbot-toggle" aria-label="Abrir Chatbot">
-            <i class="fas fa-comment-dots"></i>
-        </button>
-        <div class="chatbot-window" id="chatbot-window">
-            <div class="chatbot-header">
-                <h3>Asistente Portafy</h3>
-                <button class="chatbot-close" id="chatbot-close" aria-label="Cerrar Chatbot">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            <div class="chatbot-messages" id="chatbot-messages">
-                </div>
-            <div class="chatbot-input-area">
-                <input type="text" id="chatbot-input" placeholder="Escribe tu pregunta..." aria-label="Escribe tu pregunta al asistente">
-                <button id="chatbot-send" aria-label="Enviar mensaje">
-                    <i class="fas fa-paper-plane"></i>
-                </button>
-            </div>
-        </div>
-    </div>
-
     <script type="module" src="js/help.js"></script>
     <script src="js/theme.js"></script>
     <script src="js/help.js"></script>

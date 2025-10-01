@@ -31,11 +31,17 @@ document.addEventListener('DOMContentLoaded', () => {
         chatbotWindow.classList.add('hidden');
     });
 
-    // Añadir mensaje al contenedor
+    // Añadir mensaje al contenedor con soporte para negritas
     function appendMessage(sender, text) {
         const messageDiv = document.createElement('div');
         messageDiv.classList.add('message', `${sender}-message`);
-        messageDiv.textContent = text;
+
+        // NUEVA LÓGICA: Procesar el texto para negritas (reemplazar **texto** por <strong>texto</strong>)
+        const processedText = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+        
+        // Usamos innerHTML para renderizar el <strong>, ya que es contenido controlado.
+        messageDiv.innerHTML = processedText;
+        
         messagesContainer.appendChild(messageDiv);
         // Desplazamiento automático al final
         messagesContainer.scrollTop = messagesContainer.scrollHeight;
@@ -53,11 +59,11 @@ document.addEventListener('DOMContentLoaded', () => {
         // 1. Saludos y Cierres
         { 
             keywords: ['hola', 'saludo', 'buenos dias', 'que tal'], 
-            response: '¡Hola! Soy tu Asistente Portafy. ¿En qué puedo ayudarte hoy?' 
+            response: '¡Hola! Soy tu **Asistente Portafy**. ¿En qué puedo ayudarte hoy?' 
         },
         { 
             keywords: ['gracias', 'adios', 'chao', 'hasta luego'], 
-            response: '¡De nada! Me alegra haberte ayudado. ¡Que tengas un gran día creando tu portafolio!' 
+            response: '¡De nada! Me alegra haberte ayudado. ¡Que tengas un gran día creando tu **portafolio**!' 
         },
         // 2. Core: Creación de Portafolio
         { 
@@ -83,7 +89,7 @@ document.addEventListener('DOMContentLoaded', () => {
         },
         { 
             keywords: ['main.html', 'inicio', 'casa', 'dashboard'], 
-            response: 'La página principal es `main.html`. Es el *dashboard* o centro de inicio donde gestionas tu portafolio.' 
+            response: 'La página principal es `main.html`. Es el **dashboard** o centro de inicio donde gestionas tu portafolio.' 
         },
         // 4. Tema y Diseño
         { 
@@ -126,7 +132,7 @@ document.addEventListener('DOMContentLoaded', () => {
         },
         { 
             keywords: ['loading', 'carga', 'spinner', 'pantalla de carga', 'lentitud'], 
-            response: 'El *spinner* (`loading-overlay`) solo aparece en páginas como `index.html` para una mejor experiencia mientras cargan los proyectos.' 
+            response: 'El **spinner** (`loading-overlay`) solo aparece en páginas como `index.html` para una mejor experiencia mientras cargan los proyectos.' 
         },
         { 
             keywords: ['que es un portafolio', 'definicion', 'concepto'], 
@@ -173,7 +179,7 @@ document.addEventListener('DOMContentLoaded', () => {
         },
         { 
             keywords: ['usuario', 'login', 'registro', 'sesion'], 
-            response: 'Si tienes problemas de *login* o registro, visita la sección de ayuda para una guía de solución de problemas.' 
+            response: 'Si tienes problemas de **login** o registro, visita la sección de ayuda para una guía de solución de problemas.' 
         },
         { 
             keywords: ['tutorial', 'guia', 'pasos', 'como se hace'], 

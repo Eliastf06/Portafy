@@ -1150,3 +1150,60 @@ body.dark-mode .user-type {
     background-color: var(--accent-color);
     color: var(--clr-dark-bg-primary);
 }
+
+/* FRAGMENTO CSS: Agregar al final de css/style.css (y otros archivos CSS si no usan style.css) */
+
+#btnVolverArriba {
+    /* Posición: Fijo en la esquina inferior izquierda */
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    z-index: 1000; /* Asegura que esté por encima de otros elementos */
+
+    /* Estilo del botón (usando variables de tu :root) */
+    background-color: var(--accent-color);
+    color: var(--clr-light-text-dark); /* Color de icono en modo claro */
+    border: none;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+
+    /* Estado inicial: Oculto, con transición suave (suave y limpio) */
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease, background-color var(--transition-speed);
+}
+
+/* Estado 'mostrar' (controlado por JavaScript) */
+#btnVolverArriba.mostrar {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+/* Efecto hover */
+#btnVolverArriba:hover {
+    filter: brightness(1.1);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* Adaptación al Modo Oscuro */
+body.dark-mode #btnVolverArriba {
+    background-color: var(--clr-dark-accent);
+    color: var(--clr-dark-bg-primary); /* Mejor contraste en modo oscuro */
+    box-shadow: 0 0 5px var(--clr-dark-shadow-primary), 0 0 10px var(--clr-dark-accent);
+}
+
+body.dark-mode #btnVolverArriba:hover {
+    filter: brightness(1.05);
+}
+
+#btnVolverArriba i {
+    font-size: 1.2em;
+}

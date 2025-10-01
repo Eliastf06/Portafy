@@ -29,7 +29,6 @@
             <nav class="main-nav" role="navigation">
                 <ul>
                     <li><a href="index.html" class="cta-link">Ver Proyectos</a></li>
-                    <li><a href="regis.html" class="cta-link">Crear Portafolios</a></li>
                     <li><a href="docs.html" class="nav-button">Documentación</a></li>
                     <li id="profile-link-container"><a href="#" id="profile-link" class="nav-button">Ver mi
                             Portafolios</a></li>
@@ -46,23 +45,31 @@
                         <img src="multimedia/logo.png" alt="Logo de Portafy" class="logo-text">ortafy
                     </h1>
                     <h2>Crea, organiza y comparte tu portafolios profesional de forma simple.</h2>
-                    <p>Portafy es una plataforma diseñada para que programadores, diseñadores y artistas visuales muestren sus proyectos y consigan la visibilidad que necesitan. Olvídate de las complicaciones y centraliza tus trabajos en un solo lugar.</p>
-                    <a href="regis.html" class="main-cta-button">¡Empieza a crear tu portafolios!</a>
+                    <p>Portafy es una plataforma diseñada para que programadores, diseñadores y artistas visuales
+                        muestren sus proyectos y consigan la visibilidad que necesitan. Olvídate de las complicaciones y
+                        centraliza tus trabajos en un solo lugar.</p>
+                    <a href="regis.html" class="main-cta-button" id="hero-cta-button">¡Empieza a crear tu
+                        portafolios!</a>
                 </div>
             </div>
         </section>
 
         <section class="who-we-are">
             <div class="container">
-                <h2>¿Quiénes somos y para quién es <img src="multimedia/logo.png" alt="Logo de Portafy" class="logo-text">ortafy?</h2>
+                <h2>¿Quiénes somos y para quién es <img src="multimedia/logo.png" alt="Logo de Portafy"
+                        class="logo-text">ortafy?</h2>
                 <div class="who-content">
                     <div class="who-text">
-                        <p>Somos un grupo de estudiantes de programación que, al enfrentar el desafío de crear nuestro propio portafolios, decidimos construir una herramienta para resolver este problema no solo para nosotros, sino para toda la comunidad.</p>
+                        <p>Somos un grupo de estudiantes de programación que, al enfrentar el desafío de crear nuestro
+                            propio portafolios, decidimos construir una herramienta para resolver este problema no solo
+                            para nosotros, sino para toda la comunidad.</p>
                         <p><strong>Portafy está pensado para:</strong></p>
                         <ul>
                             <li><strong>Programadores novatos</strong> que quieren dar a conocer sus proyectos.</li>
-                            <li><strong>Diseñadores y artistas visuales</strong> que necesitan una galería profesional.</li>
-                            <li><strong>Estudiantes y egresados</strong> que buscan su primer empleo en el sector tecnológico o creativo.</li>
+                            <li><strong>Diseñadores y artistas visuales</strong> que necesitan una galería profesional.
+                            </li>
+                            <li><strong>Estudiantes y egresados</strong> que buscan su primer empleo en el sector
+                                tecnológico o creativo.</li>
                         </ul>
                     </div>
                     <div class="who-image">
@@ -89,12 +96,7 @@
                     <div class="feature-card">
                         <i class="fas fa-share-alt icon"></i>
                         <h3>Comparte fácilmente</h3>
-                        <p>Obtén un enlace único para tu portafolios y compártelo con empleadores o clientes.</p>
-                    </div>
-                    <div class="feature-card">
-                        <i class="fas fa-paint-brush icon"></i>
-                        <h3>Plantillas Modernas</h3>
-                        <p>Elige entre diversas plantillas responsivas para que tu trabajo luzca increíble en cualquier dispositivo.</p>
+                        <p>Obtén un enlace único para tu portafolio y compártelo en tus redes profesionales.</p>
                     </div>
                 </div>
             </div>
@@ -102,33 +104,85 @@
 
         <section class="projects-carousel-section">
             <div class="container">
-                <h2>Proyectos de la comunidad</h2>
-                <div class="carousel-container">
-                    <div class="carousel-track" id="carousel-track">
-                        </div>
+                <h2>Proyectos Destacados</h2>
+            </div>
+            <div class="carousel-container">
+                <div class="carousel-track" id="carousel-track">
+                </div>
+            </div>
+        </section>
+
+        <section class="who-we-are">
+            <div class="container">
+                <h2>Comienza a crear tu perfil</h2>
+                <div class="who-content">
+                    <div class="who-text">
+                        <p>Únete a la comunidad de Portafy hoy mismo y da el primer paso para impulsar tu carrera
+                            profesional. ¡Es simple, rápido y gratuito!</p>
+                        <a href="regis.html" class="main-cta-button" id="join-now-button"
+                            style="margin-top: 20px;">¡Únete ahora!</a>
+                    </div>
+                    <div class="who-image">
+                        <img src="multimedia/join-us.jpg" alt="Ilustración de un equipo de trabajo digital">
+                    </div>
                 </div>
             </div>
         </section>
     </main>
 
-    <footer class="main-footer">
+
+    <button id="btnVolverArriba" aria-label="Volver al inicio de la página" title="Volver Arriba">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <script type="module" src="js/scroll-to-top.js"></script>
+
+    <div class="chatbot-container" id="chatbot-container">
+        <button class="chatbot-toggle" id="chatbot-toggle" aria-label="Abrir Chatbot">
+            <i class="fas fa-comment-dots"></i>
+        </button>
+        <div class="chatbot-window" id="chatbot-window">
+            <div class="chatbot-header">
+                <h3>Asistente Portafy</h3>
+                <button class="chatbot-close" id="chatbot-close" aria-label="Cerrar Chatbot">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="chatbot-messages" id="chatbot-messages">
+            </div>
+            <div class="chatbot-input-area">
+                <input type="text" id="chatbot-input" placeholder="Escribe tu pregunta..."
+                    aria-label="Escribe tu pregunta al asistente">
+                <button id="chatbot-send" aria-label="Enviar mensaje">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <footer class="main-footer" role="contentinfo">
         <div class="container footer-content">
             <div class="footer-info">
                 <a href="main.html" class="app-logo-link">
                     <img src="multimedia/logo.png" alt="Logo de Portafy" class="logo-image">
                     ortafy
                 </a>
-                <p>Gestiona tu portafolios web</p>
+                <p>La forma más sencilla de crear y gestionar tu portafolio profesional.</p>
             </div>
             <div class="footer-links">
                 <h4>Navegación</h4>
-                <nav>
-                    <ul>
-                        <li><a href="index.html">Proyectos</a></li>
-                        <li><a href="regist.html">Crear Portafolios</a></li>
-                        <li><a href="docs.html">Documentación</a></li>
-                    </ul>
-                </nav>
+                <ul>
+                    <li><a href="index.html">Ver Proyectos</a></li>
+                    <li><a href="docs.html">Documentación</a></li>
+                    <li><a href="help.html">Ayuda</a></li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h4>Cuenta</h4>
+                <ul>
+                    <li><a href="signin.html">Iniciar Sesión</a></li>
+                    <li><a href="regis.html">Registrarse</a></li>
+                </ul>
             </div>
             <div class="footer-social">
                 <h4>Síguenos</h4>
@@ -148,32 +202,9 @@
             <p>&copy; 2025 Portafy. Todos los derechos reservados.</p>
         </div>
     </footer>
-
-    <div class="chatbot-container" id="chatbot-container">
-        <button class="chatbot-toggle" id="chatbot-toggle" aria-label="Abrir Chatbot">
-            <i class="fas fa-comment-dots"></i>
-        </button>
-        <div class="chatbot-window" id="chatbot-window">
-            <div class="chatbot-header">
-                <h3>Asistente Portafy</h3>
-                <button class="chatbot-close" id="chatbot-close" aria-label="Cerrar Chatbot">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            <div class="chatbot-messages" id="chatbot-messages">
-                </div>
-            <div class="chatbot-input-area">
-                <input type="text" id="chatbot-input" placeholder="Escribe tu pregunta..." aria-label="Escribe tu pregunta al asistente">
-                <button id="chatbot-send" aria-label="Enviar mensaje">
-                    <i class="fas fa-paper-plane"></i>
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <script type="module" src="js/main.js"></script>
     <script type="module" src="js/theme.js"></script>
-    <script src="js/chatbot.js"></script>
+    <script type="module" src="js/chatbot.js"></script>
+    <script type="module" src="js/main.js"></script>
 </body>
 
 </html>

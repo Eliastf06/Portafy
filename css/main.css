@@ -377,7 +377,7 @@ body.dark-mode .projects-carousel-section {
 .carousel-track {
     display: flex;
     width: max-content;
-    animation: scroll-left 60s linear infinite;
+    animation: scroll-left 30s linear infinite;
     gap: 0px; /* Cambiado a 0px para que las imágenes estén juntas */
 }
 

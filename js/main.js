@@ -10,13 +10,17 @@ const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 document.addEventListener('DOMContentLoaded', () => {
     // Referencias a los elementos del DOM
     const profileLink = document.getElementById('profile-link');
+    const heroCtaButton = document.getElementById('hero-cta-button'); // Nuevo
     const carouselTrack = document.getElementById('carousel-track');
 
     const updateUI = async () => {
         const { data: { user } } = await supabase.auth.getUser();
 
         if (user) {
-            // Usuario logeado: mostrar "Ver mi Portafolios"
+            // Lógica para USUARIO LOGEADO
+            let profileUrl = 'profile.html';
+
+            // Obtener nombre de usuario para el enlace del perfil
             const { data: userData, error } = await supabase
                 .from('usuarios')
                 .select('nom_usuario')
@@ -25,13 +29,32 @@ document.addEventListener('DOMContentLoaded', () => {
             
             if (error) {
                 console.error('Error al obtener el nombre de usuario:', error);
-                profileLink.href = 'profile.html';
             } else {
-                profileLink.href = `profile.html?username=${userData.nom_usuario}`;
+                profileUrl = `profile.html?username=${userData.nom_usuario}`;
             }
+
+            // 1. NAV CTA: "Ver mi Portafolios" -> profile.html
+            profileLink.textContent = 'Ver mi Portafolios';
+            profileLink.href = profileUrl;
+
+            // 2. HERO CTA: "Empieza a crear tu portafolios" -> "Ver mi Portafolios" -> profile.html
+            if (heroCtaButton) {
+                heroCtaButton.textContent = 'Ver mi Portafolios';
+                heroCtaButton.href = profileUrl;
+            }
+
         } else {
-            // Usuario no logeado: mostrar "Iniciar Sesión"
+            // Lógica para USUARIO NO LOGEADO
+
+            // 1. NAV CTA: "Ver mi Portafolios" -> "Crear portafolios" -> signin.html
+            profileLink.textContent = 'Crear portafolios';
             profileLink.href = 'signin.html';
+
+            // 2. HERO CTA: Mantiene "¡Empieza a crear tu portafolios!" -> regis.html
+            if (heroCtaButton) {
+                heroCtaButton.textContent = '¡Empieza a crear tu portafolios!';
+                heroCtaButton.href = 'regis.html';
+            }
         }
     };
 
@@ -52,7 +75,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // Extraer los IDs de usuario únicos de la columna 'id' de proyectos.
             const userIds = projectsData.map(p => p.id);
             const uniqueUserIds = [...new Set(userIds)];
-            
+
             // Obtener los nombres de usuario de la tabla 'usuarios' usando esos IDs.
             const { data: usersData, error: usersError } = await supabase
                 .from('usuarios')
@@ -61,38 +84,23 @@ document.addEventListener('DOMContentLoaded', () => {
                     nom_usuario
                 `)
                 .in('id', uniqueUserIds);
-            
+
             if (usersError) throw usersError;
 
             // Mapear los nombres de usuario a los proyectos.
             const usersMap = new Map(usersData.map(user => [user.id, user.nom_usuario]));
             
-            const finalProjects = projectsData.map(project => ({
-                ...project,
-                authorName: usersMap.get(project.id)
-            }));
-            
-            // Barajar y seleccionar proyectos para el carrusel.
-            const shuffledProjects = finalProjects.sort(() => 0.5 - Math.random());
-            const selectedProjects = shuffledProjects.slice(0, 10);
+            // Duplicar los datos para el efecto de carrusel continuo
+            const combinedProjects = [...projectsData, ...projectsData];
 
-            if (selectedProjects.length === 0) {
-                carouselTrack.innerHTML = '<p style="text-align: center; width: 100%;">No hay proyectos para mostrar en el carrusel.</p>';
-                return;
-            }
-
-            const infiniteProjects = [...selectedProjects, ...selectedProjects];
             const fragment = document.createDocumentFragment();
 
-            infiniteProjects.forEach(project => {
+            combinedProjects.forEach(project => {
                 const projectCard = document.createElement('div');
-                projectCard.className = 'project-card';
-                
-                const imageUrl = (project.archivos && project.archivos.length > 0)
-                    ? project.archivos[0].url
-                    : 'https://placehold.co/600x400/0a0a1a/white?text=No+Image';
-                
-                const authorName = project.authorName || 'Autor desconocido';
+                projectCard.classList.add('project-card');
+
+                const imageUrl = project.archivos.length > 0 ? project.archivos[0].url : 'multimedia/default-project.jpg';
+                const authorName = usersMap.get(project.id) || 'Autor desconocido';
 
                 projectCard.innerHTML = `
                     <div class="project-image-placeholder">
