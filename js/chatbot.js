@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!chatbotWindow.classList.contains('hidden')) {
             // Mostrar mensaje de bienvenida al abrir
             if (messagesContainer.children.length === 0) {
-                appendMessage('bot', '¡Hola! Soy tu asistente de Portafy. ¿En qué puedo ayudarte hoy? Tengo respuestas sobre la navegación, documentación, temas de color y más.');
+                appendMessage('bot', '¡Hola! Soy tu asistente de Portafy. ¿En qué puedo ayudarte hoy? Tengo respuestas sobre la navegación, documentación, temas de color y más. Te agradeceria que no tengas errores de ortografia y no insultes, Gracias');
             }
             // Enfocar el input
             inputField.focus();
@@ -52,23 +52,23 @@ document.addEventListener('DOMContentLoaded', () => {
     const knowledgeBase = [
         // 0. MANEJO DE INSULTOS Y LENGUAJE INAPROPIADO (NUEVO)
         { 
-            keywords: ['tonto', 'estupido', 'idiota', 'mierda', 'puto', 'imbecil', 'cabron', 'joder', 'coño', 'gilipollas', 'pendejo', 'chinga', 'groseria', 'obscena', 'maldito', 'feo'], 
-            response: 'Agradezco que mantengas un lenguaje profesional. Estoy aquí para ayudarte con preguntas sobre Portafy, no para responder a ofensas. Por favor, reformula tu pregunta de manera respetuosa.' 
+            keywords: ['salame', 'retardado', 'retardado', 'nigga', 'conchuda', 'conchudo', 'sexo', 'pitito', 'conchita', 'chota', 'choto', 'chotin', 'cogida', 'cogido', 'salamin', 'boludito', 'boludita', 'trolo', 'trola', 'gay', 'gey', 'lesbiana', 'homosexual', 'travesti', 'traba', 'esclavo', 'esclava', 'gordo', 'gorda', 'teton', 'tetona', 'lechon', 'vaca', 'trava', 'cojo', 'cojer', 'coger', 'garcho', 'garchar', 'violo', 'violador', 'violadora', 'violado', 'vialada', 'gordita', 'gordito', 'pelotudito', 'pelotudita', 'panflina', 'trolin', 'trolito', 'trolita', 'nabo', 'pelado', 'calvo', 'pelon', 'culon', 'negro', 'negra', 'culona', 'cancer', 'putito', 'putita', 'boludin', 'hermana', 'madre', 'vieja', 'mama', 'tia', 'lora', 'mono', 'naboleti', 'salamina', 'tontin', 'pete', 'inutil', 'panflin', 'pancho', 'gil', 'gila', 'pancha', 'orto', 'semen', 'leche', 'lechita', 'bolas', 'testiculos', 'mogolico', 'mogolica', 'down', 'autista', 'retrasado', 'retrasada', 'tarado', 'tarada', 'tonto', 'tonta', 'teta', 'culo', 'nalgas', 'pito', 'pene', 'vagina', 'concha', 'infeliz', 'estupido', 'estupida', 'idiota', 'mierda', 'puto', 'puta', 'imbecil', 'cabron', 'cabrona', 'joder', 'boludo', 'boluda', 'coño', 'gilipollas', 'pendejo', 'pendeja', 'chinga', 'groseria', 'obscena', 'maldito', 'maldita', 'feo', 'caca', 'pedo', 'pis'], 
+            response: 'Agradeceria que mantengas un lenguaje profesional. Estoy aquí para ayudarte con preguntas sobre Portafy, no para responder a ofensas. Por favor, reformula tu pregunta de manera respetuosa.' 
         },
 
         // 1. Saludos y Cierres
         { 
-            keywords: ['hola', 'saludo', 'buenos dias', 'que tal'], 
+            keywords: ['hola', 'buenas', 'buen', 'buenas', 'hi', 'hello', 'helow', 'hey', 'holis', 'ola', 'oli', 'olis', 'holanda', 'olanda', 'saludo', 'buenos dias', 'onda', 'que tal'], 
             response: '¡Hola! Soy tu **Asistente Portafy**. ¿En qué puedo ayudarte hoy?' 
         },
         { 
-            keywords: ['gracias', 'adios', 'chao', 'hasta luego'], 
-            response: '¡De nada! Me alegra haberte ayudado. ¡Que tengas un gran día creando tu **portafolio**!' 
+            keywords: ['gracias', 'muy bien', 'adios', 'chao', 'hasta luego'], 
+            response: '¡De nada! Me alegra haberte ayudado. ¡Que tengas un gran día creando/gestionando tu **portafolio**!' 
         },
         // 2. Core: Creación de Portafolio
         { 
             keywords: ['portafolio', 'crear', 'hacer uno', 'mi portafolio', 'empezar'], 
-            response: 'Para **crear tu portafolio**, ve a la página principal (`main.html`) y busca el botón de creación. Es un proceso guiado y muy simple.' 
+            response: 'Para **crear tu portafolio**, ve a la página principal y busca el botón de creación, o sino tambien en cualquier otra pagina le das al boton con la personita en la barra de navegacion o "iniciar sesion" en el menu lateral. Es un proceso muy simple.' 
         },
         // 3. Páginas de Navegación
         { 
@@ -76,8 +76,8 @@ document.addEventListener('DOMContentLoaded', () => {
             response: 'La **Documentación** está en `docs.html`. Ahí encontrarás guías detalladas, estructuras de archivos y detalles técnicos del proyecto.' 
         },
         { 
-            keywords: ['ayuda', 'soporte', 'contacto', 'problema', 'emergencia', 'reportar'], 
-            response: 'Si necesitas ayuda, visita la página de **Ayuda** (`help.html`) o contacta a soporte a través de los enlaces en el pie de página.' 
+            keywords: ['ayuda', 'soporte', 'contacto', 'problema', 'emergencia', 'duda', 'consulta', 'reportar'], 
+            response: 'Si necesitas ayuda, visita la página de **Ayuda**, que deberia estar abajo de la pagina, o contacta a soporte a través de los enlaces en el pie de página.' 
         },
         { 
             keywords: ['perfil', 'mi cuenta', 'editar perfil', 'ajustes', 'informacion'], 
@@ -119,7 +119,7 @@ document.addEventListener('DOMContentLoaded', () => {
         },
         { 
             keywords: ['lenguaje programacion', 'tecnologias', 'stack', 'framework'], 
-            response: 'La plataforma está construida con tecnologías web estándar: **HTML**, **CSS** (con variables) y **JavaScript** puro.' 
+            response: 'La plataforma está construida con tecnologías web estándar: **HTML**, **CSS** (con variables) y **JavaScript** puro. Tambien utiliza postgres sql en **Supabase**.' 
         },
         { 
             keywords: ['descargar', 'codigo', 'repositorio', 'archivos'], 
@@ -128,11 +128,11 @@ document.addEventListener('DOMContentLoaded', () => {
         // 6. Funcionalidad
         { 
             keywords: ['como editar', 'cambiar info', 'formulario', 'actualizar'], 
-            response: 'La edición de tu perfil o portafolio se gestiona con los botones y formularios de **"Editar"** que encontrarás en `profile.html` o `main.html`.' 
+            response: 'La edición de tu perfil o portafolio se gestiona con los botones y formularios de **"Editar"** que encontrarás en en la pagina de **Perfil**.' 
         },
         { 
             keywords: ['loading', 'carga', 'spinner', 'pantalla de carga', 'lentitud'], 
-            response: 'El **spinner** (`loading-overlay`) solo aparece en páginas como `index.html` para una mejor experiencia mientras cargan los proyectos.' 
+            response: 'El **spinner** solo aparece en páginas como `index.html` para una mejor experiencia mientras cargan los proyectos.' 
         },
         { 
             keywords: ['que es un portafolio', 'definicion', 'concepto'], 
@@ -158,11 +158,11 @@ document.addEventListener('DOMContentLoaded', () => {
         // 8. Componentes de la Web
         { 
             keywords: ['header', 'encabezado', 'barra superior'], 
-            response: 'El encabezado (`main-header`) contiene el logo, el botón de cambio de tema y la navegación principal (Principal, Descubrir, Documentación, Ayuda).' 
+            response: 'El encabezado contiene el logo, el botón de cambio de tema y la navegación principal.' 
         },
         { 
             keywords: ['footer', 'pie de pagina', 'fondo'], 
-            response: 'El pie de página (`footer`) incluye enlaces de navegación, nuestros perfiles de redes sociales y el aviso de copyright.' 
+            response: 'El pie de página incluye enlaces de navegación, nuestros perfiles de redes sociales y el aviso de copyright.' 
         },
         { 
             keywords: ['sociales', 'redes', 'facebook', 'twitter', 'x.com', 'instagram', 'linkedin'], 
@@ -175,15 +175,15 @@ document.addEventListener('DOMContentLoaded', () => {
         // 9. Misc
         { 
             keywords: ['es gratis', 'costo', 'pago', 'cuanto cuesta'], 
-            response: 'Asumo que la plataforma es de acceso libre para la creación de portafolios básicos. Revisa la documentación (`docs.html`) para detalles sobre licencias o planes de pago.' 
+            response: 'Asumo que la plataforma es de acceso libre para la creación de portafolios básicos. Revisa la documentación para detalles sobre licencias o planes de pago.' 
         },
         { 
             keywords: ['usuario', 'login', 'registro', 'sesion'], 
-            response: 'Si tienes problemas de **login** o registro, visita la sección de ayuda para una guía de solución de problemas.' 
+            response: 'Si tienes problemas de **login** o **registro**, visita la sección de ayuda para una guía de solución de problemas.' 
         },
         { 
             keywords: ['tutorial', 'guia', 'pasos', 'como se hace'], 
-            response: 'En la sección de **Ayuda** (`help.html`) y **Documentación** (`docs.html`) encontrarás guías paso a paso para la mayoría de las funcionalidades.' 
+            response: 'En la sección de **Ayuda** y **Documentación** encontrarás guías paso a paso para la mayoría de las funcionalidades.' 
         },
         { 
             keywords: ['como contribuir', 'colaborar', 'trabajar'], 
@@ -191,15 +191,11 @@ document.addEventListener('DOMContentLoaded', () => {
         },
         { 
             keywords: ['error', 'bug', 'falla'], 
-            response: 'Si encuentras un error o fallo, por favor repórtalo en la página de **Ayuda** (`help.html`) para que podamos solucionarlo rápidamente.' 
+            response: 'Si encuentras un error o fallo, por favor repórtalo en la página de **Ayuda** para que podamos solucionarlo rápidamente.' 
         },
-        {
-            keywords: ['responsividad suave', 'transicion'],
-            response: 'La responsividad es **suave y progresiva**, lo que significa que el diseño se adapta de forma fluida a cualquier tamaño de pantalla (desktop, tablet, móvil) sin saltos bruscos.'
-        },
-        {
-            keywords: ['copiar', 'reemplazar', 'codigo completo'],
-            response: 'Siempre proporcionamos los códigos **completos** de los archivos para que puedas copiar y reemplazar el contenido existente de forma sencilla, manteniendo la estructura de carpetas.'
+        { 
+            keywords: ['borro', 'borrar', 'proyecto'], 
+            response: 'Para borrar un proyecto puedes ir a tu **Perfil** y buscar el proyecto q desees eliminar, le das click al boton de editar, abajo de todo deberia aparecer un boton para eliminar proyecto, le das click, confirmas y el proyecto estara eliminado de forma permanente.' 
         }
     ];
 
@@ -217,7 +213,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         // Respuesta por defecto si no se encuentra nada
-        return "Disculpa, no entendí tu pregunta. Soy un asistente básico con respuestas predefinidas. Intenta reformular tu pregunta usando palabras clave sobre la **Documentación**, tu **Perfil**, el **Diseño** (neón, oscuro), o **Ayuda**.";
+        return "Disculpa, no entendí tu pregunta. Soy un asistente básico con respuestas predefinidas. Intenta reformular tu pregunta usando palabras clave sobre la **Documentación**, tu **Perfil**, el **Diseño** (neón, oscuro), o **Ayuda**. Tambien trata de no tener errores ortograficos";
     }
 
     // Función para manejar el envío de mensajes
@@ -228,17 +224,17 @@ document.addEventListener('DOMContentLoaded', () => {
             return; // No enviar mensajes vacíos
         }
 
-        // 1. Mostrar mensaje del usuario
+        // Mostrar mensaje del usuario
         appendMessage('user', userInput);
 
-        // 2. Obtener y mostrar respuesta del bot (con un pequeño retraso para simular "pensar")
+        // Obtener y mostrar respuesta del bot (con un pequeño retraso para simular "pensar")
         const botResponse = getBotResponse(userInput);
         
         setTimeout(() => {
             appendMessage('bot', botResponse);
         }, 500); // Retraso de 0.5 segundos
 
-        // 3. Limpiar el input
+        // Limpiar el input
         inputField.value = '';
     }
 
