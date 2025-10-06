@@ -85,7 +85,7 @@ document.addEventListener('DOMContentLoaded', () => {
         },
         { 
             keywords: ['descubrir', 'proyectos', 'ver otros', 'explorar', 'inspiracion'], 
-            response: 'Para explorar portafolios de otros usuarios e inspirarte, visita la página **Descubre Portafolios** (`index.html`).' 
+            response: 'Para explorar portafolios de otros usuarios e inspirarte, visita la página **Descubre Portafolios** (`discover.html`).' 
         },
         { 
             keywords: ['main.html', 'inicio', 'casa', 'dashboard'], 
@@ -132,7 +132,7 @@ document.addEventListener('DOMContentLoaded', () => {
         },
         { 
             keywords: ['loading', 'carga', 'spinner', 'pantalla de carga', 'lentitud'], 
-            response: 'El **spinner** solo aparece en páginas como `index.html` para una mejor experiencia mientras cargan los proyectos.' 
+            response: 'El **spinner** solo aparece en páginas como `discover.html` para una mejor experiencia mientras cargan los proyectos.' 
         },
         { 
             keywords: ['que es un portafolio', 'definicion', 'concepto'], 

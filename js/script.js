@@ -91,7 +91,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         
         // Cargar el contenido inicial (proyectos o usuarios) solo si no estamos en la página de inicio
-        if (document.location.pathname.includes('index.html') || document.location.pathname === '/') {
+        if (document.location.pathname.includes('discover.html') || document.location.pathname === '/') {
             if (adminFilterSelect) {
                 const filterType = adminFilterSelect.value;
                 if (filterType === 'users') {
