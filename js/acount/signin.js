@@ -62,7 +62,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 console.log('Usuario logueado:', data.user);
                 loginForm.reset();
                 setTimeout(() => {
-                    window.location.href = 'index.html';
+                    window.location.href = 'discover.html';
                 }, 2000);
             }
 

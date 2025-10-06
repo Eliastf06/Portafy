@@ -4,17 +4,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portafy - Descubre Portafolios</title>
+    <title>Portafy - Tu Portafolios Web</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/chatbot.css">
+    <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="icon" href="multimedia/logo.png" type="image/png">
 </head>
 
-<body class="is-loading">
-    <div class="loading-overlay">
-        <div class="spinner"></div>
-    </div>
+<body>
     <header class="main-header" role="banner">
         <div class="container header-content">
             <div style="display: flex; align-items: center;">
@@ -23,90 +21,114 @@
                     <i class="fas fa-moon light-mode-icon" aria-hidden="true"></i> <i class="fas fa-sun dark-mode-icon"
                         aria-hidden="true"></i>
                 </div>
-                <a href="main.html" class="app-logo-link"
-                    style="font-weight: bold; text-transform: uppercase; font-size: 1.2em; color: var(--text-color-dark); margin-left: 8px; transition: color var(--transition-speed);"
-                    aria-label="Ir a la página de inicio">Portafy</a>
+                <a href="index.html" class="app-logo-link">
+                    <img src="multimedia/logo.png" alt="Logo de Portafy" class="logo-image">
+                    ortafy
+                </a>
             </div>
-            <div class="search-bar" role="search">
-                <input type="text" placeholder="Buscar..." class="search-input" id="barra-busqueda"
-                    aria-label="Buscar proyectos y usuarios">
-                <i class="fas fa-search search-icon" aria-hidden="true"></i>
-            </div>
-            <nav class="main-nav" role="navigation" aria-label="Menú principal">
+            <nav class="main-nav" role="navigation">
                 <ul>
-                    <li id="docs-nav-item"><a href="docs.html" class="nav-icon" aria-label="Documentación"><i
-                                class="fas fa-file-alt" aria-hidden="true"></i> <span
-                                class="nav-text-desktop">DOCS</span></a></li>
-                    <li id="help-nav-item"><a href="help.html" class="nav-icon" aria-label="Ayuda"><i
-                                class="far fa-lightbulb" aria-hidden="true"></i> <span
-                                class="nav-text-desktop">AYUDA</span></a></li>
-                    <li id="signin-nav-item"><a href="signin.html" class="nav-icon" aria-label="Iniciar sesión"><i
-                                class="fas fa-user-circle" aria-hidden="true"></i> <span
-                                class="nav-text-desktop">Iniciar</span></a></li>
-                    <li id="upload-nav-item"><a href="upload-project.html" class="nav-icon"
-                            aria-label="Subir proyecto"><i class="fas fa-upload" aria-hidden="true"></i> <span
-                                class="nav-text-desktop">SUBIR</span></a></li>
-                    <li><a href="#" class="nav-icon menu-toggle" id="menu-toggle-btn" role="button"
-                            aria-expanded="false" aria-controls="side-menu-overlay" aria-label="Abrir menú lateral"><i
-                                class="fas fa-bars" aria-hidden="true"></i> <span
-                                class="nav-text-mobile">MENÚ</span></a></li>
+                    <li><a href="discover.html" class="cta-link">Ver Proyectos</a></li>
+                    <li><a href="docs.html" class="nav-button">Documentación</a></li>
+                    <li id="profile-link-container"><a href="#" id="profile-link" class="nav-button">Ver mi
+                            Portafolios</a></li>
                 </ul>
             </nav>
         </div>
     </header>
 
-    <main class="main-content container" role="main">
-        <section class="projects-section" aria-labelledby="section-title-1">
-            <h1 class="section-title" id="section-title-1">DESCUBRIR</h1>
-            <p class="section-subtitle">Explora y descubre trabajos de la comunidad</p>
-            <div class="admin-filter-container" id="admin-filter-container">
-                <label for="admin-filter-select" class="filter-label">Ver:</label>
-                <select id="admin-filter-select" class="admin-filter-select" aria-label="Filtrar por proyectos o usuarios">
-                    <option value="projects">Proyectos</option>
-                    <option value="users">Usuarios</option>
-                </select>
+    <main>
+        <section class="hero-section">
+            <div class="container hero-content">
+                <div class="hero-text">
+                    <h1>
+                        <img src="multimedia/logo.png" alt="Logo de Portafy" class="logo-text">ortafy
+                    </h1>
+                    <h2>Crea, organiza y comparte tu portafolios profesional de forma simple.</h2>
+                    <p>Portafy es una plataforma diseñada para que programadores, diseñadores y artistas visuales
+                        muestren sus proyectos y consigan la visibilidad que necesitan. Olvídate de las complicaciones y
+                        centraliza tus trabajos en un solo lugar.</p>
+                    <a href="regis.html" class="main-cta-button" id="hero-cta-button">¡Empieza a crear tu
+                        portafolios!</a>
+                </div>
             </div>
-            <div class="filter-container">
-                <label for="category-select" class="filter-label">Filtrar por categoría:</label>
-                <select id="category-select" class="filter-select" aria-label="Filtrar proyectos por categoría">
-                    <option value="">Todas las categorías</option>
-                </select>
+        </section>
+
+        <section class="who-we-are">
+            <div class="container">
+                <h2>¿Quiénes somos y para quién es <img src="multimedia/logo.png" alt="Logo de Portafy"
+                        class="logo-text">ortafy?</h2>
+                <div class="who-content">
+                    <div class="who-text">
+                        <p>Somos un grupo de estudiantes de programación que, al enfrentar el desafío de crear nuestro
+                            propio portafolios, decidimos construir una herramienta para resolver este problema no solo
+                            para nosotros, sino para toda la comunidad.</p>
+                        <p><strong>Portafy está pensado para:</strong></p>
+                        <ul>
+                            <li><strong>Programadores novatos</strong> que quieren dar a conocer sus proyectos.</li>
+                            <li><strong>Diseñadores y artistas visuales</strong> que necesitan una galería profesional.
+                            </li>
+                            <li><strong>Estudiantes y egresados</strong> que buscan su primer empleo en el sector
+                                tecnológico o creativo.</li>
+                        </ul>
+                    </div>
+                    <div class="who-image">
+                        <img src="multimedia/nosotros.jpg" alt="Ilustración de personas colaborando en tecnología">
+                    </div>
+                </div>
             </div>
-            <div class="projects-grid" id="content-grid" role="region" aria-label="Grilla de contenido">
+        </section>
+
+        <section class="features-section">
+            <div class="container">
+                <h2>Características clave</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <i class="fas fa-folder-open icon"></i>
+                        <h3>Organiza tus Proyectos</h3>
+                        <p>Sube y gestiona tus trabajos de forma sencilla con galerías, descripciones y enlaces.</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-file-export icon"></i>
+                        <h3>Exporta tu CV</h3>
+                        <p>Importa y exporta tu CV con nuestras plantillas profesionales, listas para compartir.</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-share-alt icon"></i>
+                        <h3>Comparte fácilmente</h3>
+                        <p>Obtén un enlace único para tu portafolio y compártelo en tus redes profesionales.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="projects-carousel-section">
+            <div class="container">
+                <h2>Proyectos Destacados</h2>
+            </div>
+            <div class="carousel-container">
+                <div class="carousel-track" id="carousel-track">
+                </div>
+            </div>
+        </section>
+
+        <section class="who-we-are">
+            <div class="container">
+                <h2>Comienza a crear tu perfil</h2>
+                <div class="who-content">
+                    <div class="who-text">
+                        <p>Únete a la comunidad de Portafy hoy mismo y da el primer paso para impulsar tu carrera
+                            profesional. ¡Es simple, rápido y gratuito!</p>
+                        <a href="regis.html" class="main-cta-button" id="join-now-button"
+                            style="margin-top: 20px;">¡Únete ahora!</a>
+                    </div>
+                    <div class="who-image">
+                        <img src="multimedia/laburando.png" alt="Ilustración de un equipo de trabajo digital">
+                    </div>
+                </div>
             </div>
         </section>
     </main>
-
-    <div class="menu-overlay" id="side-menu-overlay" role="dialog" aria-modal="true" aria-labelledby="menu-header-id">
-        <div class="side-menu">
-            <button class="menu-close-btn" id="menu-close-btn" aria-label="Cerrar menú lateral">&times;</button>
-            <div class="menu-header" id="menu-header-id">
-                <div class="profile-photo-circle">
-                    <img id="user-profile-photo" src="multimedia/default-profile.png"
-                        alt="Foto de perfil por defecto" />
-                </div>
-                <h3 id="user-menu-name">NOMBRE APELLIDO</h3>
-            </div>
-            <div class="menu-search-bar search-bar side-search-bar" role="search">
-                <input type="text" placeholder="Buscar..." class="search-input" id="side-search-input"
-                    aria-label="Buscar en el menú lateral">
-            </div>
-            <ul class="menu-links">
-                <li><a href="main.html"><i class="fas fa-home" aria-hidden="true"></i> Página principal</a></li>
-                <li id="login-side-menu"><a href="signin.html"><i class="fas fa-user" aria-hidden="true"></i> Iniciar
-                        sesión</a></li>
-                <li id="profile-side-menu"><a href="profile.html"><i class="fas fa-user" aria-hidden="true"></i>
-                        Perfil</a></li>
-                <li id="upload-side-menu-item"><a href="upload-project.html" id="side-menu-upload-btn"><i
-                            class="fas fa-upload" aria-hidden="true"></i> Subir proyecto</a></li>
-                <li><a href="docs.html"><i class="fas fa-file-alt" aria-hidden="true"></i>Documentación</a></li>
-                <li><a href="help.html"><i class="fas fa-lightbulb" aria-hidden="true"></i> Soporte</a></li>
-                <li id="logout-btn-item"><a href="#" id="logout-btn"><i class="fas fa-sign-out-alt"
-                            aria-hidden="true"></i> Cerrar sesión</a>
-                </li>
-            </ul>
-        </div>
-    </div>
 
 
     <button id="btnVolverArriba" aria-label="Volver al inicio de la página" title="Volver Arriba">
@@ -127,9 +149,10 @@
                 </button>
             </div>
             <div class="chatbot-messages" id="chatbot-messages">
-                </div>
+            </div>
             <div class="chatbot-input-area">
-                <input type="text" id="chatbot-input" placeholder="Escribe tu pregunta..." aria-label="Escribe tu pregunta al asistente">
+                <input type="text" id="chatbot-input" placeholder="Escribe tu pregunta..."
+                    aria-label="Escribe tu pregunta al asistente">
                 <button id="chatbot-send" aria-label="Enviar mensaje">
                     <i class="fas fa-paper-plane"></i>
                 </button>
@@ -139,19 +162,27 @@
 
     <footer class="main-footer" role="contentinfo">
         <div class="container footer-content">
-            <div class="footer-logo">
-                <h3>Portafy</h3>
-                <p>Tu plataforma para descubrir y compartir portafolios creativos.</p>
+            <div class="footer-info">
+                <a href="index.html" class="app-logo-link">
+                    <img src="multimedia/logo.png" alt="Logo de Portafy" class="logo-image">
+                    ortafy
+                </a>
+                <p>La forma más sencilla de crear y gestionar tu portafolio profesional.</p>
             </div>
             <div class="footer-links">
-                <h4>Enlaces Rápidos</h4>
-                <nav aria-label="Enlaces del pie de página">
-                    <ul>
-                        <li><a href="profile.html">Mi Perfil</a></li>
-                        <li><a href="docs.html">Documentación</a></li>
-                        <li><a href="help.html">Ayuda</a></li>
-                    </ul>
-                </nav>
+                <h4>Navegación</h4>
+                <ul>
+                    <li><a href="discover.html">Ver Proyectos</a></li>
+                    <li><a href="docs.html">Documentación</a></li>
+                    <li><a href="help.html">Ayuda</a></li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h4>Cuenta</h4>
+                <ul>
+                    <li><a href="signin.html">Iniciar Sesión</a></li>
+                    <li><a href="regis.html">Registrarse</a></li>
+                </ul>
             </div>
             <div class="footer-social">
                 <h4>Síguenos</h4>
@@ -171,13 +202,9 @@
             <p>&copy; 2025 Portafy. Todos los derechos reservados.</p>
         </div>
     </footer>
-    <script type="module" src="js/projects.js"></script>
-    <script type="module" src="js/search.js"></script>
-    <script type="module" src="js/acount/users.js"></script>
-    <script type="module" src="js/script.js"></script>
-    <script src="js/theme.js"></script>
-    <script src="js/menu.js"></script>
-    <script src="js/chatbot.js"></script>
+    <script type="module" src="js/theme.js"></script>
+    <script type="module" src="js/chatbot.js"></script>
+    <script type="module" src="js/main.js"></script>
 </body>
 
 </html>
