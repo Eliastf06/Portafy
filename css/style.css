@@ -36,6 +36,8 @@
     /* Transiciones */
     --transition-speed: 0.3s ease-in-out;
     --fade-in-speed: 0.5s ease-out;
+
+    --color-private: #d9534f; /* Rojo o color distintivo */
 }
 
 /* Modo Oscuro (se activa con la clase .dark-mode en el body) */
@@ -1206,4 +1208,68 @@ body.dark-mode #btnVolverArriba:hover {
 
 #btnVolverArriba i {
     font-size: 1.2em;
+}
+
+
+
+
+
+/* Controles de Paginación */
+.pagination-controls {
+    display: flex;
+    flex-direction: column; /* Apilar en móviles */
+    align-items: center;
+    justify-content: center;
+    margin: 30px 0;
+    gap: 15px;
+}
+
+.count-info {
+    font-size: 0.95em;
+    color: var(--text-color-light); /* Asegúrate de que esta variable exista */
+}
+
+.load-more-btn {
+    padding: 12px 25px;
+    background-color: var(--primary-color); /* Asegúrate de que esta variable exista */
+    color: var(--button-text-color); /* Asegúrate de que esta variable exista */
+    border: none;
+    border-radius: var(--border-radius); /* Asegúrate de que esta variable exista */
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color var(--transition-speed); /* Asegúrate de que esta variable exista */
+}
+
+.load-more-btn:hover {
+    background-color: var(--primary-color-hover); /* Asegúrate de que esta variable exista */
+}
+
+.load-more-btn:disabled {
+    background-color: var(--bg-color-light); /* Asegúrate de que esta variable exista */
+    color: var(--text-color-light);
+    cursor: not-allowed;
+}
+
+/* Estilo para el icono de usuario seguido en la tarjeta de proyecto */
+.project-author .followed-icon {
+    color: var(--primary-color); /* Color de acento para indicar seguido */
+    margin-left: 5px;
+    font-size: 0.9em;
+}
+
+/* Responsividad para la paginación */
+@media (min-width: 600px) {
+    .pagination-controls {
+        flex-direction: row; /* En fila en escritorio */
+        justify-content: space-between;
+    }
+}
+
+
+.project-card .private-icon {
+    /* Asegura que uses Font Awesome para el ícono 'fa-lock' */
+    color: var(--color-private);
+    margin-left: 8px;
+    font-size: 0.9em;
+    vertical-align: middle;
 }

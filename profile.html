@@ -59,9 +59,18 @@
                     <p class="profile-description" id="profile-description">Cargando biografía...</p>
                     <div id="profile-socials">
                     </div>
-                    <a class="editar" id="edit-profile-btn" href="edit-profile.html"
-                        aria-label="Editar perfil de usuario"><i class="fas fa-pencil-alt"></i> Editar Perfil</a>
+                    <div class="profile-meta"></div>
+                    <div id="followers-count-container" class="followers-count" style="display: none;">
+                        <i class="fas fa-users"></i>
+                        <span id="followers-count">0</span>
+                        <span class="count-label">Seguidores</span>
+                    </div>
                 </div>
+                <div id="follow-button-container">
+                </div>
+                <a class="editar" id="edit-profile-btn" href="edit-profile.html"
+                    aria-label="Editar perfil de usuario"><i class="fas fa-pencil-alt"></i> Editar Perfil</a>
+            </div>
             </div>
 
             <h2 class="section-title projects-title">PROYECTOS</h2>
@@ -95,7 +104,8 @@
             </div>
             <ul class="menu-links">
                 <li><a href="index.html"><i class="fas fa-home" aria-hidden="true"></i> Página principal</a></li>
-                <li><a href="discover.html"><i class="fas fa-solid fa-briefcase" aria-hidden="true"></i> Descubrir Portafolios</a></li>
+                <li><a href="discover.html"><i class="fas fa-solid fa-briefcase" aria-hidden="true"></i> Descubrir
+                        Portafolios</a></li>
                 <li id="login-side-menu"><a href="signin.html"><i class="fas fa-user" aria-hidden="true"></i> Iniciar
                         sesión</a></li>
                 <li id="profile-side-menu"><a href="profile.html"><i class="fas fa-user" aria-hidden="true"></i>
@@ -130,9 +140,10 @@
                 </button>
             </div>
             <div class="chatbot-messages" id="chatbot-messages">
-                </div>
+            </div>
             <div class="chatbot-input-area">
-                <input type="text" id="chatbot-input" placeholder="Escribe tu pregunta..." aria-label="Escribe tu pregunta al asistente">
+                <input type="text" id="chatbot-input" placeholder="Escribe tu pregunta..."
+                    aria-label="Escribe tu pregunta al asistente">
                 <button id="chatbot-send" aria-label="Enviar mensaje">
                     <i class="fas fa-paper-plane"></i>
                 </button>

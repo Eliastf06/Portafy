@@ -11,18 +11,48 @@ const contentGrid = document.getElementById('content-grid');
 const sectionTitle = document.getElementById('section-title-1');
 const sectionSubtitle = document.querySelector('.section-subtitle');
 
-export const renderProjects = (projects) => {
-    contentGrid.innerHTML = '';
-    if (projects.length === 0) {
+// Elementos de paginación
+const loadMoreBtn = document.getElementById('load-more-btn');
+const projectCountInfo = document.getElementById('project-count-info');
+
+// Estado de paginación global
+const PAGE_SIZE = 30;
+let currentPage = 0;
+let totalLoadedProjects = 0;
+let allProjectsLoaded = false;
+// Guardamos los IDs de proyectos no seguidos disponibles para la paginación aleatoria (se calcula una vez)
+let nonFollowedProjectsIds = [];
+let initialLoadDone = false;
+let isFetching = false;
+
+// Función auxiliar para mezclar un array (algoritmo Fisher-Yates)
+const shuffleArray = (array) => {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+};
+
+
+// MODIFICACIÓN 1: Ahora acepta 'is_admin'
+export const renderProjects = (projects, is_admin = false, append = false) => {
+    if (!append) {
+        contentGrid.innerHTML = '';
+    }
+    if (projects.length === 0 && totalLoadedProjects === 0) {
         contentGrid.innerHTML = '<p style="text-align: center;">No se encontraron proyectos que coincidan con la búsqueda o el filtro.</p>';
         return;
     }
+    
+    // Si no hay proyectos nuevos para mostrar y ya se cargaron algunos, no hacemos nada más.
+    if (projects.length === 0 && totalLoadedProjects > 0) return;
+
     const createProjectCard = (project) => {
         return new Promise((resolve) => {
             const projectCard = document.createElement('div');
             projectCard.className = 'project-card';
             
-            // Verifica si project.archivos existe antes de acceder a .length
             const imageUrl = (project.archivos && project.archivos.length > 0) 
                 ? project.archivos[0].url 
                 : 'https://placehold.co/600x400/0a0a1a/white?text=No+Image';
@@ -31,8 +61,13 @@ export const renderProjects = (projects) => {
             imgElement.src = imageUrl;
             imgElement.alt = project.titulo;
 
-            imgElement.onload = () => {
-                projectCard.innerHTML = `
+            // Lógica para mostrar el candado solo si es admin Y el proyecto es privado
+            const privateLockIcon = (is_admin && project.privacidad) 
+                ? '<i class="fas fa-lock private-icon" title="Proyecto Privado"></i>' 
+                : '';
+            
+            const renderCard = () => {
+                 projectCard.innerHTML = `
                     <div class="project-image-placeholder">
                         <img src="${imageUrl}" alt="${project.titulo}">
                     </div>
@@ -42,7 +77,8 @@ export const renderProjects = (projects) => {
                             <span class="author-name">
                                 ${project.authorName || 'Autor desconocido'}
                             </span>
-                        </div>
+                            ${project.isFollowed ? '<i class="fas fa-check-circle followed-icon" title="Usuario Seguido"></i>' : ''}
+                            ${privateLockIcon} </div>
                     </div>
                 `;
                 
@@ -55,30 +91,9 @@ export const renderProjects = (projects) => {
                 resolve(projectCard);
             };
 
-            imgElement.onerror = () => {
-                console.error(`Error al cargar la imagen: ${imageUrl}`);
-                projectCard.innerHTML = `
-                    <div class="project-image-placeholder">
-                        <img src="https://placehold.co/600x400/0a0a1a/white?text=No+Image" alt="Imagen no disponible">
-                    </div>
-                    <div class="project-content">
-                        <h3 class="project-title">${project.titulo}</h3>
-                        <div class="project-author">
-                            <span class="author-name">
-                                ${project.authorName || 'Autor desconocido'}
-                            </span>
-                        </div>
-                    </div>
-                `;
-
-                projectCard.addEventListener('click', () => {
-                    if (project.authorName) {
-                        window.location.href = `profile.html?username=${project.authorName}`;
-                    }
-                });
-                
-                resolve(projectCard);
-            };
+            // Intentar cargar la imagen, si falla, renderizar con la imagen por defecto
+            imgElement.onload = renderCard;
+            imgElement.onerror = renderCard; // Llama a renderCard incluso si falla
         });
     };
     
@@ -91,58 +106,230 @@ export const renderProjects = (projects) => {
     });
 };
 
-export const fetchAndRenderProjects = async (is_admin = false) => {
-    document.body.classList.add('is-loading');
+
+// Función principal de carga de proyectos
+export const fetchAndRenderProjects = async (is_admin = false, reset = false) => {
+    if (isFetching) return;
+    isFetching = true;
+    
+    if (reset) {
+        currentPage = 0;
+        totalLoadedProjects = 0;
+        allProjectsLoaded = false;
+        nonFollowedProjectsIds = [];
+        initialLoadDone = false;
+        if (contentGrid) contentGrid.innerHTML = '';
+    }
+
+    if (totalLoadedProjects === 0) {
+        document.body.classList.add('is-loading');
+        if (contentGrid) contentGrid.innerHTML = '<p style="text-align: center;">Buscando proyectos...</p>';
+    }
+
     sectionTitle.textContent = 'DESCUBRIR PROYECTOS';
     sectionSubtitle.textContent = 'Explora y descubre trabajos de la comunidad';
-    
-    contentGrid.innerHTML = '<p style="text-align: center;">Buscando proyectos...</p>';
+    if (loadMoreBtn) loadMoreBtn.style.display = 'none';
 
     try {
-        let projectsQuery = supabase
-            .from('proyectos')
-            .select(`
-                *,
-                archivos(url)
-            `);
+        const { data: { user } } = await supabase.auth.getUser();
+        const currentUserId = user?.id;
         
-        if (!is_admin) {
-            projectsQuery = projectsQuery.eq('privacidad', false);
+        let followedUserIds = [];
+        if (currentUserId) {
+            // 1. Obtener IDs de usuarios seguidos
+            const { data: followedData, error: followedError } = await supabase
+                .from('seguidores')
+                .select('id_usuario') 
+                .eq('id_seguidor', currentUserId);
+
+            if (followedError) throw followedError;
+            followedUserIds = followedData.map(f => f.id_usuario);
+        }
+        
+        let fetchedProjects = [];
+        let projectsNeeded = PAGE_SIZE; 
+        let followedProjectsCount = 0; 
+
+        // --- Estrategia de Carga de Proyectos ---
+        
+        // 1. Proyectos de Usuarios Seguidos (Prioridad - Solo se buscan en la primera página)
+        if (followedUserIds.length > 0 && currentPage === 0) {
+            let followedProjectsQuery = supabase
+                .from('proyectos')
+                .select(`
+                    *,
+                    archivos(url) 
+                `)
+                .in('id', followedUserIds) 
+                .order('id_proyectos', { ascending: false }) 
+                .limit(PAGE_SIZE); 
+
+            // Nota: Aquí no filtramos por privacidad si es admin
+            if (!is_admin) {
+                followedProjectsQuery = followedProjectsQuery.eq('privacidad', false);
+            }
+
+            const { data: followedProjectsData, error: followedProjectsError } = await followedProjectsQuery;
+            if (followedProjectsError) throw followedProjectsError;
+
+            followedProjectsCount = followedProjectsData.length;
+            
+            fetchedProjects.push(...followedProjectsData.map(p => ({ 
+                ...p, 
+                isFollowed: true,
+                authorId: p.id
+            })));
+            
+            projectsNeeded = PAGE_SIZE - fetchedProjects.length; 
+        }
+        
+        // 2. Proyectos Aleatorios (Relleno o Paginación Regular)
+        
+        // Carga Inicial de IDs de Proyectos No Seguidos (solo una vez)
+        if (!initialLoadDone) {
+            let nonFollowedQuery = supabase
+                .from('proyectos')
+                .select('id_proyectos, id'); 
+
+            if (followedUserIds.length > 0) {
+                nonFollowedQuery = nonFollowedQuery.not('id', 'in', `(${followedUserIds.join(',')})`);
+            }
+            // Nota: Aquí no filtramos por privacidad si es admin
+            if (!is_admin) {
+                nonFollowedQuery = nonFollowedQuery.eq('privacidad', false);
+            }
+            
+            const { data: nonFollowedData, error: nonFollowedError } = await nonFollowedQuery;
+            if (nonFollowedError) throw nonFollowedError;
+            
+            nonFollowedProjectsIds = nonFollowedData.map(p => ({ 
+                id_proyectos: p.id_proyectos, 
+                authorId: p.id 
+            }));
+            shuffleArray(nonFollowedProjectsIds); 
+            initialLoadDone = true;
+        }
+        
+        // Lógica de paginación aleatoria para proyectos no seguidos
+        let offsetInNonFollowed = 0;
+        if (currentPage === 0) {
+            offsetInNonFollowed = 0; 
+        } else {
+            offsetInNonFollowed = (currentPage * PAGE_SIZE) - followedProjectsCount;
         }
 
-        const { data: projectsData, error: projectsError } = await projectsQuery;
+        const startIdx = offsetInNonFollowed;
+        const endIdx = startIdx + projectsNeeded;
+        
+        const randomIdsSliceInfo = nonFollowedProjectsIds.slice(startIdx, endIdx);
+        const randomProjectIds = randomIdsSliceInfo.map(i => i.id_proyectos);
 
-        if (projectsError) throw projectsError;
 
-        const userIds = projectsData.map(p => p.id);
-        const uniqueUserIds = [...new Set(userIds)];
-        
-        const { data: usersData, error: usersError } = await supabase
-            .from('usuarios')
-            .select(`
-                id,
-                nom_usuario
-            `)
-            .in('id', uniqueUserIds);
-        
-        if (usersError) throw usersError;
+        if (randomProjectIds.length > 0) {
+            let randomProjectsQuery = supabase
+                .from('proyectos')
+                .select(`
+                    *,
+                    archivos(url)
+                `)
+                .in('id_proyectos', randomProjectIds); 
 
-        const usersMap = new Map(usersData.map(user => [user.id, user.nom_usuario]));
+            const { data: randomProjectsData, error: randomProjectsError } = await randomProjectsQuery;
+            if (randomProjectsError) throw randomProjectsError;
+            
+            shuffleArray(randomProjectsData); 
+            
+            fetchedProjects.push(...randomProjectsData.map(p => ({ 
+                ...p, 
+                isFollowed: false,
+                authorId: p.id 
+            })));
+        }
         
-        const finalProjects = projectsData.map(project => ({
-            ...project,
-            authorName: usersMap.get(project.id)
-        }));
-        
-        renderProjects(finalProjects);
+        // --- Fin de Estrategia de Carga ---
 
-        setTimeout(() => {
-            document.body.classList.remove('is-loading');
-        }, 500); 
+        // 3. UNIÓN MANUAL: Obtener los nombres de usuario
+        let finalProjects = [];
+        const authorIds = fetchedProjects.map(p => p.authorId);
+        const uniqueAuthorIds = [...new Set(authorIds.filter(id => id))];
+
+        if (uniqueAuthorIds.length > 0) {
+            const { data: usersData, error: usersError } = await supabase
+                .from('usuarios')
+                .select(`id, nom_usuario`)
+                .in('id', uniqueAuthorIds);
+            
+            if (usersError) throw usersError;
+
+            const usersMap = new Map(usersData.map(user => [user.id, user.nom_usuario]));
+
+            finalProjects = fetchedProjects.map(project => ({
+                ...project,
+                authorName: usersMap.get(project.authorId)
+            }));
+        } else {
+            finalProjects = fetchedProjects;
+        }
+
+        // 4. Combinamos y renderizamos (ordenando los seguidos al principio si es la primera página)
+        finalProjects = finalProjects.sort((a, b) => {
+            if (currentPage === 0) {
+                if (a.isFollowed && !b.isFollowed) return -1;
+                if (!a.isFollowed && b.isFollowed) return 1;
+            }
+            return 0;
+        });
         
+        // MODIFICACIÓN 2: Se pasa 'is_admin' a renderProjects
+        renderProjects(finalProjects, is_admin, currentPage > 0); 
+        
+        // Actualizar estado de paginación
+        const loadedOnThisPage = finalProjects.length;
+        totalLoadedProjects += loadedOnThisPage;
+        currentPage++;
+
+        if (randomIdsSliceInfo.length < projectsNeeded) {
+             allProjectsLoaded = true;
+        }
+
+        // Actualizar UI del contador y botón
+        if (projectCountInfo) {
+            if (totalLoadedProjects > 0) {
+                projectCountInfo.textContent = `Mostrando ${totalLoadedProjects} proyectos.`;
+            } else {
+                 projectCountInfo.textContent = 'No hay proyectos disponibles.';
+            }
+        }
+
+        if (loadMoreBtn) {
+            if (allProjectsLoaded) {
+                loadMoreBtn.style.display = 'block';
+                loadMoreBtn.textContent = 'No hay más proyectos';
+                loadMoreBtn.disabled = true;
+            } else {
+                loadMoreBtn.style.display = 'block';
+                loadMoreBtn.textContent = 'Ver más proyectos';
+                loadMoreBtn.disabled = false;
+            }
+        }
+        
+        document.body.classList.remove('is-loading');
+
     } catch (error) {
         console.error('Error al cargar los proyectos:', error);
-        contentGrid.innerHTML = `<p style="text-align: center;">Ocurrió un error al cargar los proyectos: ${error.message}</p>`;
+        if (contentGrid) contentGrid.innerHTML = `<p style="text-align: center;">Ocurrió un error al cargar los proyectos: ${error.message}</p>`;
         document.body.classList.remove('is-loading');
+        if (loadMoreBtn) loadMoreBtn.style.display = 'none';
+        if (projectCountInfo) projectCountInfo.textContent = '';
+    } finally {
+        isFetching = false;
     }
 };
+
+
+// Inicialización del botón "Ver Más"
+if (loadMoreBtn) {
+    loadMoreBtn.addEventListener('click', () => {
+        fetchAndRenderProjects(false, false); 
+    });
+}

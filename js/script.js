@@ -98,11 +98,13 @@ document.addEventListener('DOMContentLoaded', () => {
                     await fetchAndRenderUsers();
                     if (categorySelectContainer) categorySelectContainer.style.display = 'none';
                 } else {
-                    await fetchAndRenderProjects(is_admin);
+                    // LLAMADA MODIFICADA: Reinicia la paginación al cargar o cambiar a proyectos
+                    await fetchAndRenderProjects(is_admin, true); 
                     if (categorySelectContainer) categorySelectContainer.style.display = 'flex';
                 }
             } else {
-                await fetchAndRenderProjects(is_admin);
+                // LLAMADA MODIFICADA: Reinicia la paginación para la carga inicial
+                await fetchAndRenderProjects(is_admin, true);
             }
         }
     }
@@ -118,7 +120,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 await fetchAndRenderUsers();
                 if (categorySelectContainer) categorySelectContainer.style.display = 'none';
             } else {
-                await fetchAndRenderProjects(is_admin);
+                // LLAMADA MODIFICADA: Reinicia la paginación al cambiar el filtro
+                await fetchAndRenderProjects(is_admin, true); 
                 if (categorySelectContainer) categorySelectContainer.style.display = 'flex';
             }
         });

@@ -11,6 +11,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     const profileMessage = document.getElementById('profile-message');
     const projectsGrid = document.getElementById('projects-grid');
     const editProfileBtn = document.getElementById('edit-profile-btn');
+    const followButtonContainer = document.getElementById('follow-button-container');
+    const followersCountContainer = document.getElementById('followers-count-container');
+    const followersCountSpan = document.getElementById('followers-count');
     
     // Elementos del perfil para rellenar
     const profilePhoto = document.getElementById('profile-photo');
@@ -123,14 +126,113 @@ document.addEventListener('DOMContentLoaded', async () => {
     let isAdmin = false;
 
     const { data: { user } } = await supabase.auth.getUser();
+    const currentUserId = user?.id; // ID del usuario logeado, puede ser null
+
+    // --- Funciones de Seguimiento ---
+
+    const getFollowStatus = async (followedId, followerId) => {
+        const { data, error } = await supabase
+            .from('seguidores')
+            .select('id_seguimiento')
+            .eq('id_usuario', followedId) // El usuario que se está viendo
+            .eq('id_seguidor', followerId) // El usuario logeado
+            .maybeSingle();
+
+        if (error) {
+            console.error('Error al obtener estado de seguimiento:', error);
+            return null;
+        }
+        return data ? data.id_seguimiento : null;
+    };
+
+    const countFollowers = async (userId) => {
+        const { count, error } = await supabase
+            .from('seguidores')
+            .select('id_seguimiento', { count: 'exact', head: true })
+            .eq('id_usuario', userId);
+
+        if (error) {
+            console.error('Error al contar seguidores:', error);
+            return 0;
+        }
+        return count;
+    };
+
+    const renderFollowButton = async (followedId, followerId) => {
+        if (!followButtonContainer || !followerId || followedId === followerId) {
+            if (followButtonContainer) followButtonContainer.innerHTML = '';
+            return;
+        }
+
+        const followId = await getFollowStatus(followedId, followerId);
+        const isFollowing = !!followId;
+
+        const button = document.createElement('button');
+        button.className = `follow-btn ${isFollowing ? 'unfollow' : 'follow'}`;
+        button.textContent = isFollowing ? 'Dejar de Seguir' : 'Seguir';
+
+        button.addEventListener('click', async () => {
+            button.disabled = true;
+            try {
+                if (isFollowing) {
+                    // Dejar de seguir
+                    const { error } = await supabase
+                        .from('seguidores')
+                        .delete()
+                        .eq('id_seguimiento', followId);
+
+                    if (error) throw error;
+                    showMessage(`Has dejado de seguir a @${usernameToLoad}.`, 'success');
+                } else {
+                    // Seguir
+                    const { error } = await supabase
+                        .from('seguidores')
+                        .insert([
+                            { id_usuario: followedId, id_seguidor: followerId }
+                        ]);
+
+                    if (error) throw error;
+                    showMessage(`Ahora sigues a @${usernameToLoad}.`, 'success');
+                }
+                // Recargar la UI
+                await loadFollowData(followedId, followerId);
+
+            } catch (error) {
+                console.error('Error al cambiar el estado de seguimiento:', error);
+                showMessage('Error al procesar el seguimiento.', 'error');
+            } finally {
+                button.disabled = false;
+            }
+        });
+
+        followButtonContainer.innerHTML = '';
+        followButtonContainer.appendChild(button);
+    };
+
+    const loadFollowData = async (followedId, followerId) => {
+        const followerCount = await countFollowers(followedId);
+        if (followersCountSpan) followersCountSpan.textContent = followerCount;
+
+        // Mostrar el contador solo al dueño del perfil o al administrador
+        if ((isOwnProfile || isAdmin) && followersCountContainer) {
+            followersCountContainer.style.display = 'flex';
+        } else if (followersCountContainer) {
+             followersCountContainer.style.display = 'none';
+        }
+
+        // Renderizar el botón de seguir si es necesario
+        await renderFollowButton(followedId, followerId);
+    };
+
+    // --- Fin de Funciones de Seguimiento ---
 
     try {
         // Verificar si el usuario logueado es administrador
-        if (user) {
+        if (currentUserId) {
             const { data: loggedInUser, error: loggedInUserError } = await supabase
                 .from('usuarios')
                 .select('is_admin')
-                .eq('id', user.id)
+                .eq('id', currentUserId)
                 .single();
             if (!loggedInUserError && loggedInUser?.is_admin) {
                 isAdmin = true;
@@ -151,16 +253,17 @@ document.addEventListener('DOMContentLoaded', async () => {
             userData = fetchedUserData[0];
 
         } else {
-            if (!user) {
+            if (!currentUserId) {
                 showMessage('Por favor, inicia sesión para ver tu perfil.', 'error');
                 if (editProfileBtn) editProfileBtn.style.display = 'none';
+                if (followButtonContainer) followButtonContainer.innerHTML = '';
                 return;
             }
             
             const { data: fetchedUserData, error: userError } = await supabase
                 .from('usuarios')
                 .select('id, nombre, nom_usuario, tipo_usuario, is_admin')
-                .eq('id', user.id)
+                .eq('id', currentUserId)
                 .maybeSingle();
 
             if (userError || !fetchedUserData) {
@@ -172,7 +275,11 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         userIdToLoad = userData.id;
         usernameToLoad = userData.nom_usuario;
-        isOwnProfile = (user && user.id === userIdToLoad);
+        isOwnProfile = (currentUserId && currentUserId === userIdToLoad);
+
+        // --- Carga de datos de Seguimiento (NUEVO) ---
+        await loadFollowData(userIdToLoad, currentUserId);
+        // --- Fin Carga de datos de Seguimiento ---
 
         const { data: perfilData, error: perfilError } = await supabase
             .from('datos_perfil')

@@ -1041,3 +1041,88 @@ body.dark-mode #btnVolverArriba:hover {
 #btnVolverArriba i {
     font-size: 1.2em;
 }
+
+
+
+
+
+/* Estilos para el meta y el contador de seguidores */
+.profile-meta {
+    margin-top: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 20px; /* Espacio entre el contador y las redes sociales */
+}
+
+.followers-count {
+    display: flex;
+    align-items: center;
+    font-size: 1.1em;
+    font-weight: 600;
+    color: var(--text-color-light); /* O el color que uses para el texto secundario */
+}
+
+.followers-count i {
+    margin-right: 5px;
+    color: var(--primary-color); /* Color de acento */
+}
+
+.followers-count .count-label {
+    margin-left: 5px;
+    font-weight: 400;
+}
+
+/* Estilos para el botón de Seguir/Dejar de Seguir */
+#follow-button-container {
+    margin-top: 15px;
+    display: block; /* Para que ocupe todo el ancho */
+}
+
+.follow-btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color var(--transition-speed), color var(--transition-speed), border-color var(--transition-speed);
+    width: 100%; /* Ocupa el ancho completo */
+    max-width: 200px; /* Limita el ancho en escritorio */
+    text-align: center;
+    display: inline-block;
+}
+
+/* Estilo para el botón de Seguir */
+.follow-btn.follow {
+    background-color: var(--primary-color);
+    color: var(--button-text-color); /* Generalmente blanco o muy claro */
+}
+
+.follow-btn.follow:hover {
+    background-color: var(--primary-color-hover);
+}
+
+/* Estilo para el botón de Dejar de Seguir */
+.follow-btn.unfollow {
+    background-color: transparent;
+    color: var(--text-color-dark);
+    border: 2px solid var(--text-color-dark);
+}
+
+.follow-btn.unfollow:hover {
+    background-color: var(--bg-color-light); /* Un color de fondo muy suave */
+    color: var(--danger-color); /* Color de advertencia o rojo */
+    border-color: var(--danger-color);
+}
+
+/* Ajuste de responsividad (si es necesario) */
+@media (max-width: 768px) {
+    .follow-btn {
+        max-width: 100%; /* Ocupa todo el ancho en móviles */
+    }
+    .profile-meta {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+}
