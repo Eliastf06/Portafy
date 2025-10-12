@@ -665,18 +665,15 @@ body.dark-mode .social-icons a:hover {
     }
 
     .main-nav ul {
-        gap: 0; /* Eliminar el gap entre los elementos de la lista nav */
-        /* Eliminamos flex-wrap y justify-content para que solo el botón de menú sea visible */
+        gap: 0; 
     }
 
-    /* Ocultar los primeros 3 elementos de navegación (Iniciar, Perfil, Subir) en móviles */
     .main-nav ul li:nth-child(1),
     .main-nav ul li:nth-child(2),
     .main-nav ul li:nth-child(3) {
         display: none;
     }
 
-    /* Asegurar que el botón de menú hamburguesa se muestre correctamente */
     .main-nav .nav-icon.menu-toggle {
         flex-direction: row;
         font-size: 1em;
@@ -690,16 +687,13 @@ body.dark-mode .social-icons a:hover {
         margin-right: 5px; 
     }
 
-    /* Mostrar el texto "MENÚ" solo en móvil */
     .main-nav .nav-text-mobile {
         display: inline;
     }
-    /* Ocultar el texto específico de desktop en móvil */
     .main-nav .nav-text-desktop {
         display: none;
     }
 
-    /* Responsive para el footer en móviles */
     .footer-content {
         flex-direction: column;
         align-items: center;
@@ -723,7 +717,6 @@ body.dark-mode .social-icons a:hover {
         display: flex;
         justify-content: center;
     }
-    /* Regla para ocultar el botón de Subir en móviles, independientemente del estado de sesión */
     #upload-nav-item {
         display: none !important;
     }
@@ -746,7 +739,7 @@ body.dark-mode .social-icons a:hover {
     }
 
     .side-menu {
-        width: 100%; /* El menú lateral ocupa todo el ancho en móviles muy pequeños */
+        width: 100%; 
     }
 
     .footer-links ul {
@@ -764,7 +757,6 @@ body.dark-mode .social-icons a:hover {
 
 
 
-/* Estilos para el filtro de categoría */
 .filter-container {
     display: flex;
     justify-content: center;
@@ -850,7 +842,7 @@ body.dark-mode .filter-select:focus {
     display: flex;
     flex-direction: column;
     cursor: pointer;
-    height: 100%; /* Asegura que la tarjeta ocupe todo el espacio de su celda en la cuadrícula */
+    height: 100%; 
 }
 
 body.dark-mode .project-card {
@@ -869,7 +861,7 @@ body.dark-mode .project-card:hover {
 }
 
 .project-preview {
-    background-color: var(--text-color-light); /* Color de fondo temporal para la previsualización */
+    background-color: var(--text-color-light); 
     height: 200px;
     display: flex;
     justify-content: center;
@@ -887,21 +879,21 @@ body.dark-mode .project-preview {
 
 .project-image-placeholder {
     width: 100%;
-    height: 250px; /* Tamaño fijo para la altura de la imagen */
+    height: 250px;
     overflow: hidden;
 }
 
 .project-image-placeholder img {
     width: 100%;
     height: 100%;
-    object-fit: cover; /* Asegura que la imagen cubra el contenedor sin distorsión */
+    object-fit: cover; 
 }
 
 .project-content {
     padding: 20px;
     display: flex;
     flex-direction: column;
-    flex-grow: 1; /* Permite que el contenido se expanda para llenar el espacio restante */
+    flex-grow: 1; 
 }
 
 
@@ -936,15 +928,13 @@ body.dark-mode .project-card .project-author {
 }
 
 body.is-loading {
-    overflow: hidden; /* Evita el scroll mientras carga */
+    overflow: hidden; 
 }
 
-/* Ocultar el contenido de la página mientras carga */
 body.is-loading > *:not(.loading-overlay) {
     display: none;
 }
 
-/* Estilos para el overlay de carga */
 .loading-overlay {
     position: fixed;
     top: 0;
@@ -960,18 +950,16 @@ body.is-loading > *:not(.loading-overlay) {
     transition: opacity 0.5s ease-out;
 }
 
-/* Ocultar el overlay de carga */
 body:not(.is-loading) .loading-overlay {
     opacity: 0;
     pointer-events: none;
 }
 
-/* Estilos para el spinner de carga */
 .spinner {
     width: 60px;
     height: 60px;
-    border: 8px solid var(--text-color-light); /* Borde claro */
-    border-top: 8px solid var(--accent-color); /* Borde superior con color de acento */
+    border: 8px solid var(--text-color-light);
+    border-top: 8px solid var(--accent-color);
     border-radius: 50%;
     animation: spin 1s linear infinite;
 }
@@ -987,7 +975,6 @@ body.is-loading .main-content {
     pointer-events: none;
 }
 
-/* Estilo para el overlay de carga, lo ajustamos para que se desvanezca */
 .loading-overlay {
     position: fixed;
     top: 0;
@@ -1000,19 +987,17 @@ body.is-loading .main-content {
     align-items: center;
     z-index: 9999;
     opacity: 1;
-    transition: opacity var(--fade-in-speed); /* Usamos la nueva variable */
+    transition: opacity var(--fade-in-speed); 
 }
 
-/* Estado final, oculto */
 body:not(.is-loading) .loading-overlay {
     opacity: 0;
-    visibility: hidden; /* Aseguramos que no sea clickeable */
+    visibility: hidden; 
     pointer-events: none;
 }
 
-/* Nuevo estilo para la transición de aparición del contenido principal */
 .main-content {
-    transition: opacity var(--fade-in-speed); /* Transición de opacidad para el contenido */
+    transition: opacity var(--fade-in-speed); 
 }
 
 body:not(.is-loading) .main-content {
@@ -1020,7 +1005,7 @@ body:not(.is-loading) .main-content {
 }
 
 .main-content {
-    transition: opacity var(--fade-in-speed); /* Transición de opacidad para el contenido */
+    transition: opacity var(--fade-in-speed); 
 }
 
 body:not(.is-loading) .main-content {
@@ -1029,7 +1014,6 @@ body:not(.is-loading) .main-content {
 
 
 
-/* Estilos para el filtro de usuarios/proyectos (solo visible para administradores) */
 .admin-filter-container {
     display: none; /* Oculto por defecto */
     justify-content: center;
@@ -1072,7 +1056,6 @@ body.dark-mode .admin-filter-select:focus {
     transition: transform 0.2s ease, box-shadow 0.2s ease, background-color var(--transition-speed);
 }
 
-/* Estilos para las tarjetas de usuario */
 .user-card {
     display: flex;
     flex-direction: column;
@@ -1153,18 +1136,15 @@ body.dark-mode .user-type {
     color: var(--clr-dark-bg-primary);
 }
 
-/* FRAGMENTO CSS: Agregar al final de css/style.css (y otros archivos CSS si no usan style.css) */
 
 #btnVolverArriba {
-    /* Posición: Fijo en la esquina inferior izquierda */
     position: fixed;
     bottom: 20px;
     left: 20px;
-    z-index: 1000; /* Asegura que esté por encima de otros elementos */
+    z-index: 1000; 
 
-    /* Estilo del botón (usando variables de tu :root) */
     background-color: var(--accent-color);
-    color: var(--clr-light-text-dark); /* Color de icono en modo claro */
+    color: var(--clr-light-text-dark); 
     border: none;
     border-radius: 50%;
     width: 50px;
@@ -1175,30 +1155,26 @@ body.dark-mode .user-type {
     cursor: pointer;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 
-    /* Estado inicial: Oculto, con transición suave (suave y limpio) */
     opacity: 0;
     visibility: hidden;
     transform: translateY(10px);
     transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease, background-color var(--transition-speed);
 }
 
-/* Estado 'mostrar' (controlado por JavaScript) */
 #btnVolverArriba.mostrar {
     opacity: 1;
     visibility: visible;
     transform: translateY(0);
 }
 
-/* Efecto hover */
 #btnVolverArriba:hover {
     filter: brightness(1.1);
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
 }
 
-/* Adaptación al Modo Oscuro */
 body.dark-mode #btnVolverArriba {
     background-color: var(--clr-dark-accent);
-    color: var(--clr-dark-bg-primary); /* Mejor contraste en modo oscuro */
+    color: var(--clr-dark-bg-primary); 
     box-shadow: 0 0 5px var(--clr-dark-shadow-primary), 0 0 10px var(--clr-dark-accent);
 }
 
@@ -1211,13 +1187,9 @@ body.dark-mode #btnVolverArriba:hover {
 }
 
 
-
-
-
-/* Controles de Paginación */
 .pagination-controls {
     display: flex;
-    flex-direction: column; /* Apilar en móviles */
+    flex-direction: column; 
     align-items: center;
     justify-content: center;
     margin: 30px 0;
@@ -1226,48 +1198,43 @@ body.dark-mode #btnVolverArriba:hover {
 
 .count-info {
     font-size: 0.95em;
-    color: var(--text-color-light); /* Asegúrate de que esta variable exista */
+    color: var(--text-color-light); 
 }
 
 .load-more-btn {
     padding: 12px 25px;
-    background-color: var(--primary-color); /* Asegúrate de que esta variable exista */
-    color: var(--button-text-color); /* Asegúrate de que esta variable exista */
+    background-color: var(--primary-color); 
+    color: var(--button-text-color); 
     border: none;
-    border-radius: var(--border-radius); /* Asegúrate de que esta variable exista */
+    border-radius: var(--border-radius); 
     font-weight: 600;
     cursor: pointer;
-    transition: background-color var(--transition-speed); /* Asegúrate de que esta variable exista */
+    transition: background-color var(--transition-speed); 
 }
 
 .load-more-btn:hover {
-    background-color: var(--primary-color-hover); /* Asegúrate de que esta variable exista */
+    background-color: var(--primary-color-hover); 
 }
 
 .load-more-btn:disabled {
-    background-color: var(--bg-color-light); /* Asegúrate de que esta variable exista */
+    background-color: var(--bg-color-light); 
     color: var(--text-color-light);
     cursor: not-allowed;
 }
-
-/* Estilo para el icono de usuario seguido en la tarjeta de proyecto */
 .project-author .followed-icon {
-    color: var(--primary-color); /* Color de acento para indicar seguido */
+    color: var(--primary-color); 
     margin-left: 5px;
     font-size: 0.9em;
 }
 
-/* Responsividad para la paginación */
 @media (min-width: 600px) {
     .pagination-controls {
-        flex-direction: row; /* En fila en escritorio */
         justify-content: space-between;
     }
 }
 
 
 .project-card .private-icon {
-    /* Asegura que uses Font Awesome para el ícono 'fa-lock' */
     color: var(--color-private);
     margin-left: 8px;
     font-size: 0.9em;

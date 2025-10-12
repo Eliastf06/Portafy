@@ -1,14 +1,10 @@
-// js/acount/regis.js
 
-// Importa createClient directamente desde el CDN como un módulo
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
 import { validateRegistration } from './../valid/regis-valid.js';
 
-// Credenciales de Supabase
 const SUPABASE_URL = 'https://fikdyystxmsmwioyyegt.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZpa2R5eXN0eG1zbXdpb3l5ZWd0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTY3NjgxODksImV4cCI6MjA3MjM0NDE4OX0.QAfKSJfUbwT5NhGRiNHoA83JzW7BXT9u15d5oaeAlro';
 
-// Inicializa el cliente Supabase
 const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -23,14 +19,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const confirmPasswordInput = document.getElementById('confirm-password');
     const registerTypeInput = document.getElementById('register-type');
 
-    // Función para mostrar mensajes de estado con Toastify
     const showToast = (message, isError = false) => {
 
         let background = '';
         if (isError === false) {
-            background = 'linear-gradient(to right, #ffee00d8, #3e3a00d8)'; // Degradado para éxito
+            background = 'linear-gradient(to right, #ffee00d8, #3e3a00d8)'; 
         } else {
-            background = 'linear-gradient(to right, #e61d16d8, #5d0300d8)'; // Degradado para error
+            background = 'linear-gradient(to right, #e61d16d8, #5d0300d8)';
         }
 
         Toastify({
@@ -43,9 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }).showToast();
     };
 
-    // Función para verificar si el usuario o el email ya existen
     async function checkUserExists(username, email) {
-        // Verificar si el username ya existe en la tabla 'usuarios'
         const { data: userExists, error: userError } = await supabase
             .from('usuarios')
             .select('nom_usuario')
@@ -56,11 +49,10 @@ document.addEventListener('DOMContentLoaded', () => {
             return 'El nombre de usuario ya está en uso. Por favor, elige otro.';
         }
 
-        if (userError && userError.code !== 'PGRST116') { // Ignorar el error de "no rows found"
+        if (userError && userError.code !== 'PGRST116') { 
             throw userError;
         }
 
-        // Verificar si el email ya existe en la tabla de usuarios
         const { data: emailExists, error: emailError } = await supabase
             .from('usuarios')
             .select('email')
@@ -78,7 +70,6 @@ document.addEventListener('DOMContentLoaded', () => {
         return null;
     }
 
-    // Manejar el envío del formulario de registro
     registerForm.addEventListener('submit', async (e) => {
         e.preventDefault();
 
@@ -89,7 +80,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const confirmPassword = confirmPasswordInput.value;
         const userType = registerTypeInput.value;
 
-        // Validar los campos del formulario
         const validationError = validateRegistration(username, fullName, email, password, confirmPassword);
         if (validationError) {
             showToast(validationError, true);
@@ -101,7 +91,6 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // Verificar si el usuario o el email ya existen en la base de datos
         const dbCheckError = await checkUserExists(username, email);
         if (dbCheckError) {
             showToast(dbCheckError, true);
@@ -109,12 +98,10 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         try {
-            // Deshabilitar el botón de registro para evitar envíos dobles
             const registerBtn = registerForm.querySelector('button[type="submit"]');
             registerBtn.disabled = true;
             registerBtn.textContent = 'Registrando...';
 
-            // Intentar registrar el usuario en Supabase Auth
             const { data, error: authError } = await supabase.auth.signUp({
                 email: email,
                 password: password,
@@ -134,7 +121,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
-            // Si el registro de Auth fue exitoso:
             showToast(`¡Registro exitoso! Por favor, revisa tu email (${email}) para confirmar tu cuenta.`, false);
             console.log('Usuario registrado y perfil enviado:', data.user);
             registerForm.reset();
@@ -151,7 +137,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Función para alternar la visibilidad de la contraseña
     document.querySelectorAll('.toggle-password').forEach(toggle => {
         toggle.addEventListener('click', () => {
             const targetId = toggle.getAttribute('data-target');

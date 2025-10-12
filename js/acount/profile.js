@@ -1,4 +1,3 @@
-// js/acount/profile.js
 
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
 
@@ -15,7 +14,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     const followersCountContainer = document.getElementById('followers-count-container');
     const followersCountSpan = document.getElementById('followers-count');
     
-    // Elementos del perfil para rellenar
     const profilePhoto = document.getElementById('profile-photo');
     const profileName = document.getElementById('profile-name');
     const profileOccupation = document.getElementById('profile-occupation');
@@ -93,7 +91,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         const modalContent = modalContainer.querySelector('.modal-content');
         const modalCloseBtn = modalContainer.querySelector('.modal-close-btn');
 
-        // Agregar las clases para la transición de aparición
         setTimeout(() => {
             modalOverlay.classList.add('active');
             modalContent.classList.add('active');
@@ -102,10 +99,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         const closeModal = () => {
             modalOverlay.classList.remove('active');
             modalContent.classList.remove('active');
-            // Eliminar el modal del DOM después de la transición
             setTimeout(() => {
                 modalContainer.remove();
-            }, 300); // El tiempo debe coincidir con la transición en CSS
+            }, 300);
         };
 
         modalCloseBtn.addEventListener('click', closeModal);
@@ -126,16 +122,16 @@ document.addEventListener('DOMContentLoaded', async () => {
     let isAdmin = false;
 
     const { data: { user } } = await supabase.auth.getUser();
-    const currentUserId = user?.id; // ID del usuario logeado, puede ser null
+    const currentUserId = user?.id; 
 
-    // --- Funciones de Seguimiento ---
+    // Funciones de Seguimiento
 
     const getFollowStatus = async (followedId, followerId) => {
         const { data, error } = await supabase
             .from('seguidores')
             .select('id_seguimiento')
-            .eq('id_usuario', followedId) // El usuario que se está viendo
-            .eq('id_seguidor', followerId) // El usuario logeado
+            .eq('id_usuario', followedId) 
+            .eq('id_seguidor', followerId) 
             .maybeSingle();
 
         if (error) {
@@ -183,8 +179,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
                     if (error) throw error;
                     showMessage(`Has dejado de seguir a @${usernameToLoad}.`, 'success');
-                } else {
-                    // Seguir
+                } else {//seguir
                     const { error } = await supabase
                         .from('seguidores')
                         .insert([
@@ -194,7 +189,6 @@ document.addEventListener('DOMContentLoaded', async () => {
                     if (error) throw error;
                     showMessage(`Ahora sigues a @${usernameToLoad}.`, 'success');
                 }
-                // Recargar la UI
                 await loadFollowData(followedId, followerId);
 
             } catch (error) {
@@ -213,21 +207,17 @@ document.addEventListener('DOMContentLoaded', async () => {
         const followerCount = await countFollowers(followedId);
         if (followersCountSpan) followersCountSpan.textContent = followerCount;
 
-        // Mostrar el contador solo al dueño del perfil o al administrador
         if ((isOwnProfile || isAdmin) && followersCountContainer) {
             followersCountContainer.style.display = 'flex';
         } else if (followersCountContainer) {
              followersCountContainer.style.display = 'none';
         }
 
-        // Renderizar el botón de seguir si es necesario
         await renderFollowButton(followedId, followerId);
     };
 
-    // --- Fin de Funciones de Seguimiento ---
 
     try {
-        // Verificar si el usuario logueado es administrador
         if (currentUserId) {
             const { data: loggedInUser, error: loggedInUserError } = await supabase
                 .from('usuarios')
@@ -277,9 +267,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         usernameToLoad = userData.nom_usuario;
         isOwnProfile = (currentUserId && currentUserId === userIdToLoad);
 
-        // --- Carga de datos de Seguimiento (NUEVO) ---
         await loadFollowData(userIdToLoad, currentUserId);
-        // --- Fin Carga de datos de Seguimiento ---
 
         const { data: perfilData, error: perfilError } = await supabase
             .from('datos_perfil')
@@ -326,7 +314,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             `)
             .eq('id', userIdToLoad);
 
-        // Si no es el propio perfil Y el usuario no es administrador, filtrar por proyectos públicos
         if (!isOwnProfile && !isAdmin) {
             query = query.eq('privacidad', false);
         }
@@ -353,7 +340,6 @@ document.addEventListener('DOMContentLoaded', async () => {
                 const imageUrl = project.archivos.length > 0 ? project.archivos[0].url : 'https://placehold.co/600x400/000000/white?text=No+Image';
                 const projectCard = document.createElement('div');
                 projectCard.className = 'project-card';
-                // Añadir el botón de edición solo si es el dueño del perfil O un administrador
                 const showEditButton = isOwnProfile || isAdmin;
                 projectCard.innerHTML = `
                     <div class="project-image-placeholder">
@@ -366,9 +352,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 `;
                 projectsGrid.appendChild(projectCard);
 
-                // Agregar el evento de clic a cada tarjeta de proyecto
                 projectCard.addEventListener('click', (e) => {
-                    // Prevenir la apertura del modal si se hace clic en el botón de edición
                     if (e.target.closest('.edit-project-btn')) {
                         return;
                     }
@@ -379,7 +363,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         renderProjects(projectsData);
         
         if (editProfileBtn) {
-             // El botón de editar perfil ahora se muestra si es el perfil propio O si el usuario es un administrador
+             
              if (isOwnProfile || isAdmin) {
                 editProfileBtn.style.display = 'block';
                 editProfileBtn.href = `edit-profile.html?user_id=${userIdToLoad}`;

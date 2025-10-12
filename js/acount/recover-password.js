@@ -1,4 +1,3 @@
-// js/acount/recover-password.js
 
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
 
@@ -33,7 +32,6 @@ document.addEventListener('DOMContentLoaded', () => {
         showMessage('Enviando enlace de restablecimiento...', 'black');
         try {
             const { error } = await supabase.auth.resetPasswordForEmail(email, {
-                // CORRECCIÓN: La URL debe apuntar a la página update-password.html
                 redirectTo: `${window.location.origin}/update-password.html`
             });
 

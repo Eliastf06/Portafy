@@ -1,4 +1,3 @@
-// js/search.js
 
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
 import { renderProjects } from './projects.js';

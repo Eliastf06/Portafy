@@ -1,5 +1,3 @@
-/* css/docs.css */
-
 .docs-main {
     padding: 50px 20px;
 }
@@ -64,7 +62,6 @@
     margin-bottom: 10px;
 }
 
-/* Nuevos estilos para los enlaces de referencia */
 .docs-item a {
     color: var(--text-color-dark);
     text-decoration: none;
@@ -101,7 +98,6 @@
     color: var(--text-color-light);
 }
 
-/* Estilos para el glosario */
 .docs-item dl {
     display: grid;
     grid-template-columns: auto 1fr;
@@ -122,14 +118,13 @@
     color: var(--text-color-light);
 }
 
-/* Estilos mejorados para el índice de contenidos */
 .docs-index {
     margin-bottom: 40px;
-    background-color: var(--bg-primary); /* Fondo del índice */
+    background-color: var(--bg-primary); 
     padding: 30px;
     border-radius: 15px;
     box-shadow: 0 4px 15px var(--shadow-primary);
-    border-left: 5px solid var(--accent-color); /* Borde de color destacado */
+    border-left: 5px solid var(--accent-color);
     transition: background-color var(--transition-speed), box-shadow var(--transition-speed);
 }
 
@@ -150,7 +145,7 @@
 
 .docs-index ul ul {
     margin-left: 15px;
-    border-left: 2px dashed var(--text-color-light); /* Línia de guía */
+    border-left: 2px dashed var(--text-color-light); 
     padding-left: 15px;
     margin-top: 5px;
 }
@@ -166,11 +161,9 @@
 
 .docs-index li a:hover {
     color: var(--accent-color);
-    transform: translateX(5px); /* Pequeña animación al pasar el cursor */
+    transform: translateX(5px); 
 }
 
-
-/* Media Queries para responsividad */
 @media (max-width: 768px) {
     .requirement-item, .tech-stack > div {
         flex: 1 1 100%;

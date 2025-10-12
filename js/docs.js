@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Código para el desplazamiento suave del índice
     const indexLinks = document.querySelectorAll('.docs-index a');
 
     indexLinks.forEach(link => {

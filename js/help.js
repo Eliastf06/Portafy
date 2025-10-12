@@ -15,7 +15,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (matchesQuery && matchesCategory) {
                 item.style.display = 'block';
-                // Si la pregunta coincide, asegúrate de que esté visible si está cerrada
                 if (query.length > 0) {
                     item.querySelector('details').setAttribute('open', '');
                 } else {
@@ -49,7 +48,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const formMessage = document.getElementById('form-message');
 
     contactForm.addEventListener('submit', (e) => {
-        e.preventDefault(); // Evita el envío del formulario por defecto
+        e.preventDefault(); 
 
         const name = document.getElementById('contact-name').value.trim();
         const email = document.getElementById('contact-email').value.trim();
@@ -62,17 +61,13 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // Prepara el asunto y el cuerpo del correo
         const subject = `Consulta sobre Portafy - Tipo: ${contactType}`;
         const body = `Nombre: ${name}\nCorreo: ${email}\n\nMensaje:\n${message}`;
 
-        // Genera el enlace mailto
         const mailtoLink = `mailto:trabajomio2116@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
 
-        // Abre la aplicación de correo del usuario
         window.location.href = mailtoLink;
 
-        // Muestra un mensaje al usuario
         formMessage.textContent = 'Tu cliente de correo se abrirá en breve.';
         formMessage.style.color = 'green';
     });

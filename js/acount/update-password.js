@@ -1,4 +1,4 @@
-// js/acount/update-password.js
+
 
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
 
@@ -15,8 +15,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     const newPasswordInput = document.getElementById('new-password');
     const confirmPasswordInput = document.getElementById('confirm-password');
     const appMessageElement = document.getElementById('app-message');
-
-    // Ocultar el formulario al inicio
     updatePasswordForm.style.display = 'none';
 
     function showMessage(message, type = 'success') {
@@ -28,7 +26,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         }, 5000);
     } 
 
-    // Función para alternar la visibilidad de la contraseña
     document.querySelectorAll('.toggle-password').forEach(toggle => {
         toggle.addEventListener('click', () => {
             const targetId = toggle.getAttribute('data-target');
@@ -47,7 +44,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     });
 
-    // Validar si existe una sesión de recuperación al cargar la página
     const { data: { user } } = await supabase.auth.getUser();
     if (user) {
         updatePasswordForm.style.display = 'block';
@@ -63,7 +59,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         const newPassword = newPasswordInput.value;
         const confirmPassword = confirmPasswordInput.value;
 
-        // Validar que la contraseña no contenga espacios
         if (newPassword.includes(' ')) {
             showMessage('La contraseña no puede contener espacios.', 'error');
             return;

@@ -1,4 +1,3 @@
-// js/script.js
 
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
 import { fetchAndRenderProjects } from './projects.js';
@@ -11,7 +10,6 @@ const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 document.addEventListener('DOMContentLoaded', () => {
 
-    // Referencias a los elementos del DOM
     const loginNavItem = document.getElementById('signin-nav-item');
     const uploadNavItem = document.getElementById('upload-nav-item');
     
@@ -24,8 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const logoutBtn = document.getElementById('logout-btn');
     const userMenuName = document.getElementById('user-menu-name');
     const userProfilePhoto = document.getElementById('user-profile-photo');
-    
-    // Nuevo filtro de administrador
+   
     const adminFilterContainer = document.getElementById('admin-filter-container');
     const adminFilterSelect = document.getElementById('admin-filter-select');
     const categorySelectContainer = document.querySelector('.filter-container');
@@ -36,17 +33,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Si hay un usuario logueado
         if (user) {
-            // Ocultar el botón de "Iniciar Sesión" y mostrar "Subir" en la navegación principal
             if (loginNavItem) loginNavItem.style.display = 'none';
             if (uploadNavItem) uploadNavItem.style.display = 'list-item';
 
-            // Mostrar opciones en el menú lateral
             if (loginSideMenu) loginSideMenu.style.display = 'none';
             if (profileSideMenu) profileSideMenu.style.display = 'list-item';
             if (uploadSideMenu) uploadSideMenu.style.display = 'list-item';
             if (logoutBtnItem) logoutBtnItem.style.display = 'list-item';
             
-            // Obtener el nombre, la foto y el rol de usuario de la base de datos
             const { data, error } = await supabase
                 .from('usuarios')
                 .select(`
@@ -71,7 +65,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
         } else {
-            // Si no hay un usuario logueado, mostrar el botón de "Iniciar Sesión" y ocultar "Subir" en la navegación principal
             if (loginNavItem) loginNavItem.style.display = 'list-item';
             if (uploadNavItem) uploadNavItem.style.display = 'none';
 
@@ -80,7 +73,6 @@ document.addEventListener('DOMContentLoaded', () => {
             if (uploadSideMenu) uploadSideMenu.style.display = 'none';
             if (logoutBtnItem) logoutBtnItem.style.display = 'none';
             
-            // Restaurar nombre y foto de usuario por defecto
             userMenuName.textContent = 'NOMBRE APELLIDO';
             if (userProfilePhoto) userProfilePhoto.src = 'multimedia/default-profile.png';
         }
@@ -90,7 +82,7 @@ document.addEventListener('DOMContentLoaded', () => {
             adminFilterContainer.style.display = is_admin ? 'flex' : 'none';
         }
         
-        // Cargar el contenido inicial (proyectos o usuarios) solo si no estamos en la página de inicio
+        // Cargar el contenido inicial
         if (document.location.pathname.includes('discover.html') || document.location.pathname === '/') {
             if (adminFilterSelect) {
                 const filterType = adminFilterSelect.value;
@@ -98,12 +90,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     await fetchAndRenderUsers();
                     if (categorySelectContainer) categorySelectContainer.style.display = 'none';
                 } else {
-                    // LLAMADA MODIFICADA: Reinicia la paginación al cargar o cambiar a proyectos
                     await fetchAndRenderProjects(is_admin, true); 
                     if (categorySelectContainer) categorySelectContainer.style.display = 'flex';
                 }
             } else {
-                // LLAMADA MODIFICADA: Reinicia la paginación para la carga inicial
                 await fetchAndRenderProjects(is_admin, true);
             }
         }
@@ -120,7 +110,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 await fetchAndRenderUsers();
                 if (categorySelectContainer) categorySelectContainer.style.display = 'none';
             } else {
-                // LLAMADA MODIFICADA: Reinicia la paginación al cambiar el filtro
+                //Reinicia la paginación al cambiar el filtro
                 await fetchAndRenderProjects(is_admin, true); 
                 if (categorySelectContainer) categorySelectContainer.style.display = 'flex';
             }
@@ -135,15 +125,13 @@ document.addEventListener('DOMContentLoaded', () => {
             if (error) {
                 console.error('Error al cerrar sesión:', error);
             } else {
-                window.location.reload(); // Recargar la página para actualizar la UI
+                window.location.reload();
             }
         });
     }
 
-    // Actualizar la UI al cargar la página
     updateUI();
 
-    // También, escuchar cambios en el estado de autenticación
     supabase.auth.onAuthStateChange((event, session) => {
         if (event === 'SIGNED_IN' || event === 'SIGNED_OUT') {
             updateUI();

@@ -1,14 +1,13 @@
 :root {
-    /* Colores para el Modo Claro (Tema de Neón de Día Mejorado) */
-    --clr-light-bg-primary: #ffffff; /* Fondo blanco para un lienzo limpio */
-    --clr-light-bg-secondary: #f0f0f0; /* Gris muy claro para elementos secundarios */
-    --clr-light-accent: #ffeb3b; /* Amarillo neón brillante */
-    --clr-light-text-dark: #333333; /* Texto oscuro para máxima legibilidad */
-    --clr-light-text-light: #727272; /* Texto gris para contraste sutil */
+    
+    --clr-light-bg-primary: #ffffff; 
+    --clr-light-bg-secondary: #f0f0f0; 
+    --clr-light-accent: #ffeb3b; 
+    --clr-light-text-dark: #333333; 
+    --clr-light-text-light: #727272; 
     --clr-light-shadow-primary: rgba(0, 0, 0, 0.1);
     --clr-light-shadow-secondary: rgba(0, 0, 0, 0.05);
 
-    /* Colores para el Modo Oscuro (Tema de Neón de Noche) */
     --clr-dark-bg-primary: #0a0a1a;
     --clr-dark-bg-secondary: #1a1a2e;
     --clr-dark-accent: #fff01e;
@@ -17,7 +16,6 @@
     --clr-dark-shadow-primary: rgba(255, 240, 30, 0.25);
     --clr-dark-shadow-secondary: rgba(255, 240, 30, 0.1);
     
-    /* Variables de Color por defecto (Modo Claro) */
     --bg-primary: var(--clr-light-bg-primary);
     --bg-secondary: var(--clr-light-bg-secondary);
     --accent-color: var(--clr-light-accent);
@@ -26,28 +24,24 @@
     --shadow-primary: var(--clr-light-shadow-primary);
     --shadow-secondary: var(--clr-light-shadow-secondary);
     
-    /* Variables adicionales para el efecto de neón */
     --neon-yellow: #fff01e;
     --neon-blue: #00e0ff;
     --glow-effect: 0 0 5px var(--neon-yellow), 0 0 10px var(--neon-yellow), 0 0 20px var(--neon-yellow);
     --glow-effect-secondary: 0 0 5px var(--neon-blue), 0 0 10px var(--neon-blue), 0 0 20px var(--neon-blue);
 
-    /* Mensajes */
     --message-success-bg: #d4edda;
     --message-success-text: #155724;
     --message-success-border: #c3e6cb;
     --message-error-bg: #f8d7da;
     --message-error-text: #721c24;
     --message-error-border: #f5c6cb;
-    --message-info-bg: #e0e0e0; /* Para "cargando" */
+    --message-info-bg: #e0e0e0; 
     --message-info-text: #333;
     --message-info-border: #ccc;
 
-    /* Transiciones */
     --transition-speed: 0.3s ease-in-out;
 }
 
-/* Modo Oscuro (se activa con la clase .dark-mode en el body) */
 body.dark-mode {
     --bg-primary: var(--clr-dark-bg-primary);
     --bg-secondary: var(--clr-dark-bg-secondary);
@@ -57,7 +51,6 @@ body.dark-mode {
     --shadow-primary: var(--clr-dark-shadow-primary);
     --shadow-secondary: var(--clr-dark-shadow-secondary);
     
-    /* Mensajes en Modo Oscuro */
     --message-success-bg: #1f3d24;
     --message-success-text: #c3e6cb;
     --message-success-border: #21592c;
@@ -275,7 +268,6 @@ body::before {
     margin-right: 5px;
 }
 
-/* Media Queries para Responsive Design */
 @media (max-width: 600px) {
     .add-product-card {
         padding: 20px;

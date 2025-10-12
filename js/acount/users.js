@@ -1,5 +1,3 @@
-// js/acount/users.js
-
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
 
 const SUPABASE_URL = 'https://fikdyystxmsmwioyyegt.supabase.co';

@@ -1,11 +1,7 @@
-// js/valid/regis-valid.js
-
-// Caracteres prohibidos.
+//caracteres prohibidos
 const PROHIBITED_CHARS_USERNAME = /['":;,<>/\(\)@\{\}\[\]`´¬\|°\\?¿¡=!+\*~^#\$%&¨]/;
 const PROHIBITED_CHARS_EMAIL = /['":;,<>/\(\)\{\}\[\]`´¬\|°\\?¿¡=!+\*~^#\$%&¨]/;
-const PROHIBITED_CHARS_PASSWORD = /[´¨]/; // Se han eliminado los símbolos permitidos de aquí
-
-// Validar nombre de usuario (username)
+const PROHIBITED_CHARS_PASSWORD = /[´¨]/; 
 function validateUsername(username) {
     if (/\s/.test(username)) {
         return 'El nombre de usuario no puede contener espacios.';
@@ -16,7 +12,6 @@ function validateUsername(username) {
     return null;
 }
 
-// Validar nombre completo (full name)
 function validateFullName(name) {
     if (!/^[a-zA-Z]+(?:[ ][a-zA-Z]+)*$/.test(name)) {
         return 'El nombre completo solo puede contener letras y un solo espacio entre palabras. No puede tener espacios al inicio o al final.';
@@ -41,7 +36,6 @@ function validatePassword(password) {
     if (password.includes(' ')) {
         return 'La contraseña no puede contener espacios.';
     }
-    // Expresión regular para validar la combinación de caracteres y longitud
     const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+-=\[\]\{\};:'"|<,>.?/]).{12,16}$/;
 
     if (!passwordRegex.test(password)) {

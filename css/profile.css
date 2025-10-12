@@ -1,17 +1,15 @@
-/* css/style.css */
+
 
 :root {
-    /* Colores para el Modo Claro (Tema de Neón de Día Mejorado) */
-    --clr-light-bg-primary: #ffffff; /* Fondo blanco para un lienzo limpio */
-    --clr-light-bg-secondary: #f0f0f0; /* Gris muy claro para elementos secundarios */
-    --clr-light-accent: #ffeb3b; /* Amarillo neón brillante */
-    --clr-light-text-dark: #333333; /* Texto oscuro para máxima legibilidad */
-    --clr-light-text-light: #727272; /* Texto gris para contraste sutil */
+    --clr-light-bg-primary: #ffffff; 
+    --clr-light-bg-secondary: #f0f0f0;
+    --clr-light-accent: #ffeb3b; 
+    --clr-light-text-dark: #333333; 
+    --clr-light-text-light: #727272; 
     --clr-light-shadow-primary: rgba(0, 0, 0, 0.1);
     --clr-light-shadow-secondary: rgba(0, 0, 0, 0.05);
     --clr-light-text-edit: #000000;
 
-    /* Colores para el Modo Oscuro (Tema de Neón de Noche) */
     --clr-dark-bg-primary: #0a0a1a;
     --clr-dark-bg-secondary: #1a1a2e;
     --clr-dark-accent: #fff01e;
@@ -20,7 +18,6 @@
     --clr-dark-shadow-primary: rgba(255, 240, 30, 0.25);
     --clr-dark-shadow-secondary: rgba(255, 240, 30, 0.1);
 
-    /* Variables de Color por defecto (Modo Claro) */
     --bg-primary: var(--clr-light-bg-primary);
     --bg-secondary: var(--clr-light-bg-secondary);
     --accent-color: var(--clr-light-accent);
@@ -30,17 +27,14 @@
     --shadow-secondary: var(--clr-light-shadow-secondary);
     --claro-dark-edit: var(--clr-light-text-edit);
     
-    /* Variables adicionales para el efecto de neón */
     --neon-yellow: #fff01e;
     --neon-blue: #00e0ff;
     --glow-effect: 0 0 5px var(--neon-yellow), 0 0 10px var(--neon-yellow), 0 0 20px var(--neon-yellow);
     --glow-effect-secondary: 0 0 5px var(--neon-blue), 0 0 10px var(--neon-blue), 0 0 20px var(--neon-blue);
 
-    /* Transiciones */
     --transition-speed: 0.3s ease-in-out;
 }
 
-/* Modo Oscuro (se activa con la clase .dark-mode en el body) */
 body.dark-mode {
     --bg-primary: var(--clr-dark-bg-primary);
     --bg-secondary: var(--clr-dark-bg-secondary);
@@ -52,12 +46,11 @@ body.dark-mode {
     --claro-dark-edit: var(--clr-dark-accent);
 }
 
-/* Estilos Globales */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: Arial, sans-serif; /* Puedes cambiar la fuente si lo deseas */
+    font-family: Arial, sans-serif;
 }
 
 body {
@@ -78,7 +71,6 @@ ul {
     list-style: none;
 }
 
-/* Contenedor principal para centrar el contenido */
 .container {
     max-width: 1200px;
     margin: 0 auto;
@@ -123,10 +115,10 @@ ul {
     cursor: pointer;
     color: var(--text-color-dark);
     transition: color var(--transition-speed);
-    display: flex; /* Para alinear el icono y el texto */
+    display: flex; 
     align-items: center;
-    gap: 8px; /* Espacio entre icono y texto */
-    font-size: 1.2em; /* Ajuste para el texto "Portafy" */
+    gap: 8px; 
+    font-size: 1.2em; 
     font-weight: bold;
     text-transform: uppercase;
 }
@@ -149,8 +141,8 @@ body.dark-mode .theme-toggle .dark-mode-icon { display: inline-block; }
 .main-nav .nav-icon {
     display: flex;
     flex-direction: column;
-    align-items: center; /* Asegura el centrado horizontal */
-    text-align: center; /* Asegura que el texto dentro del span esté centrado */
+    align-items: center; 
+    text-align: center; 
     font-size: 0.8em;
     color: var(--text-color-dark);
     transition: color var(--transition-speed);
@@ -185,17 +177,13 @@ body.dark-mode .main-nav .nav-icon i {
 }
 
 
-
-/* Estilos de la Cuadrícula de Portafolios */
 .projects-grid, .user-projects-grid {
     display: grid;
-    /* Por defecto, una columna en móviles */
     grid-template-columns: 1fr;
     gap: 40px;
     padding-bottom: 50px;
 }
 
-/* Media query para pantallas más grandes, forzando 2 y 3 columnas */
 @media (min-width: 768px) {
     .projects-grid, .user-projects-grid {
         grid-template-columns: repeat(2, 1fr);
@@ -346,8 +334,6 @@ body.dark-mode .menu-links li a:hover i {
 
 
 
-
-/* Estilos para la Página de Perfil */
 .profile-page-content {
     padding-top: 50px; 
     padding-bottom: 50px;
@@ -572,9 +558,6 @@ body.dark-mode .social-icons a:hover {
     color: var(--text-color-light);
 }
 
-
-
-/* Responsive Design para ambas páginas */
 @media (min-width: 769px) {
     .profile-header {
         flex-direction: row;
@@ -633,8 +616,8 @@ body.dark-mode .social-icons a:hover {
     }
 
     .main-nav ul {
-        gap: 0; /* Eliminar el gap entre los elementos de la lista nav */
-        /* Eliminamos flex-wrap y justify-content para que solo el botón de menú sea visible */
+        gap: 0; 
+
     }
 
     
@@ -644,7 +627,6 @@ body.dark-mode .social-icons a:hover {
         display: none;
     }
 
-    /* Asegurar que el botón de menú hamburguesa se muestre correctamente */
     .main-nav .nav-icon.menu-toggle {
         flex-direction: row;
         font-size: 1em; 
@@ -658,11 +640,9 @@ body.dark-mode .social-icons a:hover {
         margin-right: 5px; 
     }
 
-    /* Mostrar el texto "MENÚ" solo en móvil */
     .main-nav .nav-text-mobile {
         display: inline;
     }
-    /* Ocultar el texto específico de desktop en móvil */
     .main-nav .nav-text-desktop {
         display: none;
     }
@@ -797,9 +777,6 @@ body.dark-mode .project-card .project-author {
     transition: 0.4s;
 }
 
-
-
-/* Estilos para el modal de proyecto */
 .modal-overlay {
     position: fixed;
     top: 0;
@@ -817,30 +794,26 @@ body.dark-mode .project-card .project-author {
 }
 
 .modal-content {
-    background-color: var(--bg-secondary); /* Usa el color de fondo secundario del tema */
-    color: var(--text-color-dark); /* Usa el color de texto oscuro del tema */
+    background-color: var(--bg-secondary); 
+    color: var(--text-color-dark); 
     padding: 2rem;
     border-radius: 10px;
-    box-shadow: 0 5px 15px var(--shadow-primary); /* Usa la sombra principal del tema */
+    box-shadow: 0 5px 15px var(--shadow-primary);
     position: relative;
     max-width: 800px;
     width: 90%;
-    max-height: 90vh; /* Limitar la altura para pantallas pequeñas */
-    overflow-y: auto; /* Habilita el scroll vertical cuando el contenido excede la altura */
+    max-height: 90vh; 
+    overflow-y: auto; 
     transform: translateY(-50px);
     transition: transform 0.3s ease, opacity 0.3s ease;
     opacity: 0;
 }
-
-/* Ocultar scrollbar para navegadores basados en WebKit (Chrome, Safari) */
 .modal-content::-webkit-scrollbar {
     display: none;
 }
-
-/* Ocultar scrollbar para IE, Edge y Firefox */
 .modal-content {
-    -ms-overflow-style: none;  /* IE and Edge */
-    scrollbar-width: none;  /* Firefox */
+    -ms-overflow-style: none; 
+    scrollbar-width: none; 
 }
 
 
@@ -851,13 +824,13 @@ body.dark-mode .project-card .project-author {
     background: none;
     border: none;
     font-size: 2rem;
-    color: var(--text-color-light); /* Usa el color de texto claro del tema */
+    color: var(--text-color-light); 
     cursor: pointer;
     transition: color 0.3s ease;
 }
 
 .modal-close-btn:hover {
-    color: var(--text-color-dark); /* Usa el color de texto oscuro del tema */
+    color: var(--text-color-dark); 
 }
 
 .modal-image {
@@ -869,7 +842,7 @@ body.dark-mode .project-card .project-author {
 
 .modal-details h2 {
     margin-top: 0;
-    border-bottom: 2px solid var(--accent-color); /* Usa el color de acento del tema */
+    border-bottom: 2px solid var(--accent-color); 
     padding-bottom: 0.5rem;
     margin-bottom: 1rem;
 }
@@ -880,10 +853,9 @@ body.dark-mode .project-card .project-author {
 }
 
 .modal-details p strong {
-    color: var(--text-color-dark); /* Usa el color de acento del tema */
+    color: var(--text-color-dark); 
 }
 
-/* Estilos para el modal cuando está activo */
 .modal-overlay.active {
     opacity: 1;
     visibility: visible;
@@ -894,7 +866,6 @@ body.dark-mode .project-card .project-author {
     opacity: 1;
 }
 
-/* Estilos responsivos para el modal */
 @media (max-width: 768px) {
     .modal-content {
         padding: 1rem;
@@ -933,9 +904,8 @@ body.dark-mode .project-card .project-author {
     background: none;
 }
 
-/* Estilos para el botón de editar perfil */
 .profile-header {
-    position: relative; /* Contenedor para posicionar el botón */
+    position: relative; 
 }
 
 #edit-profile-btn {
@@ -953,19 +923,16 @@ body.dark-mode .project-card .project-author {
 #edit-profile-btn:hover {
     color: #a19700;
 }
-
-/* Posicionamiento en escritorio */
 @media (min-width: 769px) {
     #edit-profile-btn {
         position: absolute;
         top: 0;
         right: 0;
-        margin-top: -20px; /* Ajuste para subir el botón */
+        margin-top: -20px; 
         margin-right: 0;
     }
 }
 
-/* Posicionamiento en móvil */
 @media (max-width: 768px) {
     .profile-info {
         display: flex;
@@ -974,7 +941,6 @@ body.dark-mode .project-card .project-author {
     }
     
     #edit-profile-btn {
-        order: 4; /* Lo coloca después de la biografía (order: 3) */
         margin-top: 20px;
     }
 }
@@ -985,18 +951,13 @@ body.dark-mode .project-card .project-author {
     color: var(--claro-dark-edit);
 }
 
-/* FRAGMENTO CSS: Agregar al final de css/style.css (y otros archivos CSS si no usan style.css) */
-
 #btnVolverArriba {
-    /* Posición: Fijo en la esquina inferior izquierda */
     position: fixed;
     bottom: 20px;
     left: 20px;
-    z-index: 1000; /* Asegura que esté por encima de otros elementos */
-
-    /* Estilo del botón (usando variables de tu :root) */
+    z-index: 1000; 
     background-color: var(--accent-color);
-    color: var(--clr-light-text-dark); /* Color de icono en modo claro */
+    color: var(--clr-light-text-dark);
     border: none;
     border-radius: 50%;
     width: 50px;
@@ -1007,27 +968,23 @@ body.dark-mode .project-card .project-author {
     cursor: pointer;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 
-    /* Estado inicial: Oculto, con transición suave (suave y limpio) */
     opacity: 0;
     visibility: hidden;
     transform: translateY(10px);
     transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease, background-color var(--transition-speed);
 }
 
-/* Estado 'mostrar' (controlado por JavaScript) */
 #btnVolverArriba.mostrar {
     opacity: 1;
     visibility: visible;
     transform: translateY(0);
 }
 
-/* Efecto hover */
 #btnVolverArriba:hover {
     filter: brightness(1.1);
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
 }
 
-/* Adaptación al Modo Oscuro */
 body.dark-mode #btnVolverArriba {
     background-color: var(--clr-dark-accent);
     color: var(--clr-dark-bg-primary); /* Mejor contraste en modo oscuro */
@@ -1043,16 +1000,12 @@ body.dark-mode #btnVolverArriba:hover {
 }
 
 
-
-
-
-/* Estilos para el meta y el contador de seguidores */
 .profile-meta {
     margin-top: 10px;
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: 20px; /* Espacio entre el contador y las redes sociales */
+    gap: 20px; 
 }
 
 .followers-count {
@@ -1060,23 +1013,21 @@ body.dark-mode #btnVolverArriba:hover {
     align-items: center;
     font-size: 1.1em;
     font-weight: 600;
-    color: var(--text-color-light); /* O el color que uses para el texto secundario */
+    color: var(--text-color-light); 
 }
 
 .followers-count i {
     margin-right: 5px;
-    color: var(--primary-color); /* Color de acento */
+    color: var(--primary-color);
 }
 
 .followers-count .count-label {
     margin-left: 5px;
     font-weight: 400;
 }
-
-/* Estilos para el botón de Seguir/Dejar de Seguir */
 #follow-button-container {
     margin-top: 15px;
-    display: block; /* Para que ocupe todo el ancho */
+    display: block; 
 }
 
 .follow-btn {
@@ -1086,23 +1037,21 @@ body.dark-mode #btnVolverArriba:hover {
     cursor: pointer;
     font-weight: bold;
     transition: background-color var(--transition-speed), color var(--transition-speed), border-color var(--transition-speed);
-    width: 100%; /* Ocupa el ancho completo */
-    max-width: 200px; /* Limita el ancho en escritorio */
+    width: 100%; 
+    max-width: 200px;
     text-align: center;
     display: inline-block;
 }
 
-/* Estilo para el botón de Seguir */
 .follow-btn.follow {
     background-color: var(--primary-color);
-    color: var(--button-text-color); /* Generalmente blanco o muy claro */
+    color: var(--button-text-color);
 }
 
 .follow-btn.follow:hover {
     background-color: var(--primary-color-hover);
 }
 
-/* Estilo para el botón de Dejar de Seguir */
 .follow-btn.unfollow {
     background-color: transparent;
     color: var(--text-color-dark);
@@ -1110,15 +1059,14 @@ body.dark-mode #btnVolverArriba:hover {
 }
 
 .follow-btn.unfollow:hover {
-    background-color: var(--bg-color-light); /* Un color de fondo muy suave */
-    color: var(--danger-color); /* Color de advertencia o rojo */
+    background-color: var(--bg-color-light);
+    color: var(--danger-color);
     border-color: var(--danger-color);
 }
 
-/* Ajuste de responsividad (si es necesario) */
 @media (max-width: 768px) {
     .follow-btn {
-        max-width: 100%; /* Ocupa todo el ancho en móviles */
+        max-width: 100%; 
     }
     .profile-meta {
         flex-direction: column;

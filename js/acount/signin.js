@@ -1,13 +1,9 @@
-// js/acount/signin.js
 
-// Importa createClient directamente desde el CDN como un módulo
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
 
-// Tus credenciales de Supabase
 const SUPABASE_URL = 'https://fikdyystxmsmwioyyegt.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZpa2R5eXN0eG1zbXdpb3l5ZWd0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTY3NjgxODksImV4cCI6MjA3MjM0NDE4OX0.QAfKSJfUbwT5NhGRiNHoA83JzW7BXT9u15d5oaeAlro';
 
-// Inicializa el cliente Supabase
 const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -89,7 +85,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     })();
 
-    // Función para alternar la visibilidad de la contraseña
     document.querySelectorAll('.toggle-password').forEach(toggle => {
         toggle.addEventListener('click', () => {
             const targetId = toggle.getAttribute('data-target');

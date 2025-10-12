@@ -1,6 +1,4 @@
-// js/valid/edit-project-valid.js
 
-// Validar el título
 const validateTitle = (title) => {
     const trimmedTitle = title.trim().replace(/\s+/g, ' '); // Elimina espacios extra
     const regex = /^[a-zA-Z0-9\s=,.-áéíóúÁÉÍÓÚ():°"]+(?:[ ][a-zA-Z0-9\s=,.-áéíóúÁÉÍÓÚ():°"]+)*$/;
@@ -43,7 +41,6 @@ const validateImage = (imageFile) => {
 
 // Validar fechas
 const validateDate = (date, minDate, today, fieldName) => {
-    // Si la fecha está vacía, no hay error de validación
     if (!date) {
         return null;
     }
@@ -56,12 +53,11 @@ const validateDate = (date, minDate, today, fieldName) => {
     return null;
 };
 
-// Validar el nombre del cliente
 const validateClient = (client) => {
     if (!client) {
         return null;
     }
-    const trimmedClient = client.trim().replace(/\s+/g, ' '); // Elimina espacios extra
+    const trimmedClient = client.trim().replace(/\s+/g, ' '); 
     if (!/^[a-zA-Z]+(?:[ ][a-zA-Z]+)*$/.test(trimmedClient)) {
         return "Este campo solo puede contener letras, sin espacios al inicio o final, y con un solo espacio entre palabras.";
     }
@@ -84,7 +80,6 @@ const validateLinks = (links) => {
     return null;
 };
 
-// Función principal de validación para el formulario de edición
 export const validateEditProjectForm = (formData) => {
     const { title, description, imageFile, startDate, endDate, client, links } = formData;
     const errors = {};
@@ -102,7 +97,6 @@ export const validateEditProjectForm = (formData) => {
         { field: 'links', validator: () => validateLinks(links) },
     ];
     
-    // Validar que la fecha final no sea anterior a la inicial, solo si ambas están presentes.
     if (startDate && endDate) {
         const startOnlyDate = new Date(startDate);
         startOnlyDate.setHours(0, 0, 0, 0);

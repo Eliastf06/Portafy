@@ -23,14 +23,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // Evento de apertura
     document.getElementById('menu-toggle-btn')?.addEventListener('click', (e) => {
         e.preventDefault();
         openModal(sideMenuOverlay);
     });
 
-    // Evento de cierre
     document.getElementById('menu-close-btn')?.addEventListener('click', () => closeModal(sideMenuOverlay));
-
 
 });

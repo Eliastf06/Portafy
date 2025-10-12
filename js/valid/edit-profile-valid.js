@@ -1,6 +1,4 @@
-// js/valid/edit-profile-valid.js
 
-// Validar nombre de usuario
 function validateUsername(username) {
     if (/\s/.test(username)) {
         return 'El nombre de usuario no puede contener espacios.';
@@ -12,7 +10,6 @@ function validateUsername(username) {
     return null;
 }
 
-// Validar nombre completo
 function validateFullName(name) {
     if (name.trim() !== name) {
         return 'El nombre completo no puede tener espacios al inicio o al final.';
@@ -26,7 +23,6 @@ function validateFullName(name) {
     return null;
 }
 
-// Validar biografía, dirección y experiencia
 function validateTextWithSymbols(text, fieldName) {
     if (text.trim() !== text) {
         return `La ${fieldName} no puede tener espacios al inicio o al final.`;
@@ -41,7 +37,7 @@ function validateTextWithSymbols(text, fieldName) {
     return null;
 }
 
-// Validar URL de red social
+// validar URL de red social
 function validateSocialUrl(url) {
     if (url.includes(' ')) {
         return 'La URL no puede contener espacios.';
@@ -64,7 +60,6 @@ function validatePhoneNumber(phone) {
     return null;
 }
 
-// Validar tipo de archivo de imagen
 function validateProfilePicture(file) {
     if (!file) {
         return null;
@@ -79,7 +74,7 @@ function validateProfilePicture(file) {
     return null;
 }
 
-// Función principal de validación para el formulario
+//validación para el formulario
 export function validateProfile(username, fullName, biography, socialUrl, phone, address, experience, profilePicFile) {
     const validations = [
         { value: username, validator: validateUsername, name: 'username' },

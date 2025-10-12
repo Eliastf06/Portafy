@@ -1,12 +1,11 @@
-// js/scroll-to-top.js
 
 document.addEventListener('DOMContentLoaded', () => {
-    // 1. Obtener el botón
+    //Obtener el botón
     const btnVolverArriba = document.getElementById('btnVolverArriba');
 
-    // 2. Lógica para mostrar/ocultar el botón
+    // mostrar/ocultar el botón
     const toggleBoton = () => {
-        // El botón se mostrará cuando el usuario haya bajado más de 300 píxeles
+        // mostrar el boton cuando el usuario baje 300px
         if (window.scrollY > 300) {
             btnVolverArriba.classList.add('mostrar');
         } else {
@@ -14,18 +13,17 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // 3. Lógica para subir al inicio de la página suavemente
+    // subir al inicio de la página suavemente
     const subirArriba = () => {
         window.scrollTo({
             top: 0,
-            behavior: 'smooth' // Esto es lo que permite la subida suave y limpia
+            behavior: 'smooth' // Esto es lo que permite la subida limpia
         });
     };
 
-    // Eventos
     window.addEventListener('scroll', toggleBoton);
     btnVolverArriba.addEventListener('click', subirArriba);
 
-    // Llamada inicial para corregir el estado si la página se carga desplazada
+    // corregir el estado si la página se carga desplazada
     toggleBoton();
 });

@@ -1,14 +1,12 @@
 :root {
-    /* Colores para el Modo Claro (Tema de Neón de Día Mejorado) */
-    --clr-light-bg-primary: #ffffff; /* Fondo blanco para un lienzo limpio */
-    --clr-light-bg-secondary: #f0f0f0; /* Gris muy claro para elementos secundarios */
-    --clr-light-accent: #ffeb3b; /* Amarillo neón brillante */
-    --clr-light-text-dark: #333333; /* Texto oscuro para máxima legibilidad */
-    --clr-light-text-light: #727272; /* Texto gris para contraste sutil */
+    --clr-light-bg-primary: #ffffff; 
+    --clr-light-bg-secondary: #f0f0f0; 
+    --clr-light-accent: #ffeb3b; 
+    --clr-light-text-dark: #333333; 
+    --clr-light-text-light: #727272; 
     --clr-light-shadow-primary: rgba(0, 0, 0, 0.1);
     --clr-light-shadow-secondary: rgba(0, 0, 0, 0.05);
 
-    /* Colores para el Modo Oscuro (Tema de Neón de Noche) */
     --clr-dark-bg-primary: #0a0a1a;
     --clr-dark-bg-secondary: #1a1a2e;
     --clr-dark-accent: #fff01e;
@@ -17,7 +15,6 @@
     --clr-dark-shadow-primary: rgba(255, 240, 30, 0.25);
     --clr-dark-shadow-secondary: rgba(255, 240, 30, 0.1);
 
-    /* Variables de Color por defecto (Modo Claro) */
     --bg-primary: var(--clr-light-bg-primary);
     --bg-secondary: var(--clr-light-bg-secondary);
     --accent-color: var(--clr-light-accent);
@@ -26,7 +23,6 @@
     --shadow-primary: var(--clr-light-shadow-primary);
     --shadow-secondary: var(--clr-light-shadow-secondary);
     
-    /* Variables adicionales para el efecto de neón */
     --neon-yellow: #fff01e;
     --neon-blue: #00e0ff;
     --glow-effect: 0 0 5px var(--neon-yellow), 0 0 10px var(--neon-yellow), 0 0 20px var(--neon-yellow);
@@ -36,7 +32,6 @@
     --transition-speed: 0.3s ease-in-out;
 }
 
-/* Modo Oscuro (se activa con la clase .dark-mode en el body) */
 body.dark-mode {
     --bg-primary: var(--clr-dark-bg-primary);
     --bg-secondary: var(--clr-dark-bg-secondary);
@@ -49,10 +44,10 @@ body.dark-mode {
 
 body {
     font-family: Arial, sans-serif;
-    background-image: url('../multimedia/fondo-portafy.jpg'); /* Adjusted path based on typical CSS structure */
-    background-size: cover; /* Cover the entire viewport */
-    background-repeat: no-repeat; /* Do not repeat the image */
-    background-attachment: fixed; /* Keep background fixed when scrolling */
+    background-image: url('../multimedia/fondo-portafy.jpg'); 
+    background-size: cover; 
+    background-repeat: no-repeat;
+    background-attachment: fixed; 
     display: flex;
     justify-content: center;
     align-items: center;
@@ -80,7 +75,7 @@ body::before {
     padding: 30px;
     border-radius: 8px;
     box-shadow: 0 2px 10px var(--shadow-primary);
-    width: 350px; /* Un poco más ancho para el registro */
+    width: 350px; 
     text-align: center;
     transition: background-color var(--transition-speed), box-shadow var(--transition-speed);
 }
@@ -107,7 +102,7 @@ body::before {
 .input-group input[type="text"],
 .input-group input[type="email"],
 .input-group input[type="password"] {
-    width: calc(100% - 20px); /* Ajusta el ancho para el padding */
+    width: calc(100% - 20px); 
     padding: 10px;
     border: 1px solid var(--text-color-light);
     background-color: var(--bg-secondary);
@@ -118,7 +113,7 @@ body::before {
 }
 
 button[type="submit"] {
-    background-color: var(--accent-color); /* Un color diferente para el botón de registro */
+    background-color: var(--accent-color); 
     color: var(--bg-primary);
     padding: 12px 20px;
     border: none;

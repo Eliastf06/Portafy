@@ -1,4 +1,3 @@
-// js/edit-project.js
 
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
 import { validateEditProjectForm } from './valid/edit-project-valid.js';

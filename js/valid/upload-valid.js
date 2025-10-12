@@ -1,6 +1,4 @@
-// js/valid/upload-valid.js
 
-// Validar título del proyecto
 function validateProjectTitle(title) {
     const trimmedTitle = title.trim().replace(/\s+/g, ' '); // Elimina espacios extra
     const regex = /^[a-zA-Z0-9\s=,.-áéíóúÁÉÍÓÚ():°"]+(?:[ ][a-zA-Z0-9\s=,.-áéíóúÁÉÍÓÚ():°"]+)*$/;
@@ -15,9 +13,8 @@ function validateProjectTitle(title) {
     return null;
 }
 
-// Validar descripción del proyecto
 function validateProjectDescription(description) {
-    const trimmedDescription = description.trim().replace(/\s+/g, ' '); // Elimina espacios extra
+    const trimmedDescription = description.trim().replace(/\s+/g, ' '); 
     const regex = /^[a-zA-Z0-9\s=,.-áéíóúÁÉÍÓÚ():°"]+(?:[ ][a-zA-Z0-9\s=,.-áéíóúÁÉÍÓÚ():°"]+)*$/;
     
     if (trimmedDescription.length === 0) {
@@ -30,7 +27,6 @@ function validateProjectDescription(description) {
     return null;
 }
 
-// Validar tipo de archivo de imagen
 function validateImageFile(file) {
     if (!file) {
         return 'Por favor, selecciona una imagen para tu proyecto.';
@@ -59,7 +55,6 @@ export function validateProjectUpload(title, description, imageFile) {
         () => validateImageFile(imageFile)
     ];
 
-    // Iterar sobre las validaciones y retornar el primer error encontrado
     for (const validator of validations) {
         const error = validator();
         if (error) {

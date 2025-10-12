@@ -1,4 +1,3 @@
-// js/main.js
 
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
 
@@ -8,7 +7,7 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
 const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 document.addEventListener('DOMContentLoaded', () => {
-    // Referencias a los elementos del DOM
+
     const profileLink = document.getElementById('profile-link');
     const heroCtaButton = document.getElementById('hero-cta-button'); // Nuevo
     const carouselTrack = document.getElementById('carousel-track');
@@ -33,11 +32,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 profileUrl = `profile.html?username=${userData.nom_usuario}`;
             }
 
-            // 1. NAV CTA: "Ver mi Portafolios" -> profile.html
             profileLink.textContent = 'Ver mi Portafolios';
             profileLink.href = profileUrl;
 
-            // 2. HERO CTA: "Empieza a crear tu portafolios" -> "Ver mi Portafolios" -> profile.html
             if (heroCtaButton) {
                 heroCtaButton.textContent = 'Ver mi Portafolios';
                 heroCtaButton.href = profileUrl;
@@ -46,11 +43,9 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             // Lógica para USUARIO NO LOGEADO
 
-            // 1. NAV CTA: "Ver mi Portafolios" -> "Crear portafolios" -> signin.html
             profileLink.textContent = 'Crear portafolios';
             profileLink.href = 'signin.html';
 
-            // 2. HERO CTA: Mantiene "¡Empieza a crear tu portafolios!" -> regis.html
             if (heroCtaButton) {
                 heroCtaButton.textContent = '¡Empieza a crear tu portafolios!';
                 heroCtaButton.href = 'regis.html';
@@ -72,11 +67,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (projectsError) throw projectsError;
 
-            // Extraer los IDs de usuario únicos de la columna 'id' de proyectos.
             const userIds = projectsData.map(p => p.id);
             const uniqueUserIds = [...new Set(userIds)];
 
-            // Obtener los nombres de usuario de la tabla 'usuarios' usando esos IDs.
             const { data: usersData, error: usersError } = await supabase
                 .from('usuarios')
                 .select(`

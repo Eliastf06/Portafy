@@ -1,4 +1,3 @@
-// js/chatbot.js
 
 document.addEventListener('DOMContentLoaded', () => {
     const toggleButton = document.getElementById('chatbot-toggle');
@@ -8,55 +7,45 @@ document.addEventListener('DOMContentLoaded', () => {
     const inputField = document.getElementById('chatbot-input');
     const sendButton = document.getElementById('chatbot-send');
 
-    // Estado inicial de la ventana del chatbot
     chatbotWindow.classList.add('hidden');
-
-    // --- Funciones del DOM ---
 
     // Toggle para abrir/cerrar el chatbot
     toggleButton.addEventListener('click', () => {
         chatbotWindow.classList.toggle('hidden');
         if (!chatbotWindow.classList.contains('hidden')) {
-            // Mostrar mensaje de bienvenida al abrir
             if (messagesContainer.children.length === 0) {
                 appendMessage('bot', '¡Hola! Soy tu asistente de Portafy. ¿En qué puedo ayudarte hoy? Tengo respuestas sobre la navegación, documentación, temas de color y más. Te agradeceria que no tengas errores de ortografia y no insultes, Gracias');
             }
-            // Enfocar el input
             inputField.focus();
         }
     });
 
-    // Cerrar el chatbot
     closeButton.addEventListener('click', () => {
         chatbotWindow.classList.add('hidden');
     });
 
-    // Añadir mensaje al contenedor con soporte para negritas
     function appendMessage(sender, text) {
         const messageDiv = document.createElement('div');
         messageDiv.classList.add('message', `${sender}-message`);
 
-        // NUEVA LÓGICA: Procesar el texto para negritas (reemplazar **texto** por <strong>texto</strong>)
+        // Procesar el texto para negritas
         const processedText = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
         
-        // Usamos innerHTML para renderizar el <strong>, ya que es contenido controlado.
+        // innerHTML para renderizar el <strong>, porque que es contenido controlado.
         messageDiv.innerHTML = processedText;
         
         messagesContainer.appendChild(messageDiv);
-        // Desplazamiento automático al final
         messagesContainer.scrollTop = messagesContainer.scrollHeight;
     }
 
-    // --- Lógica del Chatbot: Base de Conocimiento (Incluye manejo de Insultos) ---
-
     const knowledgeBase = [
-        // 0. MANEJO DE INSULTOS Y LENGUAJE INAPROPIADO (NUEVO)
+        // MANEJO DE INSULTOS Y LENGUAJE INAPROPIADO
         { 
             keywords: ['salame', 'retardado', 'retardado', 'nigga', 'conchuda', 'conchudo', 'sexo', 'pitito', 'conchita', 'chota', 'choto', 'chotin', 'cogida', 'cogido', 'salamin', 'boludito', 'boludita', 'trolo', 'trola', 'gay', 'gey', 'lesbiana', 'homosexual', 'travesti', 'traba', 'esclavo', 'esclava', 'gordo', 'gorda', 'teton', 'tetona', 'lechon', 'vaca', 'trava', 'cojo', 'cojer', 'coger', 'garcho', 'garchar', 'violo', 'violador', 'violadora', 'violado', 'vialada', 'gordita', 'gordito', 'pelotudito', 'pelotudita', 'panflina', 'trolin', 'trolito', 'trolita', 'nabo', 'pelado', 'calvo', 'pelon', 'culon', 'negro', 'negra', 'culona', 'cancer', 'putito', 'putita', 'boludin', 'hermana', 'madre', 'vieja', 'mama', 'tia', 'lora', 'mono', 'naboleti', 'salamina', 'tontin', 'pete', 'inutil', 'panflin', 'pancho', 'gil', 'gila', 'pancha', 'orto', 'semen', 'leche', 'lechita', 'bolas', 'testiculos', 'mogolico', 'mogolica', 'down', 'autista', 'retrasado', 'retrasada', 'tarado', 'tarada', 'tonto', 'tonta', 'teta', 'culo', 'nalgas', 'pito', 'pene', 'vagina', 'concha', 'infeliz', 'estupido', 'estupida', 'idiota', 'mierda', 'puto', 'puta', 'imbecil', 'cabron', 'cabrona', 'joder', 'boludo', 'boluda', 'coño', 'gilipollas', 'pendejo', 'pendeja', 'chinga', 'groseria', 'obscena', 'maldito', 'maldita', 'feo', 'caca', 'pedo', 'pis'], 
             response: 'Agradeceria que mantengas un lenguaje profesional. Estoy aquí para ayudarte con preguntas sobre Portafy, no para responder a ofensas. Por favor, reformula tu pregunta de manera respetuosa.' 
         },
 
-        // 1. Saludos y Cierres
+        //Saludos y Cierres
         { 
             keywords: ['hola', 'buenas', 'buen', 'buenas', 'hi', 'hello', 'helow', 'hey', 'holis', 'ola', 'oli', 'olis', 'holanda', 'olanda', 'saludo', 'buenos dias', 'onda', 'que tal'], 
             response: '¡Hola! Soy tu **Asistente Portafy**. ¿En qué puedo ayudarte hoy?' 
@@ -65,12 +54,12 @@ document.addEventListener('DOMContentLoaded', () => {
             keywords: ['gracias', 'muy bien', 'adios', 'chao', 'hasta luego'], 
             response: '¡De nada! Me alegra haberte ayudado. ¡Que tengas un gran día creando/gestionando tu **portafolio**!' 
         },
-        // 2. Core: Creación de Portafolio
+        // Creación de Portafolio
         { 
             keywords: ['portafolio', 'crear', 'hacer uno', 'mi portafolio', 'empezar'], 
             response: 'Para **crear tu portafolio**, ve a la página principal y busca el botón de creación, o sino tambien en cualquier otra pagina le das al boton con la personita en la barra de navegacion o "iniciar sesion" en el menu lateral. Es un proceso muy simple.' 
         },
-        // 3. Páginas de Navegación
+        // Páginas de Navegación
         { 
             keywords: ['documentacion', 'docs', 'ayuda tecnica', 'ver manual'], 
             response: 'La **Documentación** está en `docs.html`. Ahí encontrarás guías detalladas, estructuras de archivos y detalles técnicos del proyecto.' 
@@ -91,7 +80,7 @@ document.addEventListener('DOMContentLoaded', () => {
             keywords: ['main.html', 'inicio', 'casa', 'dashboard'], 
             response: 'La página principal es `main.html`. Es el **dashboard** o centro de inicio donde gestionas tu portafolio.' 
         },
-        // 4. Tema y Diseño
+        // Tema y Diseño
         { 
             keywords: ['tema', 'color', 'oscuro', 'claro', 'modo', 'neón', 'luna', 'sol'], 
             response: 'Portafy soporta **Modo Claro** y **Modo Oscuro** (Temática Neón). Usa el interruptor de luna/sol en el encabezado para cambiar el tema.' 
@@ -108,7 +97,7 @@ document.addEventListener('DOMContentLoaded', () => {
             keywords: ['acento', 'accent color', 'amarillo', 'brillo'], 
             response: 'El color de acento principal es un llamativo amarillo neón, definido por `--clr-light-accent` (claro) y `--clr-dark-accent` (oscuro) en los archivos CSS.' 
         },
-        // 5. Estructura y Desarrollo
+        // Estructura y Desarrollo
         { 
             keywords: ['estructura archivos', 'carpetas', 'donde estan', 'organizacion'], 
             response: 'La estructura de archivos es: HTML en la carpeta principal; **CSS** en `css/`; y **JavaScript** en `js/`.' 
@@ -125,7 +114,7 @@ document.addEventListener('DOMContentLoaded', () => {
             keywords: ['descargar', 'codigo', 'repositorio', 'archivos'], 
             response: 'El código fuente, una vez descargado, debe ser manipulado respetando la estructura de carpetas `css/` y `js/`.' 
         },
-        // 6. Funcionalidad
+        // Funcionalidad
         { 
             keywords: ['como editar', 'cambiar info', 'formulario', 'actualizar'], 
             response: 'La edición de tu perfil o portafolio se gestiona con los botones y formularios de **"Editar"** que encontrarás en en la pagina de **Perfil**.' 
@@ -138,7 +127,7 @@ document.addEventListener('DOMContentLoaded', () => {
             keywords: ['que es un portafolio', 'definicion', 'concepto'], 
             response: 'Un portafolio en Portafy es tu espacio digital para mostrar de manera profesional y estética tus proyectos, habilidades y experiencia.' 
         },
-        // 7. Información Corporativa / Legal
+        // Información Corporativa / Legal
         { 
             keywords: ['que es portafy', 'nombre', 'significado', 'plataforma', 'empresa'], 
             response: '**Portafy** es una plataforma para crear y gestionar tu portafolio profesional de forma simple, enfocada en un diseño estético y moderno.' 
@@ -155,7 +144,7 @@ document.addEventListener('DOMContentLoaded', () => {
             keywords: ['cookies', 'privacidad', 'legal', 'terminos'], 
             response: 'No tengo la política legal completa. Por favor, revisa los enlaces de **Política de Privacidad** y **Términos de Servicio** en el pie de página para detalles legales.' 
         },
-        // 8. Componentes de la Web
+        // Componentes de la Web
         { 
             keywords: ['header', 'encabezado', 'barra superior'], 
             response: 'El encabezado contiene el logo, el botón de cambio de tema y la navegación principal.' 
@@ -165,14 +154,14 @@ document.addEventListener('DOMContentLoaded', () => {
             response: 'El pie de página incluye enlaces de navegación, nuestros perfiles de redes sociales y el aviso de copyright.' 
         },
         { 
-            keywords: ['sociales', 'redes', 'facebook', 'twitter', 'x.com', 'instagram', 'linkedin'], 
+            keywords: ['sociales', 'redes', 'facebook', 'twitter', 'x.com', 'instagram', 'linkedin', 'ig'], 
             response: 'Puedes seguirnos en todas las redes: Facebook, X (Twitter), Instagram y LinkedIn. Los enlaces están disponibles en el **pie de página**.' 
         },
         { 
             keywords: ['icono', 'logo', 'imagen', 'multimedia'], 
             response: 'El logo de Portafy está en `multimedia/logo.png`. Los iconos utilizados son de la librería **Font Awesome 6**.' 
         },
-        // 9. Misc
+        //  Misc
         { 
             keywords: ['es gratis', 'costo', 'pago', 'cuanto cuesta'], 
             response: 'Asumo que la plataforma es de acceso libre para la creación de portafolios básicos. Revisa la documentación para detalles sobre licencias o planes de pago.' 
@@ -203,7 +192,6 @@ document.addEventListener('DOMContentLoaded', () => {
     function getBotResponse(userInput) {
         const cleanedInput = userInput.toLowerCase().trim();
 
-        // Buscar en la base de conocimiento
         for (const item of knowledgeBase) {
             for (const keyword of item.keywords) {
                 if (cleanedInput.includes(keyword)) {
@@ -212,7 +200,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
 
-        // Respuesta por defecto si no se encuentra nada
         return "Disculpa, no entendí tu pregunta. Soy un asistente básico con respuestas predefinidas. Intenta reformular tu pregunta usando palabras clave sobre la **Documentación**, tu **Perfil**, el **Diseño** (neón, oscuro), o **Ayuda**. Tambien trata de no tener errores ortograficos";
     }
 
@@ -221,24 +208,23 @@ document.addEventListener('DOMContentLoaded', () => {
         const userInput = inputField.value.trim();
 
         if (userInput === '') {
-            return; // No enviar mensajes vacíos
+            return; 
         }
 
         // Mostrar mensaje del usuario
         appendMessage('user', userInput);
 
-        // Obtener y mostrar respuesta del bot (con un pequeño retraso para simular "pensar")
+        // Obtener y mostrar respuesta del bot
         const botResponse = getBotResponse(userInput);
         
         setTimeout(() => {
             appendMessage('bot', botResponse);
-        }, 500); // Retraso de 0.5 segundos
+        }, 500);
 
-        // Limpiar el input
+      
         inputField.value = '';
     }
 
-    // Eventos de envío de mensaje
     sendButton.addEventListener('click', handleSendMessage);
     inputField.addEventListener('keypress', (e) => {
         if (e.key === 'Enter') {
@@ -246,15 +232,13 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Observador para cambios de tema (depende del script de tema principal)
+    // Observador para cambios de tema
     const observer = new MutationObserver((mutations) => {
         mutations.forEach((mutation) => {
             if (mutation.attributeName === 'class' && mutation.target === document.body) {
-                // El CSS maneja la transición de colores del chatbot gracias a las variables CSS.
             }
         });
     });
 
-    // Observar cambios en el atributo 'class' del body
     observer.observe(document.body, { attributes: true });
 });

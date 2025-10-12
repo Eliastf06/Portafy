@@ -1,15 +1,13 @@
-/* css/style.css */
+
 :root {
-    /* Colores para el Modo Claro (Tema de Neón de Día Mejorado) */
-    --clr-light-bg-primary: #ffffff; /* Fondo blanco para un lienzo limpio */
-    --clr-light-bg-secondary: #f0f0f0; /* Gris muy claro para elementos secundarios */
-    --clr-light-accent: #ffeb3b; /* Amarillo neón brillante */
-    --clr-light-text-dark: #333333; /* Texto oscuro para máxima legibilidad */
-    --clr-light-text-light: #727272; /* Texto gris para contraste sutil */
+    --clr-light-bg-primary: #ffffff; 
+    --clr-light-bg-secondary: #f0f0f0; 
+    --clr-light-accent: #ffeb3b; 
+    --clr-light-text-dark: #333333; 
+    --clr-light-text-light: #727272; 
     --clr-light-shadow-primary: rgba(0, 0, 0, 0.1);
     --clr-light-shadow-secondary: rgba(0, 0, 0, 0.05);
 
-    /* Colores para el Modo Oscuro (Tema de Neón de Noche) */
     --clr-dark-bg-primary: #0a0a1a;
     --clr-dark-bg-secondary: #1a1a2e;
     --clr-dark-accent: #fff01e;
@@ -18,7 +16,6 @@
     --clr-dark-shadow-primary: rgba(255, 240, 30, 0.25);
     --clr-dark-shadow-secondary: rgba(255, 240, 30, 0.1);
 
-    /* Variables de Color por defecto (Modo Claro) */
     --bg-primary: var(--clr-light-bg-primary);
     --bg-secondary: var(--clr-light-bg-secondary);
     --accent-color: var(--clr-light-accent);
@@ -27,17 +24,14 @@
     --shadow-primary: var(--clr-light-shadow-primary);
     --shadow-secondary: var(--clr-light-shadow-secondary);
     
-    /* Variables adicionales para el efecto de neón */
     --neon-yellow: #fff01e9a;
     --neon-blue: #00e0ff;
     --glow-effect: 0 0 5px var(--neon-yellow), 0 0 10px var(--neon-yellow), 0 0 20px var(--neon-yellow);
     --glow-effect-secondary: 0 0 5px var(--neon-blue), 0 0 10px var(--neon-blue), 0 0 20px var(--neon-blue);
 
-    /* Transiciones */
     --transition-speed: 0.3s ease-in-out;
 }
 
-/* Modo Oscuro (se activa con la clase .dark-mode en el body) */
 body.dark-mode {
     --bg-primary: var(--clr-dark-bg-primary);
     --bg-secondary: var(--clr-dark-bg-secondary);
@@ -48,12 +42,11 @@ body.dark-mode {
     --shadow-secondary: var(--clr-dark-shadow-secondary);
 }
 
-/* Estilos Globales */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: Arial, sans-serif; /* Puedes cambiar la fuente si lo deseas */
+    font-family: Arial, sans-serif;
 }
 
 body {
@@ -74,22 +67,16 @@ ul {
     list-style: none;
 }
 
-/* Contenedor principal para centrar el contenido */
 .container {
     max-width: 1200px;
     margin: 0 auto;
     padding: 20px;
 }
 
-
-
-
-/* Para los iconos de Font Awesome */
 .fas, .far, .fab {
     transition: color var(--transition-speed);
 }
 
-/* Estilos Específicos para la Cabecera */
 .main-header {
     background-color: var(--bg-secondary);
     padding: 10px 0;
@@ -104,7 +91,7 @@ ul {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 15px; /* Espacio entre elementos */
+    gap: 15px; 
 }
 
 .app-logo-link {
@@ -124,10 +111,10 @@ ul {
     cursor: pointer;
     color: var(--text-color-dark);
     transition: color var(--transition-speed);
-    display: flex; /* Para alinear el icono y el texto */
+    display: flex; 
     align-items: center;
-    gap: 8px; /* Espacio entre icono y texto */
-    font-size: 1.2em; /* Ajuste para el texto "Portafy" */
+    gap: 8px;
+    font-size: 1.2em; 
     font-weight: bold;
     text-transform: uppercase;
 }
@@ -154,8 +141,8 @@ body.dark-mode .theme-toggle .dark-mode-icon { display: inline-block; }
 .main-nav .nav-icon {
     display: flex;
     flex-direction: column;
-    align-items: center; /* Asegura el centrado horizontal */
-    text-align: center; /* Asegura que el texto dentro del span esté centrado */
+    align-items: center; 
+    text-align: center; 
     font-size: 0.8em;
     color: var(--text-color-dark);
     transition: color var(--transition-speed);
@@ -203,7 +190,7 @@ body.dark-mode .main-nav .nav-icon i {
     visibility: hidden;
     transition: opacity var(--transition-speed), visibility var(--transition-speed);
     display: flex;
-    justify-content: flex-end; /* Alinea el menú a la derecha */
+    justify-content: flex-end; 
 }
 
 .menu-overlay.active {
@@ -322,7 +309,7 @@ body.dark-mode .menu-links li a:hover {
 
 .menu-links li a i {
     margin-right: 15px;
-    width: 20px; /* Para alinear los iconos */
+    width: 20px; 
     text-align: center;
 }
 body.dark-mode .menu-links li a i {
@@ -334,9 +321,6 @@ body.dark-mode .menu-links li a:hover i {
     filter: drop-shadow(0 0 5px var(--neon-blue));
 }
 
-
-
-/* Alineación para enlaces de registro/login */
 .text-center {
     text-align: center;
 }
@@ -365,7 +349,7 @@ body.dark-mode .text-center a i {
 .main-footer {
     background-color: var(--bg-secondary);
     padding: 40px 20px 20px;
-    margin-top: auto; /* Empuja el footer hacia abajo */
+    margin-top: auto; 
     border-top: 1px solid var(--shadow-secondary);
     transition: background-color var(--transition-speed);
 }
@@ -453,7 +437,6 @@ body.dark-mode .social-icons a:hover {
     color: var(--text-color-light);
 }
 
-/* Responsive Design */
 @media (min-width: 769px) {
     .search-bar {
         max-width: 600px;
@@ -480,7 +463,6 @@ body.dark-mode .social-icons a:hover {
     }
 }
 
-/* Ajustes para el header en móvil */
 @media (max-width: 768px) {
     .header-content {
         flex-wrap: nowrap;
@@ -496,11 +478,9 @@ body.dark-mode .social-icons a:hover {
         order: 1; 
         flex-shrink: 0;
     }
-    /* Ocultar el texto "Portafy" en móviles para dejar más espacio */
     .theme-toggle span {
         display: none;
     }
-    /* Muestra el texto "Portafy" en el link separado del theme-toggle */
     .app-logo-link {
         display: none;
     }
@@ -527,18 +507,14 @@ body.dark-mode .social-icons a:hover {
     }
 
     .main-nav ul {
-        gap: 0; /* Eliminar el gap entre los elementos de la lista nav */
-        /* Eliminamos flex-wrap y justify-content para que solo el botón de menú sea visible */
+        gap: 0; 
     }
 
-    /* Ocultar los primeros 3 elementos de navegación (Iniciar, Perfil, Subir) en móviles */
     .main-nav ul li:nth-child(1),
     .main-nav ul li:nth-child(2),
     .main-nav ul li:nth-child(3) {
         display: none;
     }
-
-    /* Asegurar que el botón de menú hamburguesa se muestre correctamente */
     .main-nav .nav-icon.menu-toggle {
         flex-direction: row;
         font-size: 1em;
@@ -552,16 +528,13 @@ body.dark-mode .social-icons a:hover {
         margin-right: 5px; 
     }
 
-    /* Mostrar el texto "MENÚ" solo en móvil */
     .main-nav .nav-text-mobile {
         display: inline;
     }
-    /* Ocultar el texto específico de desktop en móvil */
     .main-nav .nav-text-desktop {
         display: none;
     }
 
-    /* Responsive para el footer en móviles */
     .footer-content {
         flex-direction: column;
         align-items: center;
@@ -608,7 +581,7 @@ body.dark-mode .social-icons a:hover {
     }
 
     .side-menu {
-        width: 100%; /* El menú lateral ocupa todo el ancho en móviles muy pequeños */
+        width: 100%; 
     }
 
     .footer-links ul {
@@ -623,7 +596,6 @@ body.dark-mode .social-icons a:hover {
 }
 
 
-/* Estilos para la página de Ayuda */
 .help-main-content {
     background-color: var(--clr-light-bg-primary);
     color: var(--clr-light-text-dark);
@@ -768,7 +740,6 @@ details[open] .faq-question {
     margin-bottom: 10px;
 }
 
-/* Sección de Formulario de Contacto */
 .contact-form-section {
     margin-bottom: 40px;
 }
@@ -852,7 +823,6 @@ body.dark-mode .btn-submit:hover {
     font-weight: bold;
 }
 
-/* Sección de Guías y Tutoriales */
 .guides-section {
     text-align: center;
 }
@@ -921,7 +891,6 @@ body.dark-mode .btn-guide:hover {
     background-color: #e0e61d;
 }
 
-/* Responsive */
 @media (max-width: 768px) {
     .faq-categories {
         justify-content: flex-start;
@@ -929,19 +898,14 @@ body.dark-mode .btn-guide:hover {
     }
 }
 
-
-/* FRAGMENTO CSS: Agregar al final de css/style.css (y otros archivos CSS si no usan style.css) */
-
 #btnVolverArriba {
-    /* Posición: Fijo en la esquina inferior izquierda */
     position: fixed;
     bottom: 20px;
     left: 20px;
-    z-index: 1000; /* Asegura que esté por encima de otros elementos */
+    z-index: 1000; 
 
-    /* Estilo del botón (usando variables de tu :root) */
     background-color: var(--accent-color);
-    color: var(--clr-light-text-dark); /* Color de icono en modo claro */
+    color: var(--clr-light-text-dark); 
     border: none;
     border-radius: 50%;
     width: 50px;
@@ -952,30 +916,26 @@ body.dark-mode .btn-guide:hover {
     cursor: pointer;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 
-    /* Estado inicial: Oculto, con transición suave (suave y limpio) */
     opacity: 0;
     visibility: hidden;
     transform: translateY(10px);
     transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease, background-color var(--transition-speed);
 }
 
-/* Estado 'mostrar' (controlado por JavaScript) */
 #btnVolverArriba.mostrar {
     opacity: 1;
     visibility: visible;
     transform: translateY(0);
 }
 
-/* Efecto hover */
 #btnVolverArriba:hover {
     filter: brightness(1.1);
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
 }
 
-/* Adaptación al Modo Oscuro */
 body.dark-mode #btnVolverArriba {
     background-color: var(--clr-dark-accent);
-    color: var(--clr-dark-bg-primary); /* Mejor contraste en modo oscuro */
+    color: var(--clr-dark-bg-primary);
     box-shadow: 0 0 5px var(--clr-dark-shadow-primary), 0 0 10px var(--clr-dark-accent);
 }
 

@@ -1,9 +1,7 @@
-// js/upload-project.js
 
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
 import { validateProjectUpload } from './valid/upload-valid.js';
 
-// Asegúrate de que estas credenciales sean las correctas de tu proyecto
 const SUPABASE_URL = 'https://fikdyystxmsmwioyyegt.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZpa2R5eXN0eG1zbXdpb3l5ZWd0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTY3NjgxODksImV4cCI6MjA3MjM0NDE4OX0.QAfKSJfUbwT5NhGRiNHoA83JzW7BXT9u15d5oaeAlro';
 
@@ -13,9 +11,9 @@ function showToast(message, type = 'success') {
 
     let background = '';
         if (type === 'success') {
-            background = 'linear-gradient(to right, #ffee00d8, #3e3a00d8)'; // Degradado para éxito
+            background = 'linear-gradient(to right, #ffee00d8, #3e3a00d8)'; 
         } else {
-            background = 'linear-gradient(to right, #e61d16d8, #5d0300d8)'; // Degradado para error
+            background = 'linear-gradient(to right, #e61d16d8, #5d0300d8)'; 
         }
 
 
@@ -31,14 +29,12 @@ function showToast(message, type = 'success') {
 
 document.addEventListener('DOMContentLoaded', async () => {
 
-    // Redirigir si no hay un usuario autenticado
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) {
         window.location.href = 'signin.html';
         return;
     }
 
-    // Referencias a los elementos del DOM
     const addProyectForm = document.getElementById('add-proyect-form');
     const titleInput = document.getElementById('proyect-name');
     const descriptionInput = document.getElementById('proyect-description');
@@ -47,14 +43,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     const fileNameDisplay = document.getElementById('file-name-display');
     const imagePreview = document.getElementById('image-preview');
     
-    // Referencias a los campos opcionales
     const startDateInput = document.getElementById('proyect-start-date');
     const endDateInput = document.getElementById('proyect-end-date');
     const clientInput = document.getElementById('proyect-client');
     const linksInput = document.getElementById('proyect-links');
     const privacyInput = document.getElementById('proyect-privacy');
-
-    // Manejar la previsualización de la imagen
+//previsualizacion de imagen
     proyectImageInput.addEventListener('change', (event) => {
         const file = event.target.files[0];
         if (file) {
@@ -71,11 +65,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     });
 
-    // Manejar el envío del formulario
+    // dnvio de formulario
     addProyectForm.addEventListener('submit', async (e) => {
         e.preventDefault();
 
-        // Limpiar y obtener los valores de los campos
+        // obtener valores de campo
         const title = titleInput.value.trim().replace(/\s+/g, ' ');
         const description = descriptionInput.value.trim().replace(/\s+/g, ' ');
         const category = categoryInput ? categoryInput.value.trim() : null;
@@ -86,7 +80,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         const links = linksInput ? linksInput.value.trim().replace(/\s+/g, ' ') : null;
         const privacy = privacyInput ? (privacyInput.value === 'true') : false;
 
-        // Validar el formulario
         const validationError = validateProjectUpload(title, description, imageFile);
         if (validationError) {
             showToast(validationError, 'error');
@@ -96,21 +89,20 @@ document.addEventListener('DOMContentLoaded', async () => {
         addProyectForm.querySelector('button[type="submit"]').disabled = true;
 
         try {
-            // Generar una ruta única para la imagen
+            // Generar una ruta unica para la imagen
             const filePath = `${user.id}/${Date.now()}-${imageFile.name}`;
 
             // Subir la imagen a Supabase Storage
             const { error: uploadError } = await supabase.storage
                 .from('proyectos_imagenes')
                 .upload(filePath, imageFile, {
-                    upsert: false // No sobrescribir si el archivo ya existe
+                    upsert: false 
                 });
 
             if (uploadError) {
                 throw uploadError;
             }
 
-            // Obtener la URL pública de la imagen
             const { data: publicUrlData } = supabase
                 .storage
                 .from('proyectos_imagenes')
@@ -118,7 +110,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             const imageUrl = publicUrlData.publicUrl;
 
-            // Insertar los datos del proyecto en la tabla 'proyectos'
             const { data: proyectosInsertData, error: proyectosInsertError } = await supabase
                 .from('proyectos')
                 .insert([{
@@ -140,7 +131,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             const projectId = proyectosInsertData[0].id_proyectos;
 
-            // Insertar la URL de la imagen en la tabla 'archivos'
             const { error: archivosInsertError } = await supabase
                 .from('archivos')
                 .insert([
@@ -154,7 +144,6 @@ document.addEventListener('DOMContentLoaded', async () => {
                 throw archivosInsertError;
             }
             
-            // Si todo fue bien
             showToast('Proyecto subido exitosamente!', 'success');
             addProyectForm.reset();
             fileNameDisplay.textContent = 'Ningún archivo seleccionado';
