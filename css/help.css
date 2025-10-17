@@ -723,7 +723,7 @@ body.dark-mode .faq-item:hover {
 .faq-question {
     cursor: pointer;
     font-weight: bold;
-    color: var(--clr-light-accent);
+    color: var(--text-color-dark);
     transition: color var(--transition-speed);
 }
 
@@ -857,7 +857,7 @@ body.dark-mode .guide-card:hover {
 }
 
 .guide-card h3 {
-    color: var(--clr-light-accent);
+    color: var(--text-color-dark);
     margin-bottom: 10px;
     transition: color var(--transition-speed);
 }
@@ -945,4 +945,5 @@ body.dark-mode #btnVolverArriba:hover {
 
 #btnVolverArriba i {
     font-size: 1.2em;
+
 }
