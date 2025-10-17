@@ -1,0 +1,36 @@
+/* css/smooth-reveal.css */
+
+/*
+ * Estilos para el efecto "Smooth Reveal" (aparición suave al hacer scroll).
+ * Utiliza transform y opacity para animaciones fluidas, elegantes y con propósito.
+ */
+
+/* Desplazamiento suave global para toda la página (complemento al JS) */
+html {
+    /* Mejora la experiencia de usuario al navegar a secciones internas */
+    scroll-behavior: smooth;
+}
+
+/* 1. Estado inicial oculto */
+.scroll-reveal.reveal-hidden {
+    opacity: 0;
+    /* Inicio de la microanimación: ligeramente desplazado hacia abajo para un efecto "fade up" */
+    transform: translateY(30px); 
+    /* Transición elegante y natural */
+    transition: opacity 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94), 
+                transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    /* Se usa 'cubic-bezier' para una transición más dinámica y profesional que el 'ease' estándar. */
+}
+
+/* 2. Estado revelado (la clase 'revealed' se añade por JavaScript) */
+.scroll-reveal.revealed {
+    opacity: 1;
+    transform: translateY(0); /* Vuelve a su posición original */
+}
+
+/* 3. Evitar que el efecto aplique a elementos que deben ser visibles inmediatamente (como el header) */
+header .scroll-reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+}

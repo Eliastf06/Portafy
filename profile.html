@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Portafy - Perfil</title>
     <link rel="stylesheet" href="css/profile.css">
+    <link rel="stylesheet" href="css/smooth-reveal.css">
     <link rel="stylesheet" href="css/chatbot.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="icon" href="multimedia/logo.png" type="image/png">
@@ -48,7 +49,7 @@
     </header>
 
     <main class="main-content container profile-page-content" role="main">
-        <section class="user-profile-section" aria-labelledby="profile-name">
+        <section class="user-profile-section scroll-reveal" aria-labelledby="profile-name">
             <div class="profile-header">
                 <div class="profile-photo-lg">
                     <img id="profile-photo" src="multimedia/default-profile.png" alt="Foto de perfil de usuario">
@@ -74,7 +75,7 @@
             </div>
 
             <h2 class="section-title projects-title">PROYECTOS</h2>
-            <div class="projects-grid" id="projects-grid" role="region" aria-label="Grilla de proyectos de usuario">
+            <div class="projects-grid scroll-reveal" id="projects-grid" role="region" aria-label="Grilla de proyectos de usuario">
             </div>
         </section>
     </main>
@@ -186,6 +187,7 @@
             <p>&copy; 2025 Portafy. Todos los derechos reservados.</p>
         </div>
     </footer>
+    <script type="module" src="js/smooth-reveal.js"></script>
     <script type="module" src="js/script.js"></script>
     <script type="module" src="js/acount/profile.js"></script>
     <script src="js/theme.js"></script>

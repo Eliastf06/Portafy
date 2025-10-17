@@ -1,4 +1,3 @@
-
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
 
 const SUPABASE_URL = 'https://fikdyystxmsmwioyyegt.supabase.co';
@@ -62,22 +61,40 @@ document.addEventListener('DOMContentLoaded', async () => {
     const showProjectModal = (project, authorName) => {
         const imageUrl = project.archivos && project.archivos.length > 0 ? project.archivos[0].url : 'https://placehold.co/600x400/000000/white?text=No+Image';
 
+        // Preparación de datos opcionales para evitar que se muestre el texto "No disponible"
+        const descripcion = project.descripcion || 'No disponible';
+        const fechaInicio = project.fecha_inicio;
+        const fechaFinalizacion = project.fecha_finalizacion;
+        const paraQuienSeHizo = project.para_quien_se_hizo;
+        const enlaceReferencia = project.enlaces_referencia;
+        
+        // Renderizado condicional
+        const fechasHtml = (fechaInicio || fechaFinalizacion) 
+            ? `<p><strong>Fechas:</strong> ${fechaInicio || 'No disponible'} / ${fechaFinalizacion || 'No disponible'}</p>`
+            : '';
+            
+        const paraQuienHtml = paraQuienSeHizo
+            ? `<p><strong>Para quién se hizo:</strong> ${paraQuienSeHizo}</p>`
+            : '';
+
+        const enlaceHtml = enlaceReferencia 
+            ? `<p><strong>Enlace de referencia:</strong>
+                <a href="${enlaceReferencia}" target="_blank" class="referencia">${enlaceReferencia}</a>
+               </p>` 
+            : '';
+
         const modalHtml = `
             <div class="modal-overlay">
                 <div class="modal-content">
-                    <button class="modal-close-btn">&times;</button>
+                    <button class="modal-close-btn" aria-label="Cerrar modal">&times;</button>
                     <img src="${imageUrl}" alt="${project.titulo}" class="modal-image">
                     <div class="modal-details">
                         <h2>${project.titulo}</h2>
+                        <p>${descripcion}</p>
                         <p><strong>Autor:</strong> ${authorName}</p>
-                        <p><strong>Descripción:</strong> ${project.descripcion || 'No disponible'}</p>
-                        <p><strong>Fecha de inicio:</strong> ${project.fecha_inicio || 'No disponible'}</p>
-                        <p><strong>Fecha de finalización:</strong> ${project.fecha_finalizacion || 'No disponible'}</p>
-                        <p><strong>Para quién se hizo:</strong> ${project.para_quien_se_hizo || 'No disponible'}</p>
-                        ${project.enlaces_referencia ? `
-                        <p><strong>Enlace de referencia:</strong>
-                            <a href="${project.enlaces_referencia}" target="_blank" class="referencia">${project.enlaces_referencia}</a>
-                        </p>` : ''}
+                        ${fechasHtml}
+                        ${paraQuienHtml}
+                        ${enlaceHtml}
                     </div>
                 </div>
             </div>
@@ -91,12 +108,14 @@ document.addEventListener('DOMContentLoaded', async () => {
         const modalContent = modalContainer.querySelector('.modal-content');
         const modalCloseBtn = modalContainer.querySelector('.modal-close-btn');
 
+        // Microtransición al aparecer
         setTimeout(() => {
             modalOverlay.classList.add('active');
             modalContent.classList.add('active');
         }, 10);
 
         const closeModal = () => {
+            // Microtransición al salir
             modalOverlay.classList.remove('active');
             modalContent.classList.remove('active');
             setTimeout(() => {
@@ -108,6 +127,14 @@ document.addEventListener('DOMContentLoaded', async () => {
         modalOverlay.addEventListener('click', (e) => {
             if (e.target === modalOverlay) {
                 closeModal();
+            }
+        });
+        
+        // Accesibilidad: Cerrar con la tecla ESC
+        document.addEventListener('keydown', function onKeydown(e) {
+            if (e.key === 'Escape') {
+                closeModal();
+                document.removeEventListener('keydown', onKeydown);
             }
         });
     };
@@ -166,6 +193,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const button = document.createElement('button');
         button.className = `follow-btn ${isFollowing ? 'unfollow' : 'follow'}`;
         button.textContent = isFollowing ? 'Dejar de Seguir' : 'Seguir';
+        button.setAttribute('aria-label', isFollowing ? 'Dejar de seguir a este usuario' : 'Seguir a este usuario');
 
         button.addEventListener('click', async () => {
             button.disabled = true;
@@ -178,7 +206,12 @@ document.addEventListener('DOMContentLoaded', async () => {
                         .eq('id_seguimiento', followId);
 
                     if (error) throw error;
-                    showMessage(`Has dejado de seguir a @${usernameToLoad}.`, 'success');
+                    // Uso de Toast (Sistema de toast perfecto)
+                    const toastEvent = new CustomEvent('showToast', {
+                        detail: { message: `Has dejado de seguir a @${usernameToLoad}.`, type: 'success' }
+                    });
+                    document.dispatchEvent(toastEvent);
+                    // showMessage(`Has dejado de seguir a @${usernameToLoad}.`, 'success');
                 } else {//seguir
                     const { error } = await supabase
                         .from('seguidores')
@@ -187,13 +220,23 @@ document.addEventListener('DOMContentLoaded', async () => {
                         ]);
 
                     if (error) throw error;
-                    showMessage(`Ahora sigues a @${usernameToLoad}.`, 'success');
+                    // Uso de Toast (Sistema de toast perfecto)
+                    const toastEvent = new CustomEvent('showToast', {
+                        detail: { message: `Ahora sigues a @${usernameToLoad}.`, type: 'success' }
+                    });
+                    document.dispatchEvent(toastEvent);
+                    // showMessage(`Ahora sigues a @${usernameToLoad}.`, 'success');
                 }
                 await loadFollowData(followedId, followerId);
 
             } catch (error) {
                 console.error('Error al cambiar el estado de seguimiento:', error);
-                showMessage('Error al procesar el seguimiento.', 'error');
+                // Uso de Toast (Sistema de toast perfecto)
+                const toastEvent = new CustomEvent('showToast', {
+                    detail: { message: 'Error al procesar el seguimiento.', type: 'error' }
+                });
+                document.dispatchEvent(toastEvent);
+                // showMessage('Error al procesar el seguimiento.', 'error');
             } finally {
                 button.disabled = false;
             }
@@ -237,18 +280,30 @@ document.addEventListener('DOMContentLoaded', async () => {
                 .eq('nom_usuario', usernameFromUrl);
             
             if (userError || !fetchedUserData || fetchedUserData.length === 0) {
-                showMessage('Usuario no encontrado o error en la carga.', 'error');
+                // Si el nombre de usuario no se encuentra, mostrar un error y salir
+                // Uso de Toast (Sistema de toast perfecto)
+                const toastEvent = new CustomEvent('showToast', {
+                    detail: { message: 'Usuario no encontrado o error en la carga.', type: 'error' }
+                });
+                document.dispatchEvent(toastEvent);
+                // showMessage('Usuario no encontrado o error en la carga.', 'error');
                 return;
             }
             userData = fetchedUserData[0];
 
         } else {
+            // **Inicio de la modificación solicitada**
             if (!currentUserId) {
-                showMessage('Por favor, inicia sesión para ver tu perfil.', 'error');
-                if (editProfileBtn) editProfileBtn.style.display = 'none';
-                if (followButtonContainer) followButtonContainer.innerHTML = '';
-                return;
+                // Si no hay nombre de usuario en URL y no hay usuario logueado
+                // Redirigir a discover.html con una transición fluida.
+                document.body.style.opacity = '0';
+                document.body.style.transition = 'opacity 0.5s ease-out';
+                setTimeout(() => {
+                    window.location.href = 'discover.html';
+                }, 500);
+                return; 
             }
+            // **Fin de la modificación solicitada**
             
             const { data: fetchedUserData, error: userError } = await supabase
                 .from('usuarios')
@@ -257,12 +312,19 @@ document.addEventListener('DOMContentLoaded', async () => {
                 .maybeSingle();
 
             if (userError || !fetchedUserData) {
-                 showMessage('Error al cargar la información de tu cuenta.', 'error');
+                 // Uso de Toast (Sistema de toast perfecto)
+                 const toastEvent = new CustomEvent('showToast', {
+                    detail: { message: 'Error al cargar la información de tu cuenta.', type: 'error' }
+                });
+                document.dispatchEvent(toastEvent);
+                // showMessage('Error al cargar la información de tu cuenta.', 'error');
                  return;
             }
             userData = fetchedUserData;
         }
 
+        // Resto de la lógica de carga del perfil (sin cambios)
+        
         userIdToLoad = userData.id;
         usernameToLoad = userData.nom_usuario;
         isOwnProfile = (currentUserId && currentUserId === userIdToLoad);
@@ -277,7 +339,12 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         if (perfilError) {
             console.error('Error al cargar la información del perfil:', perfilError);
-            showMessage('Error al cargar la información del perfil.', 'error');
+            // Uso de Toast (Sistema de toast perfecto)
+            const toastEvent = new CustomEvent('showToast', {
+                detail: { message: 'Error al cargar la información del perfil.', type: 'error' }
+            });
+            document.dispatchEvent(toastEvent);
+            // showMessage('Error al cargar la información del perfil.', 'error');
             return;
         }
 
@@ -290,9 +357,9 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (perfilData?.red_social || perfilData?.telefono || perfilData?.direccion) {
                 const socialIconClass = perfilData.red_social ? getSocialIconClass(perfilData.red_social) : 'fas fa-link';
                 profileSocials.innerHTML = `
-                    ${perfilData.red_social ? `<p><a href="${perfilData.red_social}" target="_blank"><i class="${socialIconClass} red-social-icon"></i></a></p>` : ''}
-                    ${perfilData.telefono ? `<p><i class="fas fa-phone"></i> ${perfilData.telefono}</p>` : ''}
-                    ${perfilData.direccion ? `<p><i class="fas fa-map-marker-alt"></i> ${perfilData.direccion}</p>` : ''}
+                    ${perfilData.red_social ? `<p><a href="${perfilData.red_social}" target="_blank" aria-label="Red social"><i class="${socialIconClass} red-social-icon" aria-hidden="true"></i></a></p>` : ''}
+                    ${perfilData.telefono ? `<p><i class="fas fa-phone" aria-hidden="true"></i> ${perfilData.telefono}</p>` : ''}
+                    ${perfilData.direccion ? `<p><i class="fas fa-map-marker-alt" aria-hidden="true"></i> ${perfilData.direccion}</p>` : ''}
                 `;
             } else {
                 profileSocials.innerHTML = '';
@@ -322,7 +389,12 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         if (projectsError) {
             console.error('Error al cargar los proyectos:', projectsError);
-            showMessage('Error al cargar los proyectos de este usuario.', 'error');
+            // Uso de Toast (Sistema de toast perfecto)
+            const toastEvent = new CustomEvent('showToast', {
+                detail: { message: 'Error al cargar los proyectos de este usuario.', type: 'error' }
+            });
+            document.dispatchEvent(toastEvent);
+            // showMessage('Error al cargar los proyectos de este usuario.', 'error');
             return;
         }
         
@@ -347,7 +419,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     </div>
                     <div class="project-content">
                         <h3 class="project-title">${project.titulo} ${showEditButton && project.privacidad ? '<i class="fas fa-lock" title="Proyecto privado"></i>' : ''}</h3>
-                        ${showEditButton ? `<div class="project-actions"><a href="edit-project.html?id=${project.id_proyectos}" class="edit-project-btn"><i class="fas fa-edit"></i></a></div>` : ''}
+                        ${showEditButton ? `<div class="project-actions"><a href="edit-project.html?id=${project.id_proyectos}" class="edit-project-btn" aria-label="Editar proyecto"><i class="fas fa-edit"></i></a></div>` : ''}
                     </div>
                 `;
                 projectsGrid.appendChild(projectCard);
@@ -373,6 +445,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     } catch (error) {
         console.error('Error al cargar el perfil:', error);
-        showMessage('Ocurrió un error inesperado al cargar el perfil.', 'error');
+        // Uso de Toast (Sistema de toast perfecto)
+        const toastEvent = new CustomEvent('showToast', {
+            detail: { message: 'Ocurrió un error inesperado al cargar el perfil.', type: 'error' }
+        });
+        document.dispatchEvent(toastEvent);
+        // showMessage('Ocurrió un error inesperado al cargar el perfil.', 'error');
     }
 });

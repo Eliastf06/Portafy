@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Portafy - Ayuda</title>
     <link rel="stylesheet" href="css/help.css">
+    <link rel="stylesheet" href="css/smooth-reveal.css">
     <link rel="stylesheet" href="css/chatbot.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="icon" href="multimedia/logo.png" type="image/png">
@@ -44,7 +45,7 @@
 
 
     <main class="help-main-content">
-        <section class="faq-section">
+        <section class="faq-section scroll-reveal">
             <h2>Preguntas Frecuentes</h2>
             <div class="search-bar-container">
                 <input type="text" id="faq-search" class="search-input" placeholder="Buscar preguntas...">
@@ -114,7 +115,7 @@
             </div>
         </section>
 
-        <section class="contact-form-section">
+        <section class="contact-form-section scroll-reveal">
             <h2>¿No encuentras lo que buscas? Contáctanos</h2>
             <p class="contact-description">Envíanos un mensaje con tu consulta y te responderemos lo antes posible.</p>
             <form id="contactForm" class="contact-form">
@@ -144,7 +145,7 @@
             </form>
         </section>
 
-        <section class="guides-section">
+        <section class="guides-section scroll-reveal">
             <h2>Guías y Tutoriales</h2>
             <div class="guides-grid">
                 <div class="guide-card">
@@ -256,6 +257,7 @@
             <p>&copy; 2025 Portafy. Todos los derechos reservados.</p>
         </div>
     </footer>
+    <script type="module" src="js/smooth-reveal.js"></script>
     <script type="module" src="js/help.js"></script>
     <script src="js/theme.js"></script>
     <script src="js/help.js"></script>

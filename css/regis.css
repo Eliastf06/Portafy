@@ -207,3 +207,175 @@ button[type="submit"]:hover {
     cursor: pointer;
     color: #888;
 }
+
+/* ========================================= */
+/* Estilos Específicos para Campo de Contraseña */
+/* ========================================= */
+
+.password-wrapper {
+    position: relative;
+}
+
+.password-wrapper input[type="password"],
+.password-wrapper input[type="text"] {
+    padding-right: 40px; /* Espacio para el icono */
+    transition: all 0.3s ease-in-out;
+}
+
+.toggle-password {
+    position: absolute;
+    top: 50%;
+    right: 12px;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: var(--color-texto-secundario); /* Usar variable para color secundario */
+    transition: color 0.2s ease-in-out, transform 0.15s ease-out;
+    padding: 5px; /* Área de clic accesible */
+    z-index: 10;
+}
+
+.toggle-password:hover {
+    color: var(--color-primario); /* Color de acento al pasar el cursor */
+    transform: translateY(-50%) scale(1.1);
+}
+
+.toggle-password:focus {
+    outline: 2px solid var(--color-primario);
+    outline-offset: 2px;
+    border-radius: 4px;
+}
+
+/* Indicador de Fortaleza de Contraseña */
+.password-strength {
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.password-strength .bar-container {
+    flex-grow: 1;
+    height: 6px;
+    background-color: var(--color-fondo-claro); /* Fondo sutil para la barra */
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.strength-bar {
+    height: 100%;
+    width: 0%;
+    border-radius: 3px;
+    transition: width 0.4s cubic-bezier(0.25, 0.8, 0.5, 1), background-color 0.4s ease-in-out;
+}
+
+#strength-text {
+    font-size: 0.9em;
+    font-weight: 600;
+    min-width: 50px; /* Asegurar espacio para el texto */
+    text-align: right;
+    color: var(--color-texto-secundario);
+    transition: color 0.4s ease-in-out;
+}
+
+/* Tooltip de Requisitos */
+.password-tooltip {
+    margin-top: 15px;
+    padding: 12px;
+    border-radius: var(--border-radius);
+    background-color: var(--color-fondo-claro); /* Fondo que se integre con el tema */
+    border: 1px solid var(--color-borde);
+    opacity: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: opacity 0.3s ease-in-out, max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.password-field:focus-within .password-tooltip {
+    opacity: 1;
+    max-height: 200px; /* Suficiente altura para que se muestre el contenido */
+}
+
+.password-tooltip .tooltip-title {
+    margin: 0 0 8px 0;
+    font-weight: 700;
+    color: var(--color-texto-primario);
+    border-bottom: 1px solid var(--color-borde);
+    padding-bottom: 5px;
+}
+
+#password-requirements {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+#password-requirements li {
+    display: flex;
+    align-items: center;
+    font-size: 0.9em;
+    color: var(--color-texto-secundario);
+    transition: color 0.3s ease, opacity 0.3s ease, transform 0.3s ease;
+}
+
+#password-requirements li i {
+    margin-right: 8px;
+    font-size: 1.1em;
+    width: 15px; /* Ancho fijo para alineación */
+    text-align: center;
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+
+/* Estilos para requisitos cumplidos (se ocultan suavemente) */
+#password-requirements li.passed {
+    color: var(--color-exito-suave, #58b66e); /* Verde para indicar éxito */
+    opacity: 0.5;
+    text-decoration: line-through;
+    transform: translateX(10px);
+}
+
+#password-requirements li.passed i.fa-times-circle {
+    color: var(--color-exito, #28a745);
+    transform: scale(0); /* Oculta el icono de error */
+}
+
+/* Feedback de color para el input */
+.password-field input:not(:placeholder-shown) {
+    border-color: var(--color-neutro); /* Color neutro si hay texto */
+}
+
+.password-field input.weak {
+    border-color: var(--color-error); /* Rojo para contraseña débil */
+    box-shadow: 0 0 5px rgba(var(--rgb-error), 0.3);
+}
+
+.password-field input.medium {
+    border-color: var(--color-advertencia); /* Amarillo para media */
+    box-shadow: 0 0 5px rgba(var(--rgb-advertencia), 0.3);
+}
+
+.password-field input.strong {
+    border-color: var(--color-exito); /* Verde para fuerte */
+    box-shadow: 0 0 5px rgba(var(--rgb-exito), 0.3);
+}
+
+/* Definición de variables de color (Asegúrate de que existan en style.css) */
+
+:root {
+    --color-primario: #007bff;
+    --color-texto-primario: #333;
+    --color-texto-secundario: #666;
+    --color-fondo-claro: #f5f5f5;
+    --color-borde: #ccc;
+    --color-error: #dc3545;
+    --color-advertencia: #ffc107;
+    --color-exito: #28a745;
+    --color-exito-suave: #58b66e;
+    --rgb-error: 220, 53, 69;
+    --rgb-advertencia: 255, 193, 7;
+    --rgb-exito: 40, 167, 69;
+    --color-neutro: #aaa;
+    --border-radius: 8px;
+}
