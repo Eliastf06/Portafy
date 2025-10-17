@@ -364,7 +364,7 @@ body.dark-mode .projects-carousel-section {
 .carousel-track {
     display: flex;
     width: max-content;
-    animation: scroll-left 30s linear infinite;
+    animation: scroll-left 50s linear infinite;
     gap: 0px; 
 }
 
@@ -668,3 +668,4 @@ body.dark-mode .main-cta-button:hover {
 body.dark-mode .feature-card .icon {
     text-shadow: 0 0 3px var(--clr-dark-accent), 0 0 5px var(--clr-dark-accent);
 }
+
