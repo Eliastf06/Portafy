@@ -887,6 +887,7 @@ body.dark-mode .project-card .project-author {
 }
 
 .editar{
+    display: none;
     font-size: 19px;
     font-weight:200;
     color: var(--accent-color);
@@ -1071,4 +1072,51 @@ body.dark-mode #btnVolverArriba:hover {
         align-items: flex-start;
         gap: 10px;
     }
+}
+
+
+
+
+
+/* Estilos para Drag and Drop de Proyectos */
+.project-card .drag-handle {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    cursor: grab;
+    color: var(--text-color-dark);
+    -webkit-text-stroke: var(--text-color-light) 1.5px;
+    opacity: 0;
+    font-size: 1.7rem;
+    text-shadow: 0 0 5px rgba(0,0,0,0.5);
+    transition: opacity 0.3s ease, color 0.3s ease;
+    padding: 5px;
+    z-index: 10;
+}
+
+body.dark-mode .project-card .drag-handle{
+    color: var(--clr-dark-accent);
+    -webkit-text-stroke: var(--text-color-light) 1px;
+    text-shadow: var(--glow-effect);
+}
+
+
+.project-card:hover .drag-handle {
+    opacity: 0.8;
+}
+
+.project-card .drag-handle:hover {
+    opacity: 1;
+}
+
+.drag-handle:active {
+    cursor: grabbing;
+}
+
+/* Estilo para el elemento fantasma que se muestra mientras arrastras */
+.sortable-ghost {
+    opacity: 0.4;
+    background-color: var(--accent-color-translucent);
+    border: 2px dashed var(--accent-color);
+    border-radius: var(--border-radius);
 }

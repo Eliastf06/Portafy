@@ -1,4 +1,3 @@
-
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
 
 const SUPABASE_URL = 'https://fikdyystxmsmwioyyegt.supabase.co';
@@ -55,15 +54,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const fetchAndRenderCarouselProjects = async () => {
         try {
-            // Obtener los proyectos públicos.
+            // **MODIFICACIÓN**: Obtener solo proyectos públicos donde position sea 1 o 2.
             const { data: projectsData, error: projectsError } = await supabase
                 .from('proyectos')
                 .select(`
                     id,
                     titulo,
+                    position, 
                     archivos(url)
                 `)
-                .eq('privacidad', false);
+                .eq('privacidad', false) // Solo proyectos NO privados
+                .lte('position', 2)     // Solo proyectos con posición <= 2 (1 o 2)
+                .order('position', { ascending: true }); // Opcional: ordenar por posición para visualización
 
             if (projectsError) throw projectsError;
 

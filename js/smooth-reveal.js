@@ -1,10 +1,24 @@
+/**
+ * js/smooth-reveal.js
+ * * Script para implementar el efecto "Smooth Reveal" (aparición suave del contenido)
+ * usando Intersection Observer para un rendimiento óptimo.
+ */
+
 document.addEventListener('DOMContentLoaded', () => {
-    // Usamos la clase 'scroll-reveal'
+
+    // ====================================================================
+    // 1. Smooth Reveal (Aparición suave del contenido) usando Intersection Observer
+    // ====================================================================
+
+    // Elementos a observar. Usamos la clase 'scroll-reveal'
     const revealElements = document.querySelectorAll('.scroll-reveal');
 
     // Opciones del observador
     const observerOptions = {
-        root: null,
+        // La animación se dispara cuando el 10% del elemento es visible.
+        // El rootMargin negativo (-10%) hace que la animación se vea más natural
+        // justo antes de que el elemento entre completamente en la vista.
+        root: null, // viewport
         rootMargin: '0px 0px -10% 0px', 
         threshold: 0.1
     };
@@ -36,7 +50,13 @@ document.addEventListener('DOMContentLoaded', () => {
             element.classList.add('revealed');
         });
     }
-    
+
+    // ====================================================================
+    // 2. Smooth Scroll (Desplazamiento suave para enlaces ancla)
+    // ====================================================================
+    // Nota: La propiedad 'scroll-behavior: smooth' en CSS cubre la mayoría de los casos,
+    // pero este script añade un soporte más robusto, especialmente para la manipulación del historial.
+
     document.querySelectorAll('a[href^="#"]:not([href="#"])').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
             if (this.hash) {
@@ -45,7 +65,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const targetElement = document.querySelector(this.hash);
                 if (targetElement) {
                     targetElement.scrollIntoView({
-                        behavior: 'smooth'
+                        behavior: 'smooth' // Desplazamiento nativo suave
                     });
 
                     // Actualiza la URL para reflejar la posición (sin recarga)
@@ -58,5 +78,4 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     });
-
 });

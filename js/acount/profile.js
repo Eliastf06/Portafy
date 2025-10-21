@@ -5,6 +5,49 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
 
 const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
+// **FUNCIÓN NUEVA**: Inicializa el Drag and Drop
+const initDragAndDrop = (gridElement) => {
+    // Verificar si Sortable está disponible
+    if (typeof Sortable === 'undefined') {
+        console.error('SortableJS no está cargado. Asegúrate de incluir la librería en profile.html');
+        return;
+    }
+
+    new Sortable(gridElement, {
+        animation: 250, // Animación suave
+        handle: '.drag-handle', // Elemento que activa el arrastre
+        ghostClass: 'sortable-ghost', // Clase para el estilo del fantasma
+        onEnd: async (evt) => {
+            const projectCards = Array.from(gridElement.children);
+            
+            // Crear un array de objetos con el ID del proyecto y su nueva posición (índice + 1)
+            const updates = projectCards.map((card, index) => ({
+                id: parseInt(card.dataset.projectId, 10),
+                pos: index + 1, // La posición va de 1 en adelante
+            }));
+
+            // Llamar a la función RPC de Supabase para actualizar todas las posiciones
+            const { error } = await supabase.rpc('update_project_positions', { updates });
+
+            if (error) {
+                console.error('Error al actualizar el orden de los proyectos:', error);
+                const toastEvent = new CustomEvent('showToast', {
+                    detail: { message: 'No se pudo guardar el nuevo orden.', type: 'error' }
+                });
+                document.dispatchEvent(toastEvent);
+                // Si falla, podrías recargar para revertir el orden visual
+                // window.location.reload(); 
+            } else {
+                const toastEvent = new CustomEvent('showToast', {
+                    detail: { message: 'Orden de proyectos actualizado.', type: 'success' }
+                });
+                document.dispatchEvent(toastEvent);
+            }
+        },
+    });
+};
+
+
 document.addEventListener('DOMContentLoaded', async () => {
     const profileMessage = document.getElementById('profile-message');
     const projectsGrid = document.getElementById('projects-grid');
@@ -211,7 +254,6 @@ document.addEventListener('DOMContentLoaded', async () => {
                         detail: { message: `Has dejado de seguir a @${usernameToLoad}.`, type: 'success' }
                     });
                     document.dispatchEvent(toastEvent);
-                    // showMessage(`Has dejado de seguir a @${usernameToLoad}.`, 'success');
                 } else {//seguir
                     const { error } = await supabase
                         .from('seguidores')
@@ -225,7 +267,6 @@ document.addEventListener('DOMContentLoaded', async () => {
                         detail: { message: `Ahora sigues a @${usernameToLoad}.`, type: 'success' }
                     });
                     document.dispatchEvent(toastEvent);
-                    // showMessage(`Ahora sigues a @${usernameToLoad}.`, 'success');
                 }
                 await loadFollowData(followedId, followerId);
 
@@ -236,7 +277,6 @@ document.addEventListener('DOMContentLoaded', async () => {
                     detail: { message: 'Error al procesar el seguimiento.', type: 'error' }
                 });
                 document.dispatchEvent(toastEvent);
-                // showMessage('Error al procesar el seguimiento.', 'error');
             } finally {
                 button.disabled = false;
             }
@@ -286,16 +326,12 @@ document.addEventListener('DOMContentLoaded', async () => {
                     detail: { message: 'Usuario no encontrado o error en la carga.', type: 'error' }
                 });
                 document.dispatchEvent(toastEvent);
-                // showMessage('Usuario no encontrado o error en la carga.', 'error');
                 return;
             }
             userData = fetchedUserData[0];
 
         } else {
-            // **Inicio de la modificación solicitada**
             if (!currentUserId) {
-                // Si no hay nombre de usuario en URL y no hay usuario logueado
-                // Redirigir a discover.html con una transición fluida.
                 document.body.style.opacity = '0';
                 document.body.style.transition = 'opacity 0.5s ease-out';
                 setTimeout(() => {
@@ -303,7 +339,6 @@ document.addEventListener('DOMContentLoaded', async () => {
                 }, 500);
                 return; 
             }
-            // **Fin de la modificación solicitada**
             
             const { data: fetchedUserData, error: userError } = await supabase
                 .from('usuarios')
@@ -317,13 +352,10 @@ document.addEventListener('DOMContentLoaded', async () => {
                     detail: { message: 'Error al cargar la información de tu cuenta.', type: 'error' }
                 });
                 document.dispatchEvent(toastEvent);
-                // showMessage('Error al cargar la información de tu cuenta.', 'error');
                  return;
             }
             userData = fetchedUserData;
         }
-
-        // Resto de la lógica de carga del perfil (sin cambios)
         
         userIdToLoad = userData.id;
         usernameToLoad = userData.nom_usuario;
@@ -344,7 +376,6 @@ document.addEventListener('DOMContentLoaded', async () => {
                 detail: { message: 'Error al cargar la información del perfil.', type: 'error' }
             });
             document.dispatchEvent(toastEvent);
-            // showMessage('Error al cargar la información del perfil.', 'error');
             return;
         }
 
@@ -366,6 +397,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
         }
         
+        // **ACTUALIZACIÓN DE QUERY (PASO 1):** Incluye 'position' y usa .order()
         let query = supabase
             .from('proyectos')
             .select(`
@@ -377,9 +409,11 @@ document.addEventListener('DOMContentLoaded', async () => {
                 para_quien_se_hizo,
                 enlaces_referencia,
                 privacidad,
+                position, 
                 archivos(url)
             `)
-            .eq('id', userIdToLoad);
+            .eq('id', userIdToLoad)
+            .order('position', { ascending: true, nullsFirst: false }); 
 
         if (!isOwnProfile && !isAdmin) {
             query = query.eq('privacidad', false);
@@ -394,7 +428,6 @@ document.addEventListener('DOMContentLoaded', async () => {
                 detail: { message: 'Error al cargar los proyectos de este usuario.', type: 'error' }
             });
             document.dispatchEvent(toastEvent);
-            // showMessage('Error al cargar los proyectos de este usuario.', 'error');
             return;
         }
         
@@ -412,30 +445,42 @@ document.addEventListener('DOMContentLoaded', async () => {
                 const imageUrl = project.archivos.length > 0 ? project.archivos[0].url : 'https://placehold.co/600x400/000000/white?text=No+Image';
                 const projectCard = document.createElement('div');
                 projectCard.className = 'project-card';
-                const showEditButton = isOwnProfile || isAdmin;
+                // **ACTUALIZACIÓN**: Añadir data-attribute para identificar el proyecto (necesario para la actualización de orden)
+                projectCard.setAttribute('data-project-id', project.id_proyectos);
+
+                const showActions = isOwnProfile || isAdmin;
+                
+                // **ACTUALIZACIÓN**: Añadir el drag handle (controlador de arrastre) si el usuario tiene permiso
                 projectCard.innerHTML = `
+                    ${showActions ? '<i class="fas fa-grip-vertical drag-handle" title="Arrastrar para reordenar"></i>' : ''}
                     <div class="project-image-placeholder">
                         <img src="${imageUrl}" alt="${project.titulo}">
                     </div>
                     <div class="project-content">
-                        <h3 class="project-title">${project.titulo} ${showEditButton && project.privacidad ? '<i class="fas fa-lock" title="Proyecto privado"></i>' : ''}</h3>
-                        ${showEditButton ? `<div class="project-actions"><a href="edit-project.html?id=${project.id_proyectos}" class="edit-project-btn" aria-label="Editar proyecto"><i class="fas fa-edit"></i></a></div>` : ''}
+                        <h3 class="project-title">${project.titulo} ${showActions && project.privacidad ? '<i class="fas fa-lock" title="Proyecto privado"></i>' : ''}</h3>
+                        ${showActions ? `<div class="project-actions"><a href="edit-project.html?id=${project.id_proyectos}" class="edit-project-btn" aria-label="Editar proyecto"><i class="fas fa-edit"></i></a></div>` : ''}
                     </div>
                 `;
                 projectsGrid.appendChild(projectCard);
 
                 projectCard.addEventListener('click', (e) => {
-                    if (e.target.closest('.edit-project-btn')) {
+                    // Evitar abrir el modal si se está interactuando con el drag handle o los botones de acción
+                    if (e.target.closest('.edit-project-btn') || e.target.closest('.drag-handle')) {
                         return;
                     }
                     showProjectModal(project, userData?.nombre || 'Desconocido');
                 });
             });
         };
+
         renderProjects(projectsData);
         
-        if (editProfileBtn) {
-             
+        // **ACTUALIZACIÓN**: Inicializar el drag and drop si el usuario tiene permiso
+        if (isOwnProfile || isAdmin) {
+            initDragAndDrop(projectsGrid);
+        }
+        
+        if (editProfileBtn) { 
              if (isOwnProfile || isAdmin) {
                 editProfileBtn.style.display = 'block';
                 editProfileBtn.href = `edit-profile.html?user_id=${userIdToLoad}`;
@@ -445,14 +490,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     } catch (error) {
         console.error('Error al cargar el perfil:', error);
-        // Uso de Toast (Sistema de toast perfecto)
         const toastEvent = new CustomEvent('showToast', {
             detail: { message: 'Ocurrió un error inesperado al cargar el perfil.', type: 'error' }
         });
         document.dispatchEvent(toastEvent);
-        // showMessage('Ocurrió un error inesperado al cargar el perfil.', 'error');
     }
-
 });
-
-
