@@ -26,6 +26,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             profileMessage.style.display = 'block';
         }
     };
+
+    editProfileBtn.style.display = 'none';
     
     const getSocialIconClass = (url) => {
         const urlLower = url.toLowerCase();
@@ -452,4 +454,5 @@ document.addEventListener('DOMContentLoaded', async () => {
         document.dispatchEvent(toastEvent);
         // showMessage('Ocurrió un error inesperado al cargar el perfil.', 'error');
     }
+
 });
