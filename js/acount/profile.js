@@ -13,8 +13,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     const followersCountContainer = document.getElementById('followers-count-container');
     const followersCountSpan = document.getElementById('followers-count');
     
-    editProfileBtn.style.display = 'none';
-    
     const profilePhoto = document.getElementById('profile-photo');
     const profileName = document.getElementById('profile-name');
     const profileOccupation = document.getElementById('profile-occupation');
@@ -456,4 +454,5 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
 });
+
 
