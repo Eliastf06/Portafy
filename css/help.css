@@ -615,7 +615,7 @@ body.dark-mode .help-main-content {
 
 .help-main-content h2 {
     text-align: center;
-    color: var(--clr-light-accent);
+    color: var(--clr-light-text-dark);
     margin-bottom: 20px;
 }
 

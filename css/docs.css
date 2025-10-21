@@ -30,12 +30,20 @@
     transition: background-color var(--transition-speed), box-shadow var(--transition-speed);
 }
 
-.docs-item h2 {
+
+.docs-item h2{
     font-size: 1.8em;
-    color: var(--accent-color);
+    color: var(--text-color-dark);
     margin-bottom: 20px;
+    font-weight: bold;
     text-transform: uppercase;
     letter-spacing: 1px;
+    transition: color var(--transition-speed);
+}
+
+body.dark-mode .docs-item h2 {
+    color: var(--neon-yellow);
+    text-shadow: var(--glow-effect);
 }
 
 .docs-item h3 {
@@ -43,6 +51,10 @@
     color: var(--text-color-dark);
     margin-bottom: 15px;
     text-transform: uppercase;
+}
+
+body.dark-mode .docs-item h3 {
+    color: var(--clr-dark-accent);
 }
 
 .docs-item p,
@@ -107,9 +119,13 @@
 
 .docs-item dt {
     font-weight: bold;
-    color: var(--accent-color);
+    color: var(--text-color-dark);
     font-size: 1.2em;
     text-transform: uppercase;
+}
+
+body.dark-mode .docs-item dt {
+    color: var(--clr-dark-accent);
 }
 
 .docs-item dd {

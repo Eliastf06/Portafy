@@ -135,10 +135,13 @@ button[type="submit"]:hover {
 }
 
 .links a {
-    color: var(--accent-color);
+    color: var(--clr-light-text-dark);
     text-decoration: none;
     margin: 0 8px;
     transition: color var(--transition-speed);
+}
+body.dark-mode .links a {
+    color: var(--clr-dark-accent);
 }
 
 .links a:hover {
