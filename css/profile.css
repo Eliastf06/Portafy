@@ -569,13 +569,6 @@ body.dark-mode .social-icons a:hover {
     }
 
     
-    .main-nav .nav-icon .nav-text-desktop {
-        display: block;
-    }
-    .main-nav .nav-icon .nav-text-mobile {
-        display: none;
-    }
-    
     .header-content {
         justify-content: space-between;
         gap: 20px; 
@@ -585,65 +578,9 @@ body.dark-mode .social-icons a:hover {
         margin-right: auto; 
     }
 
-    .main-nav {
-        margin-left: auto; 
-    }
 }
 
 @media (max-width: 768px) {
-    .header-content {
-        flex-wrap: nowrap;
-        justify-content: space-between;
-        align-items: center;
-        gap: 10px;
-        padding: 10px 15px;
-    }
-
-    .theme-toggle {
-        font-size: 1.5em;
-        margin-right: 0; 
-        order: 1; 
-        flex-shrink: 0; 
-    }
-
-
-    .main-nav {
-        order: 3; 
-        margin-left: 0; 
-        flex-shrink: 0; 
-    }
-
-    .main-nav ul {
-        gap: 0; 
-
-    }
-
-    
-    .main-nav ul li:nth-child(1),
-    .main-nav ul li:nth-child(2),
-    .main-nav ul li:nth-child(3) {
-        display: none;
-    }
-
-    .main-nav .nav-icon.menu-toggle {
-        flex-direction: row;
-        font-size: 1em; 
-        padding: 5px 10px;
-        border-radius: 5px;
-        background-color: transparent;
-    }
-    .main-nav .nav-icon.menu-toggle i {
-        font-size: 1.5em; 
-        margin-bottom: 0; 
-        margin-right: 5px; 
-    }
-
-    .main-nav .nav-text-mobile {
-        display: inline;
-    }
-    .main-nav .nav-text-desktop {
-        display: none;
-    }
 
     /* Otros ajustes para móviles */
     .profile-header {

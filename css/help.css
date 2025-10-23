@@ -472,15 +472,6 @@ body.dark-mode .social-icons a:hover {
         padding: 10px 15px;
     }
 
-    .theme-toggle {
-        font-size: 1.5em;
-        margin-right: 0; 
-        order: 1; 
-        flex-shrink: 0;
-    }
-    .theme-toggle span {
-        display: none;
-    }
     .app-logo-link {
         display: none;
     }
@@ -494,10 +485,6 @@ body.dark-mode .social-icons a:hover {
         width: 100%;
         padding: 8px 10px 8px 35px;
         font-size: 0.9em;
-    }
-    .search-icon {
-        left: 10px;
-        font-size: 1.2em;
     }
 
     .main-nav {
@@ -946,4 +933,57 @@ body.dark-mode #btnVolverArriba:hover {
 #btnVolverArriba i {
     font-size: 1.2em;
 
+}
+
+
+.app-logo-link {
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 1.2em;
+    color: var(--text-color-dark);
+    margin-left: 8px;
+    transition: color var(--transition-speed);
+}
+.app-logo-link:hover {
+    color: var(--accent-color);
+}
+
+.main-nav-help ul {
+    display: flex;
+    gap: 20px;
+}
+
+.main-nav-help .nav-icon {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Asegura el centrado horizontal */
+    text-align: center; /* Asegura que el texto dentro del span esté centrado */
+    font-size: 0.8em;
+    color: var(--text-color-dark);
+    transition: color var(--transition-speed);
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+.main-nav-help .nav-icon i {
+    font-size: 1.5em;
+    margin-bottom: 3px;
+    transition: color var(--transition-speed);
+}
+
+body.dark-mode .main-nav-help .nav-icon i {
+    filter: drop-shadow(0 0 3px var(--neon-blue)) drop-shadow(0 0 6px var(--neon-blue));
+    color: var(--neon-blue);
+}
+
+.main-nav-help .nav-icon:hover {
+    color: var(--accent-color);
+}
+.main-nav-help .nav-icon:hover i {
+    color: var(--accent-color);
+    filter: none;
+}
+
+.main-nav-help .nav-text-desktop {
+    display: block; 
 }

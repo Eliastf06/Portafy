@@ -101,7 +101,7 @@ body.dark-mode .main-header {
     align-items: center;
 }
 
-.main-nav ul {
+.main-nav-index ul {
     list-style: none;
     display: flex;
     gap: 20px;
@@ -109,25 +109,25 @@ body.dark-mode .main-header {
     padding: 0;
 }
 
-.main-nav a {
+.main-nav-index a {
     text-decoration: none;
     font-weight: 500;
     transition: color var(--transition-speed), transform var(--transition-speed);
 }
 
-.main-nav .cta-link {
+.main-nav-index .cta-link {
     color: var(--clr-light-text-dark);
 }
 
-.main-nav .cta-link:hover {
+.main-nav-index .cta-link:hover {
     color: var(--clr-light-accent);
 }
 
-body.dark-mode .main-nav .cta-link {
+body.dark-mode .main-nav-index .cta-link {
     color: var(--clr-dark-text-dark);
 }
 
-body.dark-mode .main-nav .cta-link:hover {
+body.dark-mode .main-nav-index .cta-link:hover {
     color: var(--clr-dark-accent);
 }
 
@@ -522,19 +522,22 @@ body.dark-mode .footer-bottom p {
 }
 
 @media (max-width: 992px) {
-    .main-nav ul {
+    .main-nav-index ul {
         gap: 15px;
     }
 }
 
 @media (max-width: 768px) {
+    .nav-button{
+        display:none;
+    }
     .header-content {
         flex-direction: column;
         text-align: center;
         gap: 20px;
     }
 
-    .main-nav ul {
+    .main-nav-index ul {
         justify-content: center;
         gap: 15px;
     }
@@ -556,6 +559,51 @@ body.dark-mode .footer-bottom p {
     }
 }
 
+@media (min-width: 769px) {
+    .main-nav-index .nav-icon .nav-text-desktop {
+        display: block;
+    }
+    .main-nav-index .nav-icon .nav-text-mobile {
+        display: none;
+    }
+}
+
+@media (max-width: 768px) {
+    .main-nav-index {
+        order: 3;
+        margin-left: 0;
+        flex-shrink: 0;
+    }
+
+    .main-nav-index ul {
+        gap: 0; 
+    }
+
+    .main-nav-index ul li:nth-child(2),
+    .main-nav-index ul li:nth-child(3) {
+        display: none;
+    }
+
+    .main-nav-index .nav-icon.menu-toggle {
+        flex-direction: row;
+        font-size: 1em;
+        padding: 5px 10px;
+        border-radius: 5px;
+        background-color: transparent;
+    }
+    .main-nav-index .nav-icon.menu-toggle i {
+        font-size: 1.5em; 
+        margin-bottom: 0; 
+        margin-right: 5px; 
+    }
+
+    .main-nav-index .nav-text-mobile {
+        display: inline;
+    }
+    .main-nav-index .nav-text-desktop {
+        display: none;
+    }
+}
 
 .main-cta-button {
     display: inline-block;

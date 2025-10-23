@@ -180,9 +180,58 @@ body.dark-mode .docs-item dt {
     transform: translateX(5px); 
 }
 
-@media (max-width: 768px) {
-    .requirement-item, .tech-stack > div {
-        flex: 1 1 100%;
-    }
-    
+.app-logo-link {
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 1.2em;
+    color: var(--text-color-dark);
+    margin-left: 8px;
+    transition: color var(--transition-speed);
 }
+.app-logo-link:hover {
+    color: var(--accent-color);
+}
+
+
+.main-nav-docs ul {
+    display: flex;
+    gap: 20px;
+}
+
+.main-nav-docs .nav-icon {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Asegura el centrado horizontal */
+    text-align: center; /* Asegura que el texto dentro del span esté centrado */
+    font-size: 0.8em;
+    color: var(--text-color-dark);
+    transition: color var(--transition-speed);
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+.main-nav-docs .nav-icon i {
+    font-size: 1.5em;
+    margin-bottom: 3px;
+    transition: color var(--transition-speed);
+}
+
+body.dark-mode .main-nav-docs .nav-icon i {
+    filter: drop-shadow(0 0 3px var(--neon-blue)) drop-shadow(0 0 6px var(--neon-blue));
+    color: var(--neon-blue);
+}
+
+.main-nav-docs .nav-icon:hover {
+    color: var(--accent-color);
+}
+.main-nav-docs .nav-icon:hover i {
+    color: var(--accent-color);
+    filter: none;
+}
+
+.main-nav-docs .nav-text-desktop {
+    display: block; 
+}
+
+
+

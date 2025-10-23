@@ -265,7 +265,7 @@ body.dark-mode .main-nav .nav-icon i {
 
 
 body.dark-mode .section-title {
-    color: var(--neon-yellow);
+    color: var(--neon-yellow); 
     text-shadow: var(--glow-effect);
 }
 
@@ -598,10 +598,10 @@ body.dark-mode .social-icons a:hover {
         max-width: 600px;
     }
 
-    .main-nav .nav-icon .nav-text-desktop {
+    .main-nav .nav-icon-disc .nav-text-desktop {
         display: block;
     }
-    .main-nav .nav-icon .nav-text-mobile {
+    .main-nav .nav-icon-disc .nav-text-mobile {
         display: none;
     }
     
@@ -610,7 +610,7 @@ body.dark-mode .social-icons a:hover {
         gap: 20px;
     }
     
-    .theme-toggle {
+    .theme-toggle-disc {
         margin-right: auto;
     }
 
@@ -629,14 +629,14 @@ body.dark-mode .social-icons a:hover {
         padding: 10px 15px;
     }
 
-    .theme-toggle {
+    .theme-toggle-disc {
         font-size: 1.5em;
         margin-right: 0; 
         order: 1; 
         flex-shrink: 0;
     }
     /* Ocultar el texto "Portafy" en móviles para dejar más espacio */
-    .theme-toggle span {
+    .theme-toggle-disc span {
         display: none;
     }
     /* Muestra el texto "Portafy" en el link separado del theme-toggle */
@@ -675,14 +675,14 @@ body.dark-mode .social-icons a:hover {
         display: none;
     }
 
-    .main-nav .nav-icon.menu-toggle {
+    .main-nav .nav-icon-disc.menu-toggle {
         flex-direction: row;
         font-size: 1em;
         padding: 5px 10px;
         border-radius: 5px;
         background-color: transparent;
     }
-    .main-nav .nav-icon.menu-toggle i {
+    .main-nav .nav-icon-disc.menu-toggle i {
         font-size: 1.5em; 
         margin-bottom: 0; 
         margin-right: 5px; 
