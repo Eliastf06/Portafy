@@ -404,6 +404,7 @@ body.dark-mode .projects-carousel-section {
 }
 
 body.dark-mode .project-card {
+    transition: 0.15s;
     background-color: transparent;
 }
 
@@ -906,4 +907,5 @@ body.dark-mode .menu-toggle i {
     filter: drop-shadow(0 0 5px var(--neon-yellow)) drop-shadow(0 0 10px var(--neon-yellow));
     color: var(--neon-yellow);
 }
+
 
