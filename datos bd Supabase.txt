@@ -1,6 +1,5 @@
 Quiero q uses de referencia los archivos q te pase (esos archivos funcionan bien y estan relacionados con supabase) para hacer q el registro/inicio de sesión sea funcional, tambien la carga de un proyecto nuevo, teniendo en cuenta que la base de datos esta alojada en Supabase. El codigo que se encargara de que el registro/inicio de sesión funcione estara en js/users.js
 
-ten en cuenta que el formulario de login esta en todos los archivos html, ya que es un modal, lo mismo con el de subir un nuevo proyecto, estos ya tienen implementada su funcion de modales y esta en un asrchivo que se encarga de los modales, vos solo tenes hacer q funcione con la base de datos
 Te dejo los datos que podrias necesitar.
 NO CAMBIES NADA, SOLO HAZ QUE LOS FORMULARIOS FUNCIONEN
 
@@ -23,7 +22,7 @@ fecha_finalizacion date
 para_quien_se_hizo text
 enlaces_referencia text
 privacidad bool
-nom_usuario[FK] text
+id[FK] uuid
 
 archivos:
 id_archivo[PK] int4
@@ -108,10 +107,10 @@ nombre completo: este campo no debe contener espacios al princio ni al final, ta
 email: este campo debe tener un dominio valido, no mas de un "@", el correo no pueden ser solo numeros, no debe contener espacios ni tampoco los siguientes simbolos/caracteres: '":;,<>/\(){}[]`´¬|°\\?¿¡!=+*~^#$%&¨
 contraseña: este campo no debe contener espacios ni tampoco los siguientes simbolos/caracteres: '":;,<>/\()@{}[]`´¬|°\\?¿¡=*~^%¨
 
-subir proyecto
+subir proyecto:
 titulo del proyecto: este campo no debe contener espacios al princio ni al final, tampoco debe tener mas de un espacio entre cada palabra, este campo solo puede contener letras (ya sean mayusculas o minisculas) y numeros, no debe aceptarse nada q no sean letras o números.
 descripción: este campo no debe contener espacios al princio ni al final, tampoco debe tener mas de un espacio entre cada palabra, este campo solo puede contener letras (ya sean mayusculas o minisculas), numeros o los siguientes simbolos/caracteres: "=,.:°, no debe aceptarse nada más.
-archivos del proyecto: solo pueden aceptarse archivos .png o .jpg
+archivos del proyecto: solo pueden aceptarse archivos .png, .jpg, .webp, .jfif, .jpeg, .svg, .tiff, .bmp, .heic/heif, .gif o .raw
 
 barra de busqueda: este campo no debe contener espacios al princio ni al final, tampoco debe tener mas de un espacio entre cada palabra, este campo solo puede contener letras (ya sean mayusculas o minisculas) y numeros, no debe aceptarse nada q no sean letras o números.
 
@@ -121,12 +120,12 @@ red soscial: este campo no debe contener espacios y debe ser una url aceptable, 
 telefono: este campo no debe contener espacios, este campo solo puede contener números, no debe aceptarse nada q no sean números.
 dirección: este campo no debe contener espacios al princio ni al final, tampoco debe tener mas de un espacio entre cada palabra, este campo solo puede contener letras (ya sean mayusculas o minisculas), numeros o los siguientes simbolos/caracteres: ",.:°, no debe aceptarse nada más.
 experiencia: este campo no debe contener espacios al princio ni al final, tampoco debe tener mas de un espacio entre cada palabra, este campo solo puede contener letras (ya sean mayusculas o minisculas), numeros o los siguientes simbolos/caracteres: ",.:°, no debe aceptarse nada más.
-foto de perfil: solo pueden aceptarse archivos .png o .jpg
+foto de perfil: solo pueden aceptarse archivos .png, .jpg, .webp, .jfif, .jpeg, .svg, .tiff, .bmp, .heic/heif, .gif o .raw
 
 editar proyecto:
 titulo: este campo no debe contener espacios al princio ni al final, tampoco debe tener mas de un espacio entre cada palabra, este campo solo puede contener letras (ya sean mayusculas o minisculas) y numeros, no debe aceptarse nada q no sean letras o números.
 descripción: este campo no debe contener espacios al princio ni al final, tampoco debe tener mas de un espacio entre cada palabra, este campo solo puede contener letras (ya sean mayusculas o minisculas), numeros o los siguientes simbolos/caracteres: "=,.:°, no debe aceptarse nada más.
-imagen del proyecto: solo pueden aceptarse archivos .png o .jpg
+imagen del proyecto: solo pueden aceptarse archivos .png, .jpg, .webp, .jfif, .jpeg, .svg, .tiff, .bmp, .heic/heif, .gif o .raw
 fecha de inicio: no puede ser una fecha antes del año 1980 ni tampoco puede ser una fecha despues de la fecha actual
 fecha de finalización: no puede ser una fecha antes del año 1980 ni tampoco puede ser una fecha despues de la fecha actual
 para quien se realizo: este campo no debe contener espacios al princio ni al final, tampoco debe tener mas de un espacio entre cada palabra, este campo solo puede contener letras, ya sean mayusculas o minisculas, no debe aceptarse nada q no sean letras.
