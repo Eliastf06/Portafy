@@ -458,7 +458,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     </div>
                     <div class="project-content">
                         <h3 class="project-title">${project.titulo} ${showActions && project.privacidad ? '<i class="fas fa-lock" title="Proyecto privado"></i>' : ''}</h3>
-                        ${showActions ? `<div class="project-actions"><a href="edit-project.html?id=${project.id_proyectos}" class="edit-project-btn" aria-label="Editar proyecto"><i class="fas fa-edit"></i></a></div>` : ''}
+                        ${showActions ? `<div class="project-actions"><a href="edit-project.html?id=${project.id_proyectos}" class="edit-project-btn" aria-label="Editar proyecto"><i class="fas fa-pencil-alt"></i></a></div>` : ''}
                     </div>
                 `;
                 projectsGrid.appendChild(projectCard);
