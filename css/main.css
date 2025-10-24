@@ -1,4 +1,3 @@
-
 :root {
     --clr-light-bg-primary: #ffffff;
     --clr-light-bg-secondary: #f0f0f0;
@@ -22,7 +21,8 @@
     --bg-gradient-light: linear-gradient(180deg, var(--clr-light-bg-primary), var(--clr-light-bg-secondary));
     --bg-gradient-dark: linear-gradient(180deg, var(--clr-dark-bg-primary), var(--clr-dark-bg-secondary));
 
-    --glow-effect: 0 0 5px var(--clr-dark-shadow-primary), 0 0 10px var(--clr-dark-shadow-secondary);
+    --glow-effect: 0 0 5px var(--neon-yellow), 0 0 10px var(--neon-yellow), 0 0 20px var(--neon-yellow);
+    --glow-effect-two: 0 0 5px var(--neon-yellow-two), 0 0 10px var(--neon-yellow-two), 0 0 20px var(--neon-yellow-two);
 }
 
 body {
@@ -98,6 +98,11 @@ body.dark-mode .main-header {
 .header-content {
     display: flex;
     justify-content: space-between;
+    align-items: center;
+}
+
+.header-left-group {
+    display: flex;
     align-items: center;
 }
 
@@ -555,25 +560,70 @@ body.dark-mode .footer-bottom p {
     }
 }
 
+/* Modificaciones para dispositivos móviles (Menos de 768px) */
 @media (max-width: 768px) {
+    
     .nav-button{
         display:none;
     }
+    
     .header-content {
-        flex-direction: column;
-        text-align: center;
-        gap: 20px;
+        /* Permite que los elementos se posicionen horizontalmente de forma predeterminada */
+        flex-direction: row; 
+        justify-content: space-between; /* Distribuye el espacio entre el grupo izquierdo y la navegación */
+        align-items: center;
+        gap: 0; /* Elimina el gap global de 20px para el header-content */
     }
 
+    .header-left-group {
+        /* Asegura que el theme-toggle y el app-logo-link estén juntos a la izquierda */
+        display: flex;
+        align-items: center;
+    }
+
+    /* Oculta los elementos de navegación de escritorio, excepto el toggle-menu */
     .main-nav-index ul {
-        justify-content: center;
-        gap: 15px;
+        justify-content: flex-end; /* Alinea los elementos de la lista a la derecha */
+        gap: 0; 
     }
 
-    .who-content {
-        flex-direction: column;
+    .main-nav-index ul li:nth-child(1),
+    .main-nav-index ul li:nth-child(2),
+    .main-nav-index ul li:nth-child(3) {
+        display: none; /* Oculta los enlaces de escritorio */
     }
 
+    /* Estilos para el botón del menú hamburguesa */
+    .main-nav-index .nav-icon.menu-toggle {
+        display: flex; /* Asegura que el botón de menú sea visible */
+        flex-direction: row;
+        font-size: 1em;
+        padding: 5px 10px;
+        border-radius: 5px;
+        background-color: transparent;
+        color: var(--clr-light-text-dark); /* Color por defecto */
+    }
+
+    body.dark-mode .main-nav-index .nav-icon.menu-toggle {
+        color: var(--clr-dark-text-dark); /* Color en modo oscuro */
+    }
+
+    .main-nav-index .nav-icon.menu-toggle i {
+        font-size: 1.5em; 
+        margin-bottom: 0; 
+        margin-right: 0; /* No necesita margen a la derecha si es el único icono */
+    }
+    
+    /* Oculta los textos de navegación de escritorio y muestra los de móvil si se usan */
+    .main-nav-index .nav-text-mobile {
+        display: inline;
+    }
+    .main-nav-index .nav-text-desktop {
+        display: none;
+    }
+
+
+    /* Ajuste para el footer en móvil */
     .footer-content {
         text-align: center;
         flex-direction: column;
@@ -587,6 +637,7 @@ body.dark-mode .footer-bottom p {
     }
 }
 
+
 @media (min-width: 769px) {
     .main-nav-index .nav-icon .nav-text-desktop {
         display: block;
@@ -594,70 +645,25 @@ body.dark-mode .footer-bottom p {
     .main-nav-index .nav-icon .nav-text-mobile {
         display: none;
     }
-}
-
-@media (max-width: 768px) {
-    .main-nav-index {
-        order: 3;
-        margin-left: 0;
-        flex-shrink: 0;
-    }
-
-    .main-nav-index ul {
-        gap: 0; 
-    }
-
-    .main-nav-index ul li:nth-child(2),
-    .main-nav-index ul li:nth-child(3) {
-        display: none;
-    }
-
     .main-nav-index .nav-icon.menu-toggle {
-        flex-direction: row;
-        font-size: 1em;
-        padding: 5px 10px;
-        border-radius: 5px;
-        background-color: transparent;
-    }
-    .main-nav-index .nav-icon.menu-toggle i {
-        font-size: 1.5em; 
-        margin-bottom: 0; 
-        margin-right: 5px; 
-    }
-
-    .main-nav-index .nav-text-mobile {
-        display: inline;
-    }
-    .main-nav-index .nav-text-desktop {
-        display: none;
+        display: none; /* Ocultar el botón del menú en escritorio */
     }
 }
+
+
+/* Estilos de Botones y Tarjetas (Microinteracciones y Glow) */
 
 .main-cta-button {
-    display: inline-block;
-    background-color: var(--clr-light-accent);
-    color: var(--clr-light-text-dark);
-    font-weight: bold;
-    padding: 15px 30px;
-    border-radius: 30px;
-    text-decoration: none;
-    font-size: 1.1em;
     transition: transform var(--transition-fast), background-color var(--transition-speed), box-shadow var(--transition-speed);
-}
-
-.main-cta-button:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    
 }
 
 body.dark-mode .main-cta-button {
-    background-color: var(--clr-dark-accent);
-    color: var(--clr-dark-bg-primary);
-    box-shadow: var(--glow-effect);
+    box-shadow: 0 0 3px var(--clr-dark-accent), 0 0 8px var(--clr-dark-accent), 0 0 15px var(--clr-dark-accent);
 }
 
 body.dark-mode .main-cta-button:hover {
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2), var(--glow-effect);
+    box-shadow: 0 0 5px var(--clr-dark-accent), 0 0 15px var(--clr-dark-accent), 0 0 30px var(--clr-dark-accent);
 }
 
 
@@ -676,6 +682,14 @@ body.dark-mode .feature-card:hover {
 }
 
 .feature-card .icon {
+    transition: color var(--transition-speed), text-shadow var(--transition-speed);
+}
+
+body.dark-mode .feature-card .icon {
+    text-shadow: 0 0 3px var(--clr-dark-accent), 0 0 5px var(--clr-dark-accent);
+}
+
+.feature-card .icon {
     font-size: 3em;
     color: var(--clr-light-accent);
     margin-bottom: 20px;
@@ -684,7 +698,7 @@ body.dark-mode .feature-card:hover {
 
 body.dark-mode .feature-card .icon {
     color: var(--clr-dark-accent);
-    text-shadow: var(--glow-effect);
+    text-shadow: var(--glow-effect-two);
 }
 
 
@@ -723,41 +737,13 @@ body.dark-mode .hero-text h1 {
 
 
 
-.main-cta-button {
-    transition: transform var(--transition-fast), background-color var(--transition-speed), box-shadow var(--transition-speed);
-    
-}
-
-body.dark-mode .main-cta-button {
-    box-shadow: 0 0 3px var(--clr-dark-accent), 0 0 8px var(--clr-dark-accent), 0 0 15px var(--clr-dark-accent);
-}
-
-body.dark-mode .main-cta-button:hover {
-    box-shadow: 0 0 5px var(--clr-dark-accent), 0 0 15px var(--clr-dark-accent), 0 0 30px var(--clr-dark-accent);
-}
-
-
-.feature-card .icon {
-    transition: color var(--transition-speed), text-shadow var(--transition-speed);
-}
-
-body.dark-mode .feature-card .icon {
-    text-shadow: 0 0 3px var(--clr-dark-accent), 0 0 5px var(--clr-dark-accent);
-}
-
-
-
-
-
-
-
-
-
-/* MENU */
+/* MENU LATERAL */
 .menu-toggle{
     display: none;
 }
 
+
+/* Usando variables CSS que no están definidas en :root, se asume que se usan las equivalentes */
 .menu-overlay {
     position: fixed;
     top: 0;
@@ -770,7 +756,7 @@ body.dark-mode .feature-card .icon {
     visibility: hidden;
     transition: opacity var(--transition-speed), visibility var(--transition-speed);
     display: flex;
-    justify-content: flex-end; /* Alinea el menú a la derecha */
+    justify-content: flex-end;
 }
 
 .menu-overlay.active {
@@ -780,15 +766,21 @@ body.dark-mode .feature-card .icon {
 
 .side-menu {
     width: 300px;
-    background-color: var(--bg-secondary);
+    background-color: var(--clr-light-bg-secondary); /* Usando secundaria como fondo de menú */
     padding: 25px;
-    box-shadow: -5px 0 15px var(--shadow-primary);
+    box-shadow: -5px 0 15px var(--clr-light-shadow-primary); 
     transform: translateX(100%);
-    transition: transform var(--transition-speed), background-color var(--transition-speed);
+    transition: transform var(--transition-speed), background-color var(--transition-speed), box-shadow var(--transition-speed);
     height: 100%;
     overflow-y: auto;
     position: relative;
 }
+
+body.dark-mode .side-menu {
+    background-color: var(--clr-dark-bg-secondary);
+    box-shadow: -5px 0 15px var(--clr-dark-shadow-primary);
+}
+
 
 .menu-overlay.active .side-menu {
     transform: translateX(0);
@@ -799,13 +791,22 @@ body.dark-mode .feature-card .icon {
     top: 15px;
     left: 15px;
     font-size: 28px;
-    color: var(--text-color-light);
+    color: var(--clr-light-text-light); 
     cursor: pointer;
     transition: color var(--transition-speed);
+    border: none;
+    background: none;
 }
 
 .menu-close-btn:hover {
-    color: var(--text-color-dark);
+    color: var(--clr-light-text-dark);
+}
+body.dark-mode .menu-close-btn {
+    color: var(--clr-dark-text-light);
+}
+
+body.dark-mode .menu-close-btn:hover {
+    color: var(--clr-dark-text-dark);
 }
 
 .menu-header {
@@ -838,9 +839,12 @@ body.dark-mode .profile-photo-circle {
 }
 
 .menu-header h3 {
-    color: var(--text-color-dark);
+    color: var(--clr-light-text-dark);
     font-size: 1.4em;
     transition: color var(--transition-speed);
+}
+body.dark-mode .menu-header h3 {
+    color: var(--clr-dark-text-dark);
 }
 
 
@@ -851,76 +855,45 @@ body.dark-mode .profile-photo-circle {
 .menu-links li a {
     display: block;
     padding: 10px 15px;
-    color: var(--text-color-dark);
+    color: var(--clr-light-text-dark); 
     font-size: 1.1em;
-    transition: background-color var(--transition-speed), color var(--transition-speed);
+    transition: background-color var(--transition-speed), color var(--transition-speed), text-shadow var(--transition-speed);
     border-radius: 8px;
 }
 
-body.dark-mode .menu-links li a {
-    color: var(--text-color-light);
+.menu-links li a:hover {
+    background-color: var(--clr-light-bg-primary);
+    box-shadow: 0 0 5px var(--clr-light-shadow-primary);
 }
+
+body.dark-mode .menu-links li a {
+    color: var(--clr-dark-text-light);
+}
+
 body.dark-mode .menu-links li a:hover {
-    background-color: var(--bg-primary);
-    color: var(--neon-blue);
-    text-shadow: 0 0 5px var(--neon-blue);
+    background-color: var(--clr-dark-bg-primary); /* Usando primaria para contraste en hover */
+    color: var(--clr-dark-accent);
+    text-shadow: 0 0 5px var(--clr-dark-accent);
+    box-shadow: 0 0 8px var(--clr-dark-shadow-primary);
 }
 
 .menu-links li a i {
     margin-right: 15px;
-    width: 20px; /* Para alinear los iconos */
+    width: 20px;
     text-align: center;
+    transition: color var(--transition-speed), filter var(--transition-speed);
 }
+
 body.dark-mode .menu-links li a i {
-    color: var(--neon-blue);
-    filter: drop-shadow(0 0 3px var(--neon-blue));
+    color: var(--clr-dark-accent); 
+    filter: drop-shadow(0 0 3px var(--clr-dark-accent));
 }
+
 body.dark-mode .menu-links li a:hover i {
-    color: var(--neon-blue);
-    filter: drop-shadow(0 0 5px var(--neon-blue));
+    color: var(--clr-dark-accent);
+    filter: drop-shadow(0 0 5px var(--clr-dark-accent));
 }
 
-
-@media (max-width: 768px) {
-    .menu-toggle{
-    display: block;
-}
-    .main-nav {
-        order: 3;
-        margin-left: 0;
-        flex-shrink: 0;
-    }
-
-    .main-nav ul {
-        gap: 0; 
-    }
-
-    .main-nav ul li:nth-child(1),
-    .main-nav ul li:nth-child(2),
-    .main-nav ul li:nth-child(3) {
-        display: none;
-    }
-
-    .main-nav .nav-icon.menu-toggle {
-        flex-direction: row;
-        font-size: 1em;
-        padding: 5px 10px;
-        border-radius: 5px;
-        background-color: transparent;
-    }
-    .main-nav .nav-icon.menu-toggle i {
-        font-size: 1.5em; 
-        margin-bottom: 0; 
-        margin-right: 5px; 
-    }
-
-    .main-nav .nav-text-mobile {
-        display: inline;
-    }
-    .main-nav .nav-text-desktop {
-        display: none;
-    }
-}
 
 @media (max-width: 480px) {
     .side-menu {
@@ -928,7 +901,9 @@ body.dark-mode .menu-links li a:hover i {
     }
 }
 
-.menu-close-btn{
-    border: none;
-    background: none;
+
+body.dark-mode .menu-toggle i {
+    filter: drop-shadow(0 0 5px var(--neon-yellow)) drop-shadow(0 0 10px var(--neon-yellow));
+    color: var(--neon-yellow);
 }
+
