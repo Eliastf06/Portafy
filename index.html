@@ -16,7 +16,7 @@
 <body>
     <header class="main-header" role="banner">
         <div class="container header-content">
-            <div style="display: flex; align-items: center;">
+            <div class="header-left-group">
                 <div class="theme-toggle" id="theme-toggle" role="button" aria-label="Cambiar tema de color"
                     tabindex="0">
                     <i class="fas fa-moon light-mode-icon" aria-hidden="true"></i> <i class="fas fa-sun dark-mode-icon"
@@ -27,12 +27,16 @@
                     ortafy
                 </a>
             </div>
+            
             <nav class="main-nav-index" role="navigation">
                 <ul>
-                    <li><a href="discover.html" class="view-projects">Ver Proyectos</a></li>
+                    <li><a href="discover.html" class="nav-button">Ver Proyectos</a></li>
                     <li><a href="docs.html" class="nav-button">Documentación</a></li>
                     <li id="profile-link-container"><a href="#" id="profile-link" class="nav-button">Ver mi
                             Portafolios</a></li>
+                    <li><a href="#" class="nav-icon nav-icon menu-toggle" id="menu-toggle-btn" role="button"
+                            aria-expanded="false" aria-controls="side-menu-overlay" aria-label="Abrir menú lateral">
+                            <i class="fas fa-bars" aria-hidden="true"></i></a></li>
                 </ul>
             </nav>
         </div>
@@ -132,6 +136,34 @@
     </main>
 
 
+    <div class="menu-overlay" id="side-menu-overlay" role="dialog" aria-modal="true" aria-labelledby="menu-header-id">
+        <div class="side-menu">
+            <button class="menu-close-btn" id="menu-close-btn" aria-label="Cerrar menú lateral">&times;</button>
+            <div class="menu-header" id="menu-header-id">
+                <div class="profile-photo-circle">
+                    <img id="user-profile-photo" src="multimedia/default-profile.png"
+                        alt="Foto de perfil por defecto" />
+                </div>
+                <h3 id="user-menu-name">NOMBRE APELLIDO</h3>
+            </div>
+            <ul class="menu-links">
+                <li><a href="discover.html"><i class="fas fa-solid fa-briefcase" aria-hidden="true"></i> Descubrir Portafolios</a></li>
+                <li id="login-side-menu"><a href="signin.html"><i class="fas fa-user" aria-hidden="true"></i> Iniciar
+                        sesión</a></li>
+                <li id="profile-side-menu"><a href="profile.html"><i class="fas fa-user" aria-hidden="true"></i>
+                        Perfil</a></li>
+                <li id="upload-side-menu-item"><a href="upload-project.html" id="side-menu-upload-btn"><i
+                            class="fas fa-upload" aria-hidden="true"></i> Subir proyecto</a></li>
+                <li><a href="docs.html"><i class="fas fa-file-alt" aria-hidden="true"></i>Documentación</a></li>
+                <li><a href="help.html"><i class="fas fa-lightbulb" aria-hidden="true"></i> Soporte</a></li>
+                <li id="logout-btn-item"><a href="#" id="logout-btn"><i class="fas fa-sign-out-alt"
+                            aria-hidden="true"></i> Cerrar sesión</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+
     <button id="btnVolverArriba" aria-label="Volver al inicio de la página" title="Volver Arriba">
         <i class="fas fa-arrow-up"></i>
     </button>
@@ -207,6 +239,8 @@
     <script type="module" src="js/theme.js"></script>
     <script type="module" src="js/chatbot.js"></script>
     <script type="module" src="js/main.js"></script>
+    <script type="module" src="js/script.js"></script>
+    <script src="js/menu.js"></script>
 </body>
 
 </html>
