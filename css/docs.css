@@ -43,7 +43,7 @@
 
 body.dark-mode .docs-item h2 {
     color: var(--neon-yellow);
-    text-shadow: var(--glow-effect);
+    text-shadow: var(--glow-effect-secondary);
 }
 
 .docs-item h3 {
@@ -216,9 +216,10 @@ body.dark-mode .docs-item dt {
     transition: color var(--transition-speed);
 }
 
+
 body.dark-mode .main-nav-docs .nav-icon i {
-    filter: drop-shadow(0 0 3px var(--neon-blue)) drop-shadow(0 0 6px var(--neon-blue));
-    color: var(--neon-blue);
+    filter: drop-shadow(0 0 3px var(--neon-yellow)) drop-shadow(0 0 6px var(--neon-yellow));
+    color: var(--neon-yellow);
 }
 
 .main-nav-docs .nav-icon:hover {

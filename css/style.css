@@ -28,10 +28,10 @@
     --shadow-secondary: var(--clr-light-shadow-secondary);
     
     /* Variables adicionales para el efecto de neón */
-    --neon-yellow: #fff01e;
-    --neon-yellow-two: #fff01e9e;
+    --neon-yellow: #fff01ed3;
+    --neon-yellow-two: #fff01e7f;
     --glow-effect: 0 0 5px var(--neon-yellow), 0 0 10px var(--neon-yellow), 0 0 20px var(--neon-yellow);
-    --glow-effect-secondary: 0 0 5px var(--neon-yellow), 0 0 10px var(--neon-yellow), 0 0 20px var(--neon-yellow);
+    --glow-effect-secondary: 0 0 5px var(--neon-yellow-two), 0 0 10px var(--neon-yellow-two), 0 0 20px var(--neon-yellow-two);
 
     /* Transiciones */
     --transition-speed: 0.3s ease-in-out;

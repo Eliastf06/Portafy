@@ -155,10 +155,7 @@ body.dark-mode .theme-toggle .dark-mode-icon { display: inline-block; }
     transition: color var(--transition-speed);
 }
 
-body.dark-mode .main-nav .nav-icon i {
-    filter: drop-shadow(0 0 3px var(--neon-yellow)) drop-shadow(0 0 6px var(--neon-yellow));
-    color: var(--neon-yellow);
-}
+
 
 .main-nav .nav-icon:hover {
     color: var(--accent-color);
@@ -978,8 +975,8 @@ body.dark-mode #btnVolverArriba:hover {
 }
 
 body.dark-mode .main-nav-help .nav-icon i {
-    filter: drop-shadow(0 0 3px var(--neon-blue)) drop-shadow(0 0 6px var(--neon-blue));
-    color: var(--neon-blue);
+    filter: drop-shadow(0 0 3px var(--neon-yellow)) drop-shadow(0 0 6px var(--neon-yellow));
+    color: var(--neon-yellow);
 }
 
 .main-nav-help .nav-icon:hover {
