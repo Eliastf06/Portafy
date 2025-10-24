@@ -46,7 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
             profileLink.href = 'signin.html';
 
             if (heroCtaButton) {
-                heroCtaButton.textContent = '¡Empieza a crear tu portafolios!';
+                heroCtaButton.textContent = '¡Empieze a crear su portafolios!';
                 heroCtaButton.href = 'regis.html';
             }
         }
@@ -135,4 +135,5 @@ document.addEventListener('DOMContentLoaded', () => {
             updateUI();
         }
     });
+
 });
