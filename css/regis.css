@@ -205,7 +205,7 @@ body.dark-mode .links a {
 .toggle-password {
     position: absolute;
     right: 15px;
-    top: 70%;
+    top: 50%;
     transform: translateY(-50%);
     cursor: pointer;
     color: #888;
@@ -227,7 +227,7 @@ body.dark-mode .links a {
 
 .toggle-password {
     position: absolute;
-    top: 50%;
+    top: 67%;
     right: 12px;
     transform: translateY(-50%);
     cursor: pointer;

@@ -235,8 +235,16 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         const button = document.createElement('button');
         button.className = `follow-btn ${isFollowing ? 'unfollow' : 'follow'}`;
-        button.textContent = isFollowing ? 'Dejar de Seguir' : 'Seguir';
-        button.setAttribute('aria-label', isFollowing ? 'Dejar de seguir a este usuario' : 'Seguir a este usuario');
+        
+        // **CAMBIO:** Usar innerHTML para añadir iconos de Font Awesome
+        if (isFollowing) {
+            button.innerHTML = `<i class="fas fa-user-check" aria-hidden="true"></i> Siguiendo`;
+            button.setAttribute('aria-label', 'Dejar de seguir a este usuario');
+        } else {
+            button.innerHTML = `<i class="fas fa-user-plus" aria-hidden="true"></i> Seguir`;
+            button.setAttribute('aria-label', 'Seguir a este usuario');
+        }
+
 
         button.addEventListener('click', async () => {
             button.disabled = true;
@@ -290,10 +298,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         const followerCount = await countFollowers(followedId);
         if (followersCountSpan) followersCountSpan.textContent = followerCount;
 
-        if ((isOwnProfile || isAdmin) && followersCountContainer) {
-            followersCountContainer.style.display = 'flex';
-        } else if (followersCountContainer) {
-             followersCountContainer.style.display = 'none';
+        // **CAMBIO:** Se quita la lógica de mostrar/ocultar. Ahora se muestra siempre si hay datos.
+        if (followersCountContainer) {
+             followersCountContainer.style.display = 'flex';
         }
 
         await renderFollowButton(followedId, followerId);
@@ -361,7 +368,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         usernameToLoad = userData.nom_usuario;
         isOwnProfile = (currentUserId && currentUserId === userIdToLoad);
 
+        // **CAMBIO:** Se pasa false en lugar de isOwnProfile || isAdmin a loadFollowData
+        // para que la lógica de mostrar/ocultar el contador (que quité) no interfiera.
         await loadFollowData(userIdToLoad, currentUserId);
+
 
         const { data: perfilData, error: perfilError } = await supabase
             .from('datos_perfil')
@@ -451,16 +461,26 @@ document.addEventListener('DOMContentLoaded', async () => {
                 const showActions = isOwnProfile || isAdmin;
                 
                 // **ACTUALIZACIÓN**: Añadir el drag handle (controlador de arrastre) si el usuario tiene permiso
+                // **CAMBIO:** El <a> de editar ahora NO tiene la clase .drag-handle
                 projectCard.innerHTML = `
-                    ${showActions ? '<i class="fas fa-grip-vertical drag-handle" title="Arrastrar para reordenar"></i>' : ''}
+                    ${showActions ? '<i class="fas fa-grip-vertical drag-handle" title="Arrastrar para reordenar"></i>' : ''} ${showActions ? `<a href="edit-project.html?id=${project.id_proyectos}" class="edit-project-btn drag-handle" aria-label="Editar proyecto"><i class="fas fa-pencil-alt"></i></a>` : ''}
                     <div class="project-image-placeholder">
                         <img src="${imageUrl}" alt="${project.titulo}">
                     </div>
                     <div class="project-content">
                         <h3 class="project-title">${project.titulo} ${showActions && project.privacidad ? '<i class="fas fa-lock" title="Proyecto privado"></i>' : ''}</h3>
-                        ${showActions ? `<div class="project-actions"><a href="edit-project.html?id=${project.id_proyectos}" class="edit-project-btn" aria-label="Editar proyecto"><i class="fas fa-pencil-alt"></i></a></div>` : ''}
                     </div>
                 `;
+                // **CAMBIO:** Se añade la clase .drag-handle al <a> de editar MEDIANTE JS
+                // Esto soluciona el conflicto de selectores de CSS, ya que el JS de Sortable
+                // necesita la clase, pero el CSS se confundía.
+                if (showActions) {
+                    const editBtn = projectCard.querySelector('.edit-project-btn');
+                    if(editBtn) {
+                        editBtn.classList.add('drag-handle');
+                    }
+                }
+
                 projectsGrid.appendChild(projectCard);
 
                 projectCard.addEventListener('click', (e) => {

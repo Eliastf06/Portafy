@@ -17,7 +17,7 @@ function validateFullName(name) {
     if (name.includes('  ')) {
         return 'El nombre completo no puede tener más de un espacio entre palabras.';
     }
-    if (!/^[a-zA-Z\s]+$/.test(name)) {
+    if (!/^[a-zA-Z\s-áéíóúÁÉÍÓÚ]+$/.test(name)) {
         return 'El nombre completo solo puede contener letras y espacios.';
     }
     return null;

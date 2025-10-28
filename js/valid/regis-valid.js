@@ -13,7 +13,7 @@ function validateUsername(username) {
 }
 
 function validateFullName(name) {
-    if (!/^[a-zA-Z]+(?:[ ][a-zA-Z]+)*$/.test(name)) {
+    if (!/^[a-zA-Z\s-áéíóúÁÉÍÓÚ]+(?:[ ][a-zA-Z\s-áéíóúÁÉÍÓÚ]+)*$/.test(name)) {
         return 'El nombre completo solo puede contener letras y un solo espacio entre palabras. No puede tener espacios al inicio o al final.';
     }
     return null;

@@ -426,6 +426,7 @@ body.dark-mode .profile-photo-lg {
     box-shadow: 0 4px 10px var(--shadow-secondary);
     transition: transform 0.2s ease, box-shadow 0.2s ease, background-color var(--transition-speed);
     cursor: pointer;
+    position: relative; /* <-- CAMBIO: Añadido para posicionar íconos correctamente */
 }
 
 body.dark-mode .project-card {
@@ -462,12 +463,52 @@ body.dark-mode .project-image-placeholder {
     background-color: var(--clr-dark-text-light);
 }
 
-.project-name {
+
+.project-content {
     padding: 15px;
+    position: relative; /* <-- CAMBIO: Añadido para posicionar el lápiz */
+}
+
+.project-title {
     font-size: 1.2em;
     color: var(--text-color-dark);
-    text-align: center;
     transition: color var(--transition-speed);
+}
+
+/* CAMBIO: Nuevos estilos para el contenedor de acciones */
+.project-actions {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    z-index: 5;
+}
+
+/* CAMBIO: Nuevos estilos para el botón de editar (lápiz) */
+.edit-project-btn {
+    font-size: 1.1rem;
+    color: var(--text-color-dark);
+    opacity: 0;
+    transition: opacity 0.3s ease, color 0.3s ease;
+    padding: 5px;
+    display: block;
+}
+
+.project-card:hover .edit-project-btn {
+    opacity: 0.8;
+}
+
+.edit-project-btn:hover {
+    opacity: 1;
+    color: var(--accent-color);
+}
+
+body.dark-mode .edit-project-btn {
+    color: var(--clr-dark-text-light);
+}
+
+body.dark-mode .edit-project-btn:hover {
+    color: var(--clr-dark-accent);
+    filter: drop-shadow(0 0 3px var(--neon-yellow));
 }
 
 
@@ -943,7 +984,7 @@ body.dark-mode #btnVolverArriba:hover {
 
 
 .profile-meta {
-    margin-top: 10px;
+    margin-top: 20px; /* Aumentado para más espacio */
     display: flex;
     flex-wrap: wrap;
     align-items: center;
@@ -959,70 +1000,117 @@ body.dark-mode #btnVolverArriba:hover {
 }
 
 .followers-count i {
-    margin-right: 5px;
-    color: var(--primary-color);
+    margin-right: 8px; /* Más espacio para el ícono */
+    color: var(--text-color-dark); /* Color más visible */
+    font-size: 1.2em;
+}
+
+body.dark-mode .followers-count i {
+    color: var(--clr-dark-text-dark);
 }
 
 .followers-count .count-label {
     margin-left: 5px;
     font-weight: 400;
 }
+
 #follow-button-container {
-    margin-top: 15px;
+    /* CAMBIO: Se elimina el margin-top y se ajusta el display */
     display: block; 
 }
 
+/* CAMBIO: Estilos de botón de seguir/siguiendo rediseñados */
 .follow-btn {
     padding: 10px 20px;
-    border: none;
-    border-radius: var(--border-radius);
+    border: 2px solid transparent;
+    border-radius: 8px;
     cursor: pointer;
     font-weight: bold;
-    transition: background-color var(--transition-speed), color var(--transition-speed), border-color var(--transition-speed);
-    width: 100%; 
-    max-width: 200px;
-    text-align: center;
-    display: inline-block;
+    transition: background-color var(--transition-speed), color var(--transition-speed), border-color var(--transition-speed), transform 0.2s ease, box-shadow var(--transition-speed);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.95em;
 }
 
+.follow-btn:hover {
+    transform: translateY(-2px);
+}
+.follow-btn:active {
+    transform: translateY(0);
+}
+
+.follow-btn i {
+    font-size: 1em;
+}
+
+/* Estado "Seguir" */
 .follow-btn.follow {
-    background-color: var(--primary-color);
-    color: var(--button-text-color);
+    background-color: var(--accent-color);
+    color: var(--clr-light-text-dark);
+    border-color: var(--accent-color);
+}
+
+body.dark-mode .follow-btn.follow {
+    background-color: var(--clr-dark-accent);
+    color: var(--clr-dark-bg-primary);
+    border-color: var(--clr-dark-accent);
+    text-shadow: none; 
 }
 
 .follow-btn.follow:hover {
-    background-color: var(--primary-color-hover);
+    filter: brightness(1.1);
 }
 
+body.dark-mode .follow-btn.follow:hover {
+    box-shadow: var(--glow-effect-secondary);
+}
+
+/* Estado "Siguiendo" */
 .follow-btn.unfollow {
     background-color: transparent;
     color: var(--text-color-dark);
-    border: 2px solid var(--text-color-dark);
+    border: 2px solid var(--text-color-light);
+}
+
+body.dark-mode .follow-btn.unfollow {
+    color: var(--text-color-dark);
+    border-color: var(--clr-dark-text-light);
 }
 
 .follow-btn.unfollow:hover {
-    background-color: var(--bg-color-light);
-    color: var(--danger-color);
-    border-color: var(--danger-color);
+    color: #E53935; /* Rojo para acción destructiva */
+    border-color: #E53935;
 }
+
+body.dark-mode .follow-btn.unfollow:hover {
+     color: #FF5252; 
+     border-color: #FF5252;
+}
+
 
 @media (max-width: 768px) {
     .follow-btn {
         max-width: 100%; 
+        width: 100%;
+        justify-content: center;
     }
     .profile-meta {
         flex-direction: column;
-        align-items: flex-start;
-        gap: 10px;
+        align-items: center; /* Centrado en móvil */
+        gap: 15px;
+        width: 100%;
+    }
+    
+    .followers-count {
+        justify-content: center;
     }
 }
 
 
-
-
-
 /* Estilos para Drag and Drop de Proyectos */
-.project-card .drag-handle {
+
+.project-card > .drag-handle {
     position: absolute;
     top: 12px;
     left: 12px;
@@ -1037,18 +1125,21 @@ body.dark-mode #btnVolverArriba:hover {
     z-index: 10;
 }
 
-body.dark-mode .project-card .drag-handle{
+
+body.dark-mode .project-card > .drag-handle{
     color: var(--clr-dark-accent);
     -webkit-text-stroke: var(--text-color-light) 1px;
     text-shadow: var(--glow-effect);
 }
 
 
-.project-card:hover .drag-handle {
+/* CAMBIO: Selector modificado a HIJO DIRECTO (>) */
+.project-card:hover > .drag-handle {
     opacity: 0.8;
 }
 
-.project-card .drag-handle:hover {
+/* CAMBIO: Selector modificado a HIJO DIRECTO (>) */
+.project-card > .drag-handle:hover {
     opacity: 1;
 }
 
@@ -1059,7 +1150,19 @@ body.dark-mode .project-card .drag-handle{
 /* Estilo para el elemento fantasma que se muestra mientras arrastras */
 .sortable-ghost {
     opacity: 0.4;
-    background-color: var(--accent-color-translucent);
-    border: 2px dashed var(--accent-color);
-    border-radius: var(--border-radius);
+    background-color: var(--accent-color); /* Usando variable definida */
+    border: 2px dashed var(--clr-light-text-dark); /* Usando variable definida */
+    border-radius: 15px; /* Usando valor de .project-card */
+}
+
+body.dark-mode .sortable-ghost {
+    background-color: var(--clr-dark-accent);
+    border-color: var(--clr-dark-text-dark);
+}
+
+
+.edit-project-btn.drag-handle{
+    left: 285px;
+    cursor: pointer;
+    font-size: 1.5rem;
 }
