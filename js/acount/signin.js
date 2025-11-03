@@ -1,3 +1,4 @@
+
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
 
 const SUPABASE_URL = 'https://fikdyystxmsmwioyyegt.supabase.co';
@@ -5,40 +6,23 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
 
 const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-function showMessage(message, type = 'success') {
-    const appMessageElement = document.getElementById('app-message');
-    appMessageElement.textContent = message;
-    appMessageElement.style.color = type === 'success' ? 'green' : (type === 'error' ? 'red' : 'black');
-    appMessageElement.style.display = 'block';
-    setTimeout(() => {
-        appMessageElement.style.display = 'none';
-    }, 5000);
-}
-
-document.addEventListener('DOMContentLoaded', async () => {
-
-    // **[MODIFICACIÓN CLAVE]** Verificar autenticación al cargar la página
-    try {
-        const { data: { user } } = await supabase.auth.getUser();
-        if (user) {
-            console.log("Usuario ya autenticado. Redirigiendo a discover.html");
-            // Muestra un mensaje breve de redirección antes de salir
-            showMessage(`Bienvenido de nuevo! Redirigiendo...`, 'success');
-            setTimeout(() => {
-                window.location.href = 'discover.html';
-            }, 500); // Pequeño retraso para que el usuario perciba el cambio
-            return; // Detiene la ejecución del resto del script
-        }
-    } catch (error) {
-        console.error("Error al obtener el estado de autenticación:", error);
-        // Si hay un error al verificar, permite que el usuario intente loguearse
-    }
+document.addEventListener('DOMContentLoaded', () => {
 
     const loginForm = document.getElementById('loginForm');
+    const appMessageElement = document.getElementById('app-message');
     const forgotPasswordLink = document.getElementById('forgot-password');
 
     const emailInput = document.getElementById('email');
     const passwordInput = document.getElementById('password');
+
+    function showMessage(message, type = 'success') {
+        appMessageElement.textContent = message;
+        appMessageElement.style.color = type === 'success' ? 'green' : 'red';
+        appMessageElement.style.display = 'block';
+        setTimeout(() => {
+            appMessageElement.style.display = 'none';
+        }, 5000);
+    }
 
     loginForm.addEventListener('submit', async (e) => {
         e.preventDefault();
@@ -89,6 +73,18 @@ document.addEventListener('DOMContentLoaded', async () => {
         window.location.href = 'recover-password.html';
     });
     
+    (async () => {
+        try {
+            const { data: { user } } = await supabase.auth.getUser();
+            if (user) {
+                console.log("Usuario ya autenticado:", user);
+                showMessage(`Bienvenido de nuevo! Ya estás conectado.`, 'success');
+            }
+        } catch (error) {
+            console.error("Error al obtener el estado de autenticación:", error);
+        }
+    })();
+
     document.querySelectorAll('.toggle-password').forEach(toggle => {
         toggle.addEventListener('click', () => {
             const targetId = toggle.getAttribute('data-target');
