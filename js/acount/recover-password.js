@@ -1,3 +1,4 @@
+//recover-password.js
 
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
 
@@ -32,7 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
         showMessage('Enviando enlace de restablecimiento...', 'black');
         try {
             const { error } = await supabase.auth.resetPasswordForEmail(email, {
-                redirectTo: `${window.location.origin}/update-password.html`
+                redirectTo: `https://portafy.vercel.app/update-password.html`
             });
 
             if (error) {
