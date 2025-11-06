@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
         showMessage('Enviando enlace de restablecimiento...', 'black');
         try {
             const { error } = await supabase.auth.resetPasswordForEmail(email, {
-                redirectTo: `https://portafy.vercel.app/update-password.html`
+                redirectTo: 'https://portafy.vercel.app/update-password.html'
             });
 
             if (error) {
@@ -49,3 +49,4 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
+
