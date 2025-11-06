@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function showMessage(message, type = 'success') {
         appMessageElement.textContent = message;
-        appMessageElement.style.color = type === 'success' ? 'green' : (type === 'error' ? 'red' : 'black');
+        appMessageElement.style.color = type === 'success' ? 'green' : (type === 'error' ? 'red' : 'rgb(107, 107, 107)');
         appMessageElement.style.display = 'block';
         setTimeout(() => {
             appMessageElement.style.display = 'none';
@@ -49,4 +49,3 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
-

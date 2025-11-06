@@ -1,4 +1,4 @@
-
+//update-password.js
 
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
 
@@ -8,7 +8,7 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
 const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 // Caracteres prohibidos para la contraseña
-const PROHIBITED_CHARS_PASSWORD = /['":;,<>/\(\)@\{\}\[\]`´¬\|°\\?¿¡=!*~^%¨]/;
+const PROHIBITED_CHARS_PASSWORD = /[{}^<>`~*¨|°¬;´¨]/;
 
 document.addEventListener('DOMContentLoaded', async () => {
     const updatePasswordForm = document.getElementById('updatePasswordForm');
@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     function showMessage(message, type = 'success') {
         appMessageElement.textContent = message;
-        appMessageElement.style.color = type === 'success' ? 'green' : (type === 'error' ? 'red' : 'black');
+        appMessageElement.style.color = type === 'success' ? 'green' : (type === 'error' ? 'red' : 'rgb(107, 107, 107)');
         appMessageElement.style.display = 'block';
         setTimeout(() => {
             appMessageElement.style.display = 'none';
