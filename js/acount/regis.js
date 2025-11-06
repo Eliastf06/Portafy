@@ -9,14 +9,10 @@ const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 const showToast = (message, isError = false) => {
 
     let background = '';
-    // [Pautas estéticas y emocionales] Uso de colores equilibrados y feedback emocional.
-    // Aunque has pedido no modificar la implementación actual del toast,
-    // mantengo el esquema de colores para este contexto, pero ten en cuenta tus pautas guardadas
-    // (Verde suave → éxito, Rojo profundo → error).
     if (isError === false) {
-        background = 'linear-gradient(to right, #28a745d8, #1e7e34d8)'; // Éxito/Información (Actualizado a verde suave)
+        background = 'linear-gradient(to right, #ffee00d8, #3e3a00d8)'; // Éxito/Información (Actualizado a verde suave)
     } else {
-        background = 'linear-gradient(to right, #dc3545d8, #c82333d8)'; // Error (Actualizado a rojo profundo)
+        background = 'linear-gradient(to right, #e61d16d8, #5d0300d8)'; // Error (Actualizado a rojo profundo)
     }
 
     Toastify({

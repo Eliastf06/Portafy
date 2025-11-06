@@ -1,0 +1,246 @@
+/* ========================================================================= */
+/* 📂 css/print.css - Estilos específicos para impresión (Print/CV) */
+/* ========================================================================= */
+
+/* --- Configuración General de Impresión --- */
+@media print {
+    /* Ajuste para impresión a una sola página */
+    @page {
+        size: A4 portrait; 
+        margin: 1cm; 
+    }
+
+    /* Eliminar elementos de la interfaz de usuario */
+    .main-header,
+    .main-footer,
+    #btnVolverArriba,
+    .chatbot-container,
+    #edit-profile-btn, 
+    #follow-button-container,
+    #followers-count-container,
+    .drag-handle, 
+    .project-actions, 
+    .menu-overlay, 
+    .modal-overlay, 
+    .nav-icon,
+    .profile-meta,
+    /* Ocultar iconos de todas las redes sociales */
+    #profile-socials .fab,
+    #profile-socials .fas 
+     {
+        display: none !important;
+    }
+
+    /* CORRECCIÓN CLAVE: Forzar la visibilidad del contenido principal */
+    .scroll-reveal,
+    .user-profile-section {
+        opacity: 1 !important;
+        transform: none !important; 
+        visibility: visible !important;
+        transition: none !important; 
+        animation: none !important; 
+        background-color: transparent !important; 
+        box-shadow: none !important;
+    }
+    
+    /* Restablecer el flujo del documento y estilos visuales */
+    body {
+        margin: 0;
+        padding: 0;
+        background-color: white !important;
+        color: black !important;
+        font-family: 'Arial', 'Helvetica', sans-serif; 
+        min-height: 0;
+        display: block;
+    }
+
+    .main-content {
+        padding: 0;
+        margin: 0 auto;
+        max-width: 100%;
+    }
+    
+    .container {
+        padding: 0;
+        margin: 0 auto;
+        max-width: 100%;
+    }
+
+    /* --- Sección de Perfil (Header/CV Info) --- */
+    .user-profile-section {
+        padding: 0;
+        margin-bottom: 30px;
+    }
+
+    .profile-header {
+        flex-direction: row; 
+        align-items: flex-start;
+        gap: 20px;
+        text-align: left;
+        border-bottom: 2px solid #333; 
+        padding-bottom: 15px;
+        margin-bottom: 20px;
+    }
+
+    /* Foto: hacerla más pequeña y cuadrada */
+    .profile-photo-lg {
+        width: 100px;
+        height: 100px;
+        border: 2px solid #333;
+        box-shadow: none !important;
+        flex-shrink: 0;
+        margin-bottom: 0;
+    }
+    
+    .profile-name {
+        font-size: 1.8em;
+    }
+    
+    /* --- Información de Contacto (Socials) --- */
+    #profile-socials {
+        font-size: 0.9em;
+        margin-top: 10px;
+        color: #555;
+    }
+    
+    /* Mostrar la URL del enlace */
+    #profile-socials a {
+        color: #333 !important;
+        text-decoration: none !important;
+        margin-right: 15px; 
+        display: block !important; 
+        line-height: 1.4;
+    }
+    
+    /* Mostrar el texto "GitHub: [URL]" */
+    #profile-socials a[href*="github.com"]::after {
+         content: "GitHub: " attr(href); 
+         font-weight: normal;
+         color: #333 !important;
+         display: inline !important;
+    }
+    
+    /* Mostrar otras redes (ejemplo: LinkedIn) */
+    #profile-socials a[href*="linkedin.com"]::after {
+         content: "LinkedIn: " attr(href); 
+         font-weight: normal;
+         color: #333 !important;
+         display: inline !important;
+    }
+
+
+    /* --- Sección de Proyectos --- */
+    .projects-title {
+        font-size: 1.5em;
+        text-transform: uppercase;
+        color: #333;
+        border-bottom: 2px solid #333;
+        padding-bottom: 5px;
+        margin-bottom: 20px;
+        page-break-before: auto;
+    }
+
+    .projects-grid {
+        display: block; 
+        gap: 0; 
+        padding-bottom: 0;
+    }
+
+    .project-card {
+        box-shadow: none !important;
+        border: none !important;
+        border-bottom: 1px solid #ccc;
+        border-radius: 0;
+        margin-bottom: 15px;
+        padding-bottom: 15px;
+        page-break-inside: avoid; 
+        background-color: white !important;
+        display: flow-root; 
+    }
+    
+    .project-card:last-child {
+        border-bottom: none;
+        margin-bottom: 0;
+        padding-bottom: 0;
+    }
+
+    /* SOLICITUD: Imágenes de proyectos más grandes (Aumentado a 350px) */
+    .project-image-placeholder {
+        display: block !important; 
+        width: 100%; 
+        max-width: 350px; /* Tamaño más grande */
+        height: auto;
+        float: left; 
+        margin-right: 20px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc; 
+    }
+
+    .project-image-placeholder img {
+        width: 100%;
+        height: auto;
+        display: block;
+    }
+
+    /* SOLUCIÓN FINAL para forzar la visibilidad de la descripción */
+    
+    /* 1. Asegurar que el contenedor no tenga restricciones de altura */
+    .project-content {
+        height: auto !important; 
+        max-height: none !important;
+        overflow: visible !important; 
+        padding: 0;
+        opacity: 1 !important; /* Asegurar visibilidad del contenedor */
+    }
+    
+    /* 2. Aplicar reglas ultra-fuertes a la clase de descripción */
+    .project-description {
+        display: block !important; 
+        visibility: visible !important; 
+        opacity: 1 !important; 
+        height: auto !important; 
+        max-height: none !important;
+        min-height: 1px !important; 
+        font-size: 0.9em;
+        line-height: 1.4;
+        margin-top: 5px;
+        color: #333;
+        white-space: normal !important; /* Evitar que el texto se comprima */
+    }
+    
+    /* 3. Regla ultra-agresiva para cualquier párrafo dentro de la tarjeta de proyecto */
+    .project-card p {
+        display: block !important; 
+        visibility: visible !important;
+        opacity: 1 !important;
+        height: auto !important;
+        max-height: none !important;
+        min-height: 1px !important; 
+        margin-top: 5px; 
+    }
+
+    .project-title {
+        font-size: 1.1em;
+        font-weight: bold;
+        color: #333;
+        margin-bottom: 5px;
+    }
+    
+    .project-card .project-author {
+        display: none; 
+    }
+
+    .project-description-text { /* <--- ¡ESTE ES EL NUEVO SELECTOR! */
+        display: block !important; 
+        visibility: visible !important; 
+        opacity: 1 !important; 
+        height: auto !important; 
+        max-height: none !important;
+        min-height: 1px !important; 
+        font-size: 0.9em;
+        line-height: 1.4;
+        margin-top: 5px;
+        color: #333;
+        white-space: normal !important; 
+    }
+}

@@ -51,7 +51,7 @@ body.dark-mode {
 body.dark-mode .app-logo-link {
     color: var(--clr-dark-text-dark);
 }
-
+ 
 
 
 .logo-text {
@@ -757,7 +757,3 @@ body.dark-mode .menu-toggle i {
     color: var(--neon-yellow);
 }
 
-
-.nalgas{
-    display:none;
-}

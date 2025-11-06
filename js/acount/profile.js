@@ -133,7 +133,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     <img src="${imageUrl}" alt="${project.titulo}" class="modal-image">
                     <div class="modal-details">
                         <h2>${project.titulo}</h2>
-                        <p>${descripcion}</p>
+                        <p class="project-description-text">${descripcion}</p>
                         <p><strong>Autor:</strong> ${authorName}</p>
                         ${fechasHtml}
                         ${paraQuienHtml}
